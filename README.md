@@ -4,4 +4,4 @@
 
 ## multi select
 
-![demo](https://user-images.githubusercontent.com/65269574/182380603-ab5aac65-1725-4cfc-8a72-fce97e38e510.gif)
+![demo](https://user-images.githubusercontent.com/65269574/182394667-417b1ef4-6927-4cf5-9e01-c4e4ccb48b6a.gif)
