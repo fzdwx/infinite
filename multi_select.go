@@ -3,9 +3,7 @@ package inf
 import (
 	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/stringx"
-	"github.com/fzdwx/infinite/style"
 	"github.com/rotisserie/eris"
 )
 
@@ -15,11 +13,23 @@ type (
 	}
 
 	MultiSelectOption func(ms *MultiSelect)
+
+	innerMultiSelect struct {
+		choices  []string
+		cursor   int
+		selected map[int]struct{}
+
+		defaultText string
+
+		selectedStr string
+
+		unSelectedStr string
+	}
 )
 
 // Show startup MultiSelect
 func (ms MultiSelect) Show(text ...string) ([]int, error) {
-	ms.apply(WithDefaultText(text...))
+	ms.apply(WithMultiSelectDefaultText(text...))
 
 	err := ms.inner.Start()
 	if err != nil {
@@ -29,12 +39,26 @@ func (ms MultiSelect) Show(text ...string) ([]int, error) {
 	return ms.inner.Selected(), nil
 }
 
-// WithDefaultText set default text
-func WithDefaultText(text ...string) MultiSelectOption {
+// WithMultiSelectDefaultText default is "Please select your options:"
+func WithMultiSelectDefaultText(text ...string) MultiSelectOption {
 	return func(ms *MultiSelect) {
 		if len(text) >= 1 {
 			ms.inner.defaultText = text[0]
 		}
+	}
+}
+
+// WithMultiSelectStr default is "✓"
+func WithMultiSelectStr(selectedStr string) MultiSelectOption {
+	return func(ms *MultiSelect) {
+		ms.inner.selectedStr = selectedStr
+	}
+}
+
+// WithMultiSelectUnStr default is "✗"
+func WithMultiSelectUnStr(unSelectedStr string) MultiSelectOption {
+	return func(ms *MultiSelect) {
+		ms.inner.unSelectedStr = unSelectedStr
 	}
 }
 
@@ -49,22 +73,14 @@ func (ms *MultiSelect) apply(ops ...MultiSelectOption) *MultiSelect {
 }
 
 /* ============================================================== inner */
-type (
-	innerMultiSelect struct {
-		textStyle   lipgloss.Style
-		choices     []string
-		cursor      int
-		selected    map[int]struct{}
-		defaultText string
-	}
-)
 
 func newInnerSelect(choices []string) *innerMultiSelect {
 	return &innerMultiSelect{
-		choices:     choices,
-		selected:    make(map[int]struct{}),
-		defaultText: "Please select your options",
-		textStyle:   style.PrimaryStyle,
+		choices:       choices,
+		selected:      make(map[int]struct{}),
+		defaultText:   "Please select your options:",
+		selectedStr:   "✓",
+		unSelectedStr: "✗",
 	}
 }
 
@@ -106,7 +122,7 @@ func (is *innerMultiSelect) View() string {
 	msg := stringx.NewFluentSb()
 
 	// The header
-	msg.Write(is.textStyle.Render(is.defaultText)).NextLine()
+	msg.Write(is.defaultText).NextLine()
 
 	// Iterate over our choices
 	for i, choice := range is.choices {
@@ -118,9 +134,9 @@ func (is *innerMultiSelect) View() string {
 		}
 
 		// Is this choice selected?
-		checked := " " // not selected
+		checked := is.unSelectedStr // not selected
 		if _, ok := is.selected[i]; ok {
-			checked = "x" // selected!
+			checked = is.selectedStr // selected!
 		}
 
 		// Render the row
@@ -163,4 +179,11 @@ func (is *innerMultiSelect) choice() {
 // quit These keys should exit the program.
 func (is *innerMultiSelect) quit() (tea.Model, tea.Cmd) {
 	return is, tea.Quit
+}
+
+// renderColor set color to text
+func (is *innerMultiSelect) renderColor() {
+	is.defaultText = Theme.primaryStyle.Render(is.defaultText)
+	is.selectedStr = Theme.multiSelectedStrStyle.Render(is.selectedStr)
+	is.unSelectedStr = Theme.unSelectedStrStyle.Render(is.unSelectedStr)
 }

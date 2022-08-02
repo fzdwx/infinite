@@ -35,10 +35,13 @@ func startUp(c Components) error {
 }
 
 func NewMultiSelect(choices []string, ops ...MultiSelectOption) *MultiSelect {
-
 	ms := &MultiSelect{
 		inner: newInnerSelect(choices),
 	}
 
-	return ms.apply(ops...)
+	ms.apply(ops...)
+
+	ms.inner.renderColor()
+
+	return ms
 }
