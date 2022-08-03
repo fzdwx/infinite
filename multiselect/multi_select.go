@@ -27,7 +27,7 @@ func (ms MultiSelect) Show(prompt ...string) ([]int, error) {
 		return nil, eris.Wrap(err, "start inner multi select fail")
 	}
 
-	return ms.inner.Selected(), nil
+	return ms.inner.value(), nil
 }
 
 // apply options on MultiSelect

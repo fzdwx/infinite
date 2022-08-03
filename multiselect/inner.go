@@ -2,6 +2,8 @@ package multiselect
 
 import (
 	"fmt"
+	"github.com/charmbracelet/bubbles/help"
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/duke-git/lancet/v2/mathutil"
@@ -13,13 +15,21 @@ type innerMultiSelect struct {
 	choices  []string
 	selected map[int]struct{}
 
-	cursor       int
+	// current cursor index in currentChoices
+	cursor int
+	// the offset of screen
 	scrollOffset int
-
+	// usually len(currentChoices)
 	availableChoices int
-	currentChoices   []string
-
+	// currently valid option
+	currentChoices []string
+	// how many options to display at a time
 	pageSize int
+
+	// key binding
+	keymap KeyMap
+	// key help text
+	help help.Model
 
 	cursorSymbol      string
 	cursorSymbolStyle lipgloss.Style
@@ -55,11 +65,13 @@ func newInnerSelect(choices []string) *innerMultiSelect {
 		quited:              false,
 		disableOutPutResult: false,
 		pageSize:            5,
+		keymap:              DefaultKeyMap,
+		help:                help.New(),
 	}
 }
 
-// Selected get all selected
-func (is *innerMultiSelect) Selected() []int {
+// value get all selected
+func (is *innerMultiSelect) value() []int {
 	var selected []int
 	for s, _ := range is.selected {
 		selected = append(selected, s)
@@ -106,14 +118,14 @@ func (is *innerMultiSelect) Init() tea.Cmd {
 func (is *innerMultiSelect) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		switch msg.String() {
-		case "ctrl+c", "q":
+		switch {
+		case key.Matches(msg, is.keymap.Confirm):
 			return is.quit()
-		case "up", "k":
+		case key.Matches(msg, is.keymap.Up):
 			is.moveUp()
-		case "down", "j":
+		case key.Matches(msg, is.keymap.Down):
 			is.moveDown()
-		case "enter", " ":
+		case key.Matches(msg, is.keymap.Choice):
 			is.choice()
 		}
 	}
@@ -154,7 +166,8 @@ func (is *innerMultiSelect) View() string {
 	}
 
 	// The footer
-	msg.Write("\nPress q to quit.\n")
+	view := is.help.View(is.keymap)
+	msg.Write(view)
 
 	// Send the UI for rendering
 	return msg.String()

@@ -12,6 +12,13 @@ func WithPageSize(pageSize int) Option {
 	}
 }
 
+// WithKeyBinding replace key map.
+func WithKeyBinding(keymap KeyMap) Option {
+	return func(ms *MultiSelect) {
+		ms.inner.keymap = keymap
+	}
+}
+
 // WithCursorSymbol default is ">"
 func WithCursorSymbol(symbol string) Option {
 	return func(ms *MultiSelect) {
