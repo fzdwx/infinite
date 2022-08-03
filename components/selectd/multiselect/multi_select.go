@@ -11,7 +11,7 @@ type Select struct {
 
 func New(choices []string, ops ...Option) *Select {
 	ms := &Select{
-		inner: selectd.NewInnerSelect(choices),
+		inner: selectd.New(choices),
 	}
 
 	return ms.Apply(ops...)

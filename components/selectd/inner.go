@@ -53,7 +53,7 @@ type InnerSelect struct {
 	RowRender func(string, string, string) string
 }
 
-func NewInnerSelect(choices []string) *InnerSelect {
+func New(choices []string) *InnerSelect {
 	return &InnerSelect{
 		Choices:             choices,
 		Selected:            make(map[int]struct{}),
@@ -75,40 +75,6 @@ func NewInnerSelect(choices []string) *InnerSelect {
 			return fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
 		},
 	}
-}
-
-// Value get all Selected
-func (is *InnerSelect) Value() []int {
-	var selected []int
-	for s, _ := range is.Selected {
-		selected = append(selected, s)
-	}
-	return selected
-}
-
-// refreshChoices refresh Choices
-func (is *InnerSelect) refreshChoices() {
-	var choices []string
-	var available, ignored int
-
-	for _, choice := range is.Choices {
-		available++
-
-		if is.PageSize > 0 && len(choices) >= is.PageSize {
-			break
-		}
-
-		if (is.PageSize > 0) && (ignored < is.ScrollOffset) {
-			ignored++
-
-			continue
-		}
-
-		choices = append(choices, choice)
-	}
-
-	is.CurrentChoices = choices
-	is.AvailableChoices = available
 }
 
 func (is *InnerSelect) Start() error {
@@ -176,6 +142,40 @@ func (is *InnerSelect) View() string {
 
 	// Send the UI for rendering
 	return msg.String()
+}
+
+// Value get all Selected
+func (is *InnerSelect) Value() []int {
+	var selected []int
+	for s, _ := range is.Selected {
+		selected = append(selected, s)
+	}
+	return selected
+}
+
+// refreshChoices refresh Choices
+func (is *InnerSelect) refreshChoices() {
+	var choices []string
+	var available, ignored int
+
+	for _, choice := range is.Choices {
+		available++
+
+		if is.PageSize > 0 && len(choices) >= is.PageSize {
+			break
+		}
+
+		if (is.PageSize > 0) && (ignored < is.ScrollOffset) {
+			ignored++
+
+			continue
+		}
+
+		choices = append(choices, choice)
+	}
+
+	is.CurrentChoices = choices
+	is.AvailableChoices = available
 }
 
 // viewResult get result

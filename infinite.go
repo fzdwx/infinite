@@ -4,6 +4,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/fzdwx/infinite/components/selectd/multiselect"
 	"github.com/fzdwx/infinite/components/selectd/singleselect"
+	"github.com/fzdwx/infinite/components/spinner"
 )
 
 type (
@@ -37,4 +38,8 @@ func NewMultiSelect(choices []string, ops ...multiselect.Option) *multiselect.Se
 
 func NewSingleSelect(choices []string, ops ...singleselect.Option) *singleselect.Select {
 	return singleselect.New(choices, ops...)
+}
+
+func NewSpinner() *spinner.Spinner {
+	return spinner.New()
 }
