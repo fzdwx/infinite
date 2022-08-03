@@ -125,15 +125,17 @@ func (is *innerMultiSelect) Init() tea.Cmd {
 func (is *innerMultiSelect) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		switch {
-		case key.Matches(msg, is.keymap.Confirm):
-			return is.quit()
-		case key.Matches(msg, is.keymap.Up):
-			is.moveUp()
-		case key.Matches(msg, is.keymap.Down):
-			is.moveDown()
-		case key.Matches(msg, is.keymap.Choice):
+		if key.Matches(msg, is.keymap.Choice) {
 			is.choice()
+		}
+		if key.Matches(msg, is.keymap.Up) {
+			is.moveUp()
+		}
+		if key.Matches(msg, is.keymap.Down) {
+			is.moveDown()
+		}
+		if key.Matches(msg, is.keymap.Confirm) {
+			return is.quit()
 		}
 	}
 	return is, nil

@@ -3,6 +3,7 @@ package inf
 import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/fzdwx/infinite/multiselect"
+	"github.com/fzdwx/infinite/singleselect"
 )
 
 type (
@@ -30,6 +31,10 @@ type (
 	}
 )
 
-func NewMultiSelect(choices []string, ops ...multiselect.Option) *multiselect.MultiSelect {
+func NewMultiSelect(choices []string, ops ...multiselect.Option) *multiselect.Select {
 	return multiselect.New(choices, ops...)
+}
+
+func NewSingleSelect(choices []string, ops ...singleselect.Option) *singleselect.Select {
+	return singleselect.New(choices, ops...)
 }

@@ -1,6 +1,9 @@
-package multiselect
+package singleselect
 
-import "github.com/charmbracelet/bubbles/key"
+import (
+	"github.com/charmbracelet/bubbles/key"
+	"github.com/fzdwx/infinite/multiselect"
+)
 
 type KeyMap struct {
 	Up      key.Binding
@@ -20,6 +23,15 @@ func (k KeyMap) FullHelp() [][]key.Binding {
 	}
 }
 
+func (k KeyMap) MapToMulti() multiselect.KeyMap {
+	return multiselect.KeyMap{
+		Up:      k.Up,
+		Down:    k.Down,
+		Choice:  k.Choice,
+		Confirm: k.Confirm,
+	}
+}
+
 var DefaultKeyMap = KeyMap{
 	Up: key.NewBinding(
 		key.WithKeys("up"),
@@ -30,11 +42,11 @@ var DefaultKeyMap = KeyMap{
 		key.WithHelp("↓", "move down"),
 	),
 	Choice: key.NewBinding(
-		key.WithKeys(" "),
-		key.WithHelp("space", "choice it"),
+		key.WithKeys("enter"),
+		key.WithHelp("enter", "choice it"),
 	),
 	Confirm: key.NewBinding(
-		key.WithKeys("enter"),
-		key.WithHelp("enter", "confirm and quit"),
+		key.WithKeys("ctrl+c", "enter"),
+		key.WithHelp("ctrl+c/enter", "quit"),
 	),
 }

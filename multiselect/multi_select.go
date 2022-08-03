@@ -4,34 +4,34 @@ import (
 	"github.com/rotisserie/eris"
 )
 
-type MultiSelect struct {
+type Select struct {
 	inner *innerMultiSelect
 }
 
-func New(choices []string, ops ...Option) *MultiSelect {
-	ms := &MultiSelect{
+func New(choices []string, ops ...Option) *Select {
+	ms := &Select{
 		inner: newInnerSelect(choices),
 	}
 
 	return ms.Apply(ops...)
 }
 
-// Show startup MultiSelect
-func (ms MultiSelect) Show(prompt ...string) ([]int, error) {
+// Show startup Select
+func (ms Select) Show(prompt ...string) ([]int, error) {
 	ms.Apply(WithPrompt(prompt...))
 
 	ms.inner.renderColor()
 
 	err := ms.inner.Start()
 	if err != nil {
-		return nil, eris.Wrap(err, "start inner multi select fail")
+		return nil, eris.Wrap(err, "start inner select fail")
 	}
 
 	return ms.inner.value(), nil
 }
 
-// Apply options on MultiSelect
-func (ms *MultiSelect) Apply(ops ...Option) *MultiSelect {
+// Apply options on Select
+func (ms *Select) Apply(ops ...Option) *Select {
 	if len(ops) > 0 {
 		for _, option := range ops {
 			option(ms)
