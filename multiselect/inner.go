@@ -47,6 +47,10 @@ type innerMultiSelect struct {
 
 	disableOutPutResult bool
 	quited              bool
+
+	// rowRender output options
+	// cursorSymbol,hintSymbol,choice
+	rowRender func(string, string, string) string
 }
 
 func newInnerSelect(choices []string) *innerMultiSelect {
@@ -67,6 +71,9 @@ func newInnerSelect(choices []string) *innerMultiSelect {
 		pageSize:            5,
 		keymap:              DefaultKeyMap,
 		help:                help.New(),
+		rowRender: func(cursorSymbol string, hintSymbol string, choice string) string {
+			return fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
+		},
 	}
 }
 
@@ -142,32 +149,28 @@ func (is *innerMultiSelect) View() string {
 	// The header
 	msg.Write(is.prompt)
 
-	msg.NewLine()
-
 	// Iterate over our choices
 	for i, choice := range is.currentChoices {
 
-		// Is the cursor pointing at this choice?
-		cursor := " " // no cursor
+		// Is the cursorSymbol pointing at this choice?
+		cursorSymbol := " " // no cursorSymbol
 		if is.cursor == i {
-			cursor = is.cursorSymbol // cursor!
+			cursorSymbol = is.cursorSymbol // cursorSymbol!
 			choice = is.choiceTextStyle.Render(choice)
 		}
 
 		// Is this choice selected?
-		checked := is.unHintSymbol // not selected
-		if _, ok := is.selected[i]; ok {
-			checked = is.hintSymbol // selected!
+		hintSymbol := is.unHintSymbol // not selected
+		if _, ok := is.selected[i+is.scrollOffset]; ok {
+			hintSymbol = is.hintSymbol // selected!
 		}
 
 		// Render the row
-		msg.Write(fmt.Sprintf("%s [%s] %s", cursor, checked, choice)).
-			NewLine()
+		msg.NewLine().Write(is.rowRender(cursorSymbol, hintSymbol, choice))
 	}
 
 	// The footer
-	view := is.help.View(is.keymap)
-	msg.Write(view)
+	msg.NewLine().Write(is.help.View(is.keymap))
 
 	// Send the UI for rendering
 	return msg.String()
@@ -217,11 +220,11 @@ func (is *innerMultiSelect) moveDown() {
 // The "enter" key and the spacebar (a literal space) toggle
 // the selected state for the item that the cursor is pointing at.
 func (is *innerMultiSelect) choice() {
-	_, ok := is.selected[is.cursor]
+	_, ok := is.selected[is.cursor+is.scrollOffset]
 	if ok {
-		delete(is.selected, is.cursor)
+		delete(is.selected, is.cursor+is.scrollOffset)
 	} else {
-		is.selected[is.cursor] = struct{}{}
+		is.selected[is.cursor+is.scrollOffset] = struct{}{}
 	}
 }
 

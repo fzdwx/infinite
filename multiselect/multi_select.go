@@ -13,12 +13,12 @@ func New(choices []string, ops ...Option) *MultiSelect {
 		inner: newInnerSelect(choices),
 	}
 
-	return ms.apply(ops...)
+	return ms.Apply(ops...)
 }
 
 // Show startup MultiSelect
 func (ms MultiSelect) Show(prompt ...string) ([]int, error) {
-	ms.apply(withPrompt(prompt...))
+	ms.Apply(WithPrompt(prompt...))
 
 	ms.inner.renderColor()
 
@@ -30,8 +30,8 @@ func (ms MultiSelect) Show(prompt ...string) ([]int, error) {
 	return ms.inner.value(), nil
 }
 
-// apply options on MultiSelect
-func (ms *MultiSelect) apply(ops ...Option) *MultiSelect {
+// Apply options on MultiSelect
+func (ms *MultiSelect) Apply(ops ...Option) *MultiSelect {
 	if len(ops) > 0 {
 		for _, option := range ops {
 			option(ms)

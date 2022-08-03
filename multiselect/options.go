@@ -5,6 +5,17 @@ import "github.com/charmbracelet/lipgloss"
 // Option the option of MultiSelect
 type Option func(ms *MultiSelect)
 
+// WithRowRender default is
+//
+// `
+// fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
+// `
+func WithRowRender(rowRender func(string, string, string) string) Option {
+	return func(ms *MultiSelect) {
+		ms.inner.rowRender = rowRender
+	}
+}
+
 // WithPageSize default is 5
 func WithPageSize(pageSize int) Option {
 	return func(ms *MultiSelect) {
@@ -82,8 +93,8 @@ func WithDisableOutputResult() Option {
 	}
 }
 
-// withPrompt default is "Please select your options:"
-func withPrompt(prompt ...string) Option {
+// WithPrompt default is "Please select your options:"
+func WithPrompt(prompt ...string) Option {
 	return func(ms *MultiSelect) {
 		if len(prompt) >= 1 && len(prompt[0]) > 0 {
 			ms.inner.prompt = prompt[0]

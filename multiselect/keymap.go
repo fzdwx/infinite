@@ -23,18 +23,18 @@ func (k KeyMap) FullHelp() [][]key.Binding {
 var DefaultKeyMap = KeyMap{
 	Up: key.NewBinding(
 		key.WithKeys("up"),
-		key.WithHelp("↑", "move up."),
+		key.WithHelp("↑", "move up"),
 	),
 	Down: key.NewBinding(
 		key.WithKeys("down"),
-		key.WithHelp("↓", "move down."),
+		key.WithHelp("↓", "move down"),
 	),
 	Choice: key.NewBinding(
 		key.WithKeys(" "),
-		key.WithHelp("space", "choice it."),
+		key.WithHelp("space", "choice it"),
 	),
 	Confirm: key.NewBinding(
 		key.WithKeys("enter"),
-		key.WithHelp("enter", "confirm and quit multi select."),
+		key.WithHelp("enter", "confirm and quit multi select"),
 	),
 }

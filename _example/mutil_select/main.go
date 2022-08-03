@@ -18,17 +18,17 @@ func main() {
 func t1() {
 	_, _ = inf.
 		NewMultiSelect([]string{
-			"Buy carrots",
-			"Buy celery",
-			"Buy kohlrabi",
-			"Buy computer",
-			"Buy something",
-			"Buy car",
-			"Buy subway",
+			"1 Buy carrots",
+			"2 Buy celery",
+			"3 Buy kohlrabi",
+			"4 Buy computer",
+			"5 Buy something",
+			"6 Buy car",
+			"7 Buy subway",
 		},
 			multiselect.WithHintSymbol("x"),
 			multiselect.WithUnHintSymbol("√"),
-			multiselect.WithDisableOutputResult(),
+			//multiselect.WithDisableOutputResult(),
 			multiselect.WithCursorSymbol("*"),
 		).
 		Show("替换！！！")
