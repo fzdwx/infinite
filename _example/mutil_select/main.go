@@ -4,7 +4,7 @@ import (
 	"fmt"
 	inf "github.com/fzdwx/infinite"
 	"github.com/fzdwx/infinite/color"
-	"github.com/fzdwx/infinite/multiselect"
+	"github.com/fzdwx/infinite/components/selectd/multiselect"
 	"github.com/fzdwx/infinite/style"
 )
 

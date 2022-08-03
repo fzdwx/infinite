@@ -1,4 +1,4 @@
-package multiselect
+package selectd
 
 import "github.com/charmbracelet/bubbles/key"
 
@@ -20,7 +20,7 @@ func (k KeyMap) FullHelp() [][]key.Binding {
 	}
 }
 
-var DefaultKeyMap = KeyMap{
+var DefaultMultiKeyMap = KeyMap{
 	Up: key.NewBinding(
 		key.WithKeys("up"),
 		key.WithHelp("↑", "move up"),
@@ -36,5 +36,24 @@ var DefaultKeyMap = KeyMap{
 	Confirm: key.NewBinding(
 		key.WithKeys("enter"),
 		key.WithHelp("enter", "confirm and quit"),
+	),
+}
+
+var DefaultSingleKeyMap = KeyMap{
+	Up: key.NewBinding(
+		key.WithKeys("up"),
+		key.WithHelp("↑", "move up"),
+	),
+	Down: key.NewBinding(
+		key.WithKeys("down"),
+		key.WithHelp("↓", "move down"),
+	),
+	Choice: key.NewBinding(
+		key.WithKeys("enter"),
+		key.WithHelp("enter", "choice it"),
+	),
+	Confirm: key.NewBinding(
+		key.WithKeys("ctrl+c", "enter"),
+		key.WithHelp("ctrl+c/enter", "quit"),
 	),
 }

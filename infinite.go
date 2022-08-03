@@ -2,8 +2,8 @@ package inf
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/fzdwx/infinite/multiselect"
-	"github.com/fzdwx/infinite/singleselect"
+	"github.com/fzdwx/infinite/components/selectd/multiselect"
+	"github.com/fzdwx/infinite/components/selectd/singleselect"
 )
 
 type (

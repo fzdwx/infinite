@@ -1,16 +1,17 @@
 package multiselect
 
 import (
+	"github.com/fzdwx/infinite/components/selectd"
 	"github.com/rotisserie/eris"
 )
 
 type Select struct {
-	inner *innerMultiSelect
+	inner *selectd.InnerSelect
 }
 
 func New(choices []string, ops ...Option) *Select {
 	ms := &Select{
-		inner: newInnerSelect(choices),
+		inner: selectd.NewInnerSelect(choices),
 	}
 
 	return ms.Apply(ops...)
@@ -20,14 +21,14 @@ func New(choices []string, ops ...Option) *Select {
 func (ms Select) Show(prompt ...string) ([]int, error) {
 	ms.Apply(WithPrompt(prompt...))
 
-	ms.inner.renderColor()
+	ms.inner.RenderColor()
 
 	err := ms.inner.Start()
 	if err != nil {
-		return nil, eris.Wrap(err, "start inner select fail")
+		return nil, eris.Wrap(err, "start inner selectd fail")
 	}
 
-	return ms.inner.value(), nil
+	return ms.inner.Value(), nil
 }
 
 // Apply options on Select
