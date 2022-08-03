@@ -1,86 +1,43 @@
-package inf
+package multiselect
 
 import (
 	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/stringx"
-	"github.com/rotisserie/eris"
+	"github.com/fzdwx/infinite/theme"
 )
 
-type (
-	MultiSelect struct {
-		inner *innerMultiSelect
-	}
+type innerMultiSelect struct {
+	choices  []string
+	cursor   int
+	selected map[int]struct{}
 
-	MultiSelectOption func(ms *MultiSelect)
+	prompt      string
+	promptStyle lipgloss.Style
 
-	innerMultiSelect struct {
-		choices  []string
-		cursor   int
-		selected map[int]struct{}
+	hintSymbol      string
+	hintSymbolStyle lipgloss.Style
 
-		defaultText string
+	unHintSymbol      string
+	unHintSymbolStyle lipgloss.Style
 
-		selectedStr string
-
-		unSelectedStr string
-	}
-)
-
-// Show startup MultiSelect
-func (ms MultiSelect) Show(text ...string) ([]int, error) {
-	ms.apply(WithMultiSelectDefaultText(text...))
-
-	err := ms.inner.Start()
-	if err != nil {
-		return nil, eris.Wrap(err, "start inner multi select fail")
-	}
-
-	return ms.inner.Selected(), nil
+	disableOutPutResult bool
+	quited              bool
 }
-
-// WithMultiSelectDefaultText default is "Please select your options:"
-func WithMultiSelectDefaultText(text ...string) MultiSelectOption {
-	return func(ms *MultiSelect) {
-		if len(text) >= 1 {
-			ms.inner.defaultText = text[0]
-		}
-	}
-}
-
-// WithMultiSelectStr default is "✓"
-func WithMultiSelectStr(selectedStr string) MultiSelectOption {
-	return func(ms *MultiSelect) {
-		ms.inner.selectedStr = selectedStr
-	}
-}
-
-// WithMultiSelectUnStr default is "✗"
-func WithMultiSelectUnStr(unSelectedStr string) MultiSelectOption {
-	return func(ms *MultiSelect) {
-		ms.inner.unSelectedStr = unSelectedStr
-	}
-}
-
-// apply options on MultiSelect
-func (ms *MultiSelect) apply(ops ...MultiSelectOption) *MultiSelect {
-	if len(ops) > 0 {
-		for _, option := range ops {
-			option(ms)
-		}
-	}
-	return ms
-}
-
-/* ============================================================== inner */
 
 func newInnerSelect(choices []string) *innerMultiSelect {
 	return &innerMultiSelect{
-		choices:       choices,
-		selected:      make(map[int]struct{}),
-		defaultText:   "Please select your options:",
-		selectedStr:   "✓",
-		unSelectedStr: "✗",
+		choices:             choices,
+		selected:            make(map[int]struct{}),
+		prompt:              "Please select your options:",
+		promptStyle:         theme.DefaultTheme.PromptStyle,
+		hintSymbol:          "✓",
+		hintSymbolStyle:     theme.DefaultTheme.MultiSelectedHintSymbolStyle,
+		unHintSymbol:        "✗",
+		unHintSymbolStyle:   theme.DefaultTheme.UnHintSymbolStyle,
+		quited:              false,
+		disableOutPutResult: false,
 	}
 }
 
@@ -94,7 +51,7 @@ func (is innerMultiSelect) Selected() []int {
 }
 
 func (is *innerMultiSelect) Start() error {
-	return startUp(is)
+	return tea.NewProgram(is).Start()
 }
 
 func (is innerMultiSelect) Init() tea.Cmd {
@@ -119,10 +76,16 @@ func (is *innerMultiSelect) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (is *innerMultiSelect) View() string {
+	if is.quited {
+		return is.viewResult()
+	}
+
 	msg := stringx.NewFluentSb()
 
 	// The header
-	msg.Write(is.defaultText).NextLine()
+	msg.Write(is.prompt)
+
+	msg.NewLine()
 
 	// Iterate over our choices
 	for i, choice := range is.choices {
@@ -134,9 +97,9 @@ func (is *innerMultiSelect) View() string {
 		}
 
 		// Is this choice selected?
-		checked := is.unSelectedStr // not selected
+		checked := is.unHintSymbol // not selected
 		if _, ok := is.selected[i]; ok {
-			checked = is.selectedStr // selected!
+			checked = is.hintSymbol // selected!
 		}
 
 		// Render the row
@@ -148,6 +111,23 @@ func (is *innerMultiSelect) View() string {
 
 	// Send the UI for rendering
 	return msg.String()
+}
+
+// viewResult get result
+func (is innerMultiSelect) viewResult() string {
+	if is.disableOutPutResult || len(is.selected) == 0 {
+		return ""
+	}
+
+	output := stringx.NewFluentSb().Write(is.prompt).Space()
+
+	for i, _ := range is.selected {
+		output.Write(is.choices[i]).Space()
+	}
+
+	output.NewLine()
+
+	return output.String()
 }
 
 // moveUp The "up" and "k" keys move the cursor up
@@ -178,12 +158,13 @@ func (is *innerMultiSelect) choice() {
 
 // quit These keys should exit the program.
 func (is *innerMultiSelect) quit() (tea.Model, tea.Cmd) {
+	is.quited = true
 	return is, tea.Quit
 }
 
 // renderColor set color to text
 func (is *innerMultiSelect) renderColor() {
-	is.defaultText = Theme.primaryStyle.Render(is.defaultText)
-	is.selectedStr = Theme.multiSelectedStrStyle.Render(is.selectedStr)
-	is.unSelectedStr = Theme.unSelectedStrStyle.Render(is.unSelectedStr)
+	is.prompt = is.promptStyle.Render(is.prompt)
+	is.hintSymbol = is.hintSymbolStyle.Render(is.hintSymbol)
+	is.unHintSymbol = is.unHintSymbolStyle.Render(is.unHintSymbol)
 }

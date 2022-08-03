@@ -2,6 +2,7 @@ package inf
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/fzdwx/infinite/multiselect"
 )
 
 type (
@@ -10,9 +11,8 @@ type (
 		//
 		// example:
 		//
-		//
 		// func (is *innerMultiSelect) Start() error {
-		//	return startUp(is)
+		//	return tea.NewProgram(is).Start()
 		// }
 		Start() error
 
@@ -30,18 +30,6 @@ type (
 	}
 )
 
-func startUp(c Components) error {
-	return tea.NewProgram(c).Start()
-}
-
-func NewMultiSelect(choices []string, ops ...MultiSelectOption) *MultiSelect {
-	ms := &MultiSelect{
-		inner: newInnerSelect(choices),
-	}
-
-	ms.apply(ops...)
-
-	ms.inner.renderColor()
-
-	return ms
+func NewMultiSelect(choices []string, ops ...multiselect.Option) *multiselect.MultiSelect {
+	return multiselect.New(choices, ops...)
 }
