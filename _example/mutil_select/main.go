@@ -23,6 +23,8 @@ func t1() {
 			"Buy kohlrabi",
 			"Buy computer",
 			"Buy something",
+			"Buy car",
+			"Buy subway",
 		},
 			multiselect.WithHintSymbol("x"),
 			multiselect.WithUnHintSymbol("√"),

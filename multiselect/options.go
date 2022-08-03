@@ -5,6 +5,13 @@ import "github.com/charmbracelet/lipgloss"
 // Option the option of MultiSelect
 type Option func(ms *MultiSelect)
 
+// WithPageSize default is 5
+func WithPageSize(pageSize int) Option {
+	return func(ms *MultiSelect) {
+		ms.inner.pageSize = pageSize
+	}
+}
+
 // WithCursorSymbol default is ">"
 func WithCursorSymbol(symbol string) Option {
 	return func(ms *MultiSelect) {

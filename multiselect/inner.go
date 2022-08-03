@@ -4,14 +4,22 @@ import (
 	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/duke-git/lancet/v2/mathutil"
 	"github.com/fzdwx/infinite/stringx"
 	"github.com/fzdwx/infinite/theme"
 )
 
 type innerMultiSelect struct {
 	choices  []string
-	cursor   int
 	selected map[int]struct{}
+
+	cursor       int
+	scrollOffset int
+
+	availableChoices int
+	currentChoices   []string
+
+	pageSize int
 
 	cursorSymbol      string
 	cursorSymbolStyle lipgloss.Style
@@ -46,11 +54,12 @@ func newInnerSelect(choices []string) *innerMultiSelect {
 		unHintSymbolStyle:   theme.DefaultTheme.UnHintSymbolStyle,
 		quited:              false,
 		disableOutPutResult: false,
+		pageSize:            5,
 	}
 }
 
 // Selected get all selected
-func (is innerMultiSelect) Selected() []int {
+func (is *innerMultiSelect) Selected() []int {
 	var selected []int
 	for s, _ := range is.selected {
 		selected = append(selected, s)
@@ -58,11 +67,39 @@ func (is innerMultiSelect) Selected() []int {
 	return selected
 }
 
+// refreshChoices refresh choices
+func (is *innerMultiSelect) refreshChoices() {
+	var choices []string
+	var available, ignored int
+
+	for _, choice := range is.choices {
+		available++
+
+		if is.pageSize > 0 && len(choices) >= is.pageSize {
+			break
+		}
+
+		if (is.pageSize > 0) && (ignored < is.scrollOffset) {
+			ignored++
+
+			continue
+		}
+
+		choices = append(choices, choice)
+	}
+
+	is.currentChoices = choices
+	is.availableChoices = available
+}
+
 func (is *innerMultiSelect) Start() error {
 	return tea.NewProgram(is).Start()
 }
 
-func (is innerMultiSelect) Init() tea.Cmd {
+func (is *innerMultiSelect) Init() tea.Cmd {
+
+	is.refreshChoices()
+
 	return nil
 }
 
@@ -96,7 +133,7 @@ func (is *innerMultiSelect) View() string {
 	msg.NewLine()
 
 	// Iterate over our choices
-	for i, choice := range is.choices {
+	for i, choice := range is.currentChoices {
 
 		// Is the cursor pointing at this choice?
 		cursor := " " // no cursor
@@ -142,16 +179,25 @@ func (is innerMultiSelect) viewResult() string {
 
 // moveUp The "up" and "k" keys move the cursor up
 func (is *innerMultiSelect) moveUp() {
-	if is.cursor > 0 {
-		is.cursor--
+	if is.shouldScrollUp() {
+		is.scrollUp()
 	}
+
+	is.cursor = mathutil.Max(0, is.cursor-1)
 }
 
 // moveDown The "down" and "j" keys move the cursor down
 func (is *innerMultiSelect) moveDown() {
-	if is.cursor < len(is.choices)-1 {
-		is.cursor++
+	if is.shouldMoveToTop() {
+		is.moveToTop()
+		return
 	}
+
+	if is.shouldScrollDown() {
+		is.scrollDown()
+	}
+
+	is.cursor = mathutil.Min(len(is.currentChoices)-1, is.cursor+1)
 }
 
 // choice
@@ -178,4 +224,62 @@ func (is *innerMultiSelect) renderColor() {
 	is.prompt = is.promptStyle.Render(is.prompt)
 	is.hintSymbol = is.hintSymbolStyle.Render(is.hintSymbol)
 	is.unHintSymbol = is.unHintSymbolStyle.Render(is.unHintSymbol)
+}
+
+// shouldMoveToTop should move to top?
+func (is *innerMultiSelect) shouldMoveToTop() bool {
+	return (is.cursor + is.scrollOffset) == (len(is.choices) - 1)
+}
+
+// shouldScrollDown should scroll down?
+func (is *innerMultiSelect) shouldScrollDown() bool {
+	return is.cursor == len(is.currentChoices)-1 && is.canScrollDown()
+}
+
+// shouldScrollUp should scroll up?
+func (is *innerMultiSelect) shouldScrollUp() bool {
+	return is.cursor == 0 && is.canScrollUp()
+}
+
+// moveToTop  move cursor to top
+func (is *innerMultiSelect) moveToTop() {
+	is.cursor = 0
+	is.scrollOffset = 0
+	is.refreshChoices()
+}
+
+func (is *innerMultiSelect) scrollUp() {
+	if is.pageSize <= 0 || is.scrollOffset <= 0 {
+		return
+	}
+
+	is.cursor = mathutil.Min(len(is.currentChoices)-1, is.cursor+1)
+	is.scrollOffset--
+	is.refreshChoices()
+}
+
+func (is *innerMultiSelect) scrollDown() {
+	if is.pageSize <= 0 || is.scrollOffset+is.pageSize >= is.availableChoices {
+		return
+	}
+
+	is.cursor = mathutil.Max(0, is.cursor-1)
+	is.scrollOffset++
+	is.refreshChoices()
+}
+
+func (is *innerMultiSelect) canScrollDown() bool {
+	if is.pageSize <= 0 || is.availableChoices <= is.pageSize {
+		return false
+	}
+
+	if is.scrollOffset+is.pageSize >= len(is.choices) {
+		return false
+	}
+
+	return true
+}
+
+func (is *innerMultiSelect) canScrollUp() bool {
+	return is.scrollOffset > 0
 }

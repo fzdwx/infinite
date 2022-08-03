@@ -12,6 +12,7 @@ require (
 	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/charmbracelet/bubbles v0.11.0 // indirect
 	github.com/containerd/console v1.0.3 // indirect
+	github.com/duke-git/lancet/v2 v2.1.4 // indirect
 	github.com/erikgeiser/promptkit v0.7.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
