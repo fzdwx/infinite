@@ -5,6 +5,27 @@ import "github.com/charmbracelet/lipgloss"
 // Option the option of MultiSelect
 type Option func(ms *MultiSelect)
 
+// WithCursorSymbol default is ">"
+func WithCursorSymbol(symbol string) Option {
+	return func(ms *MultiSelect) {
+		ms.inner.cursorSymbol = symbol
+	}
+}
+
+// WithCursorSymbolStyle default is theme.DefaultTheme.CursorSymbolStyle.
+func WithCursorSymbolStyle(style lipgloss.Style) Option {
+	return func(ms *MultiSelect) {
+		ms.inner.cursorSymbolStyle = style
+	}
+}
+
+// WithChoiceTextStyle default is theme.DefaultTheme.ChoiceTextStyle.
+func WithChoiceTextStyle(style lipgloss.Style) Option {
+	return func(ms *MultiSelect) {
+		ms.inner.choiceTextStyle = style
+	}
+}
+
 // WithHintSymbol default is "✓".
 func WithHintSymbol(selectedStr string) Option {
 	return func(ms *MultiSelect) {

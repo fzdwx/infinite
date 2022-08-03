@@ -13,6 +13,11 @@ type innerMultiSelect struct {
 	cursor   int
 	selected map[int]struct{}
 
+	cursorSymbol      string
+	cursorSymbolStyle lipgloss.Style
+
+	choiceTextStyle lipgloss.Style
+
 	prompt      string
 	promptStyle lipgloss.Style
 
@@ -30,6 +35,9 @@ func newInnerSelect(choices []string) *innerMultiSelect {
 	return &innerMultiSelect{
 		choices:             choices,
 		selected:            make(map[int]struct{}),
+		cursorSymbol:        ">",
+		cursorSymbolStyle:   theme.DefaultTheme.CursorSymbolStyle,
+		choiceTextStyle:     theme.DefaultTheme.ChoiceTextStyle,
 		prompt:              "Please select your options:",
 		promptStyle:         theme.DefaultTheme.PromptStyle,
 		hintSymbol:          "✓",
@@ -93,7 +101,8 @@ func (is *innerMultiSelect) View() string {
 		// Is the cursor pointing at this choice?
 		cursor := " " // no cursor
 		if is.cursor == i {
-			cursor = ">" // cursor!
+			cursor = is.cursorSymbol // cursor!
+			choice = is.choiceTextStyle.Render(choice)
 		}
 
 		// Is this choice selected?
@@ -103,7 +112,8 @@ func (is *innerMultiSelect) View() string {
 		}
 
 		// Render the row
-		msg.Write(fmt.Sprintf("%s [%s] %s\n", cursor, checked, choice))
+		msg.Write(fmt.Sprintf("%s [%s] %s", cursor, checked, choice)).
+			NewLine()
 	}
 
 	// The footer
@@ -164,6 +174,7 @@ func (is *innerMultiSelect) quit() (tea.Model, tea.Cmd) {
 
 // renderColor set color to text
 func (is *innerMultiSelect) renderColor() {
+	is.cursorSymbol = is.cursorSymbolStyle.Render(is.cursorSymbol)
 	is.prompt = is.promptStyle.Render(is.prompt)
 	is.hintSymbol = is.hintSymbolStyle.Render(is.hintSymbol)
 	is.unHintSymbol = is.unHintSymbolStyle.Render(is.unHintSymbol)

@@ -27,6 +27,7 @@ func t1() {
 			multiselect.WithHintSymbol("x"),
 			multiselect.WithUnHintSymbol("√"),
 			multiselect.WithDisableOutputResult(),
+			multiselect.WithCursorSymbol("*"),
 		).
 		Show("替换！！！")
 
