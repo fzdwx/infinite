@@ -15,12 +15,12 @@
 - [selection.component](https://github.com/fzdwx/infinite/blob/main/components/selection/component.go)
 - [spinner.component](https://github.com/fzdwx/infinite/blob/main/components/spinner/component.go)
 
-比如说` multi select` 和 `single select` 的基础组件就是 `selection.component`.
+比如说`multi select` 和 `single select` 的基础组件就是 `selection.component`.
 
 ## install
 
 ```go
-go get -u github.com/fzdwx/infinite@latest
+go get github.com/fzdwx/infinite@latest
 ```
 
 ## showcase
