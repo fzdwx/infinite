@@ -7,6 +7,7 @@ type Spinner struct {
 	err   error
 }
 
+// New Spinner
 func New(ops ...Option) *Spinner {
 	s := &Spinner{
 		inner: NewComponent(),
@@ -27,12 +28,15 @@ func (s *Spinner) Apply(ops ...Option) *Spinner {
 	return s
 }
 
+// Show Spinner
 func (s *Spinner) Show() *Spinner {
 	go func() {
 		s.err = s.inner.Start()
 	}()
 	return s
 }
+
+// Finish quit Spinner
 func (s *Spinner) Finish(prompt ...string) error {
 	s.refresh(prompt...)
 	s.inner.Quited = true
@@ -40,11 +44,13 @@ func (s *Spinner) Finish(prompt ...string) error {
 	return s.err
 }
 
+// Refresh Spinner prompt
 func (s *Spinner) Refresh(prompt string) {
 	s.refresh(prompt)
 }
 
-func (s *Spinner) RefreshF(format string, a ...any) {
+// Refreshf Spinner prompt
+func (s *Spinner) Refreshf(format string, a ...any) {
 	s.refresh(fmt.Sprintf(format, a...))
 }
 

@@ -69,7 +69,7 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return c, tea.Quit
 		}
 
-		return c, c.TickStatus(c.Quited)
+		return c, c.tickStatus(c.Quited)
 	case spinner.TickMsg:
 		// refresh spinner
 		var cmd tea.Cmd
@@ -96,7 +96,7 @@ func (c *Component) shouldAppendNewLine() bool {
 	return c.Quited && !c.DisableOutPutResult
 }
 
-func (c *Component) TickStatus(quited bool) tea.Cmd {
+func (c *Component) tickStatus(quited bool) tea.Cmd {
 	return tea.Tick(c.TickStatusDelay, func(t time.Time) tea.Msg {
 		return StatusMsg{Quited: quited}
 	})

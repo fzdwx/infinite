@@ -13,6 +13,7 @@ type Theme struct {
 	CursorSymbolStyle            lipgloss.Style
 	UnHintSymbolStyle            lipgloss.Style
 	SpinnerShapeStyle            lipgloss.Style
+	PlaceholderStyle             lipgloss.Style
 }
 
 var (
@@ -23,5 +24,6 @@ var (
 		CursorSymbolStyle:            style.New(),
 		UnHintSymbolStyle:            style.New().Foreground(color.Red),
 		SpinnerShapeStyle:            style.New().Foreground(color.RedPink),
+		PlaceholderStyle:             style.New().Foreground(lipgloss.Color("240")),
 	}
 )

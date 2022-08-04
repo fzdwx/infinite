@@ -15,10 +15,10 @@ func main() {
 	go func() {
 		for i := 0; i < 10; i++ {
 			time.Sleep(time.Millisecond * 100)
-			sp.RefreshF("hello world %d", i)
+			sp.Refreshf("hello world %d", i)
 		}
-		sp.Finish("qqqqqqqqqqqqqqqqqqq")
+		sp.Finish("finish")
 	}()
 
-	time.Sleep(time.Second * 5)
+	time.Sleep(time.Millisecond * 100 * 15)
 }
