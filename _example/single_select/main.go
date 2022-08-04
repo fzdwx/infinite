@@ -22,6 +22,6 @@ func main() {
 		return
 	}
 
-	fmt.Printf("you selectd %s\n", options[selected])
+	fmt.Printf("you selection %s\n", options[selected])
 
 }

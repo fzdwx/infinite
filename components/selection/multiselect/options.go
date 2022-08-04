@@ -2,7 +2,7 @@ package multiselect
 
 import (
 	"github.com/charmbracelet/lipgloss"
-	"github.com/fzdwx/infinite/components/selectd"
+	"github.com/fzdwx/infinite/components/selection"
 )
 
 // Option the option of Select
@@ -27,7 +27,7 @@ func WithPageSize(pageSize int) Option {
 }
 
 // WithKeyBinding replace key map.
-func WithKeyBinding(keymap selectd.KeyMap) Option {
+func WithKeyBinding(keymap selection.KeyMap) Option {
 	return func(s *Select) {
 		s.inner.Keymap = keymap
 	}
@@ -89,7 +89,7 @@ func WithPromptStyle(style lipgloss.Style) Option {
 	}
 }
 
-// WithPrompt default is "Please selectd your options:"
+// WithPrompt default is "Please selection your options:"
 func WithPrompt(prompt ...string) Option {
 	return func(s *Select) {
 		if len(prompt) >= 1 && len(prompt[0]) > 0 {

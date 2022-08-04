@@ -2,8 +2,8 @@ package singleselect
 
 import (
 	"github.com/charmbracelet/lipgloss"
-	"github.com/fzdwx/infinite/components/selectd"
-	"github.com/fzdwx/infinite/components/selectd/multiselect"
+	"github.com/fzdwx/infinite/components/selection"
+	"github.com/fzdwx/infinite/components/selection/multiselect"
 )
 
 // Option the option of Select
@@ -28,7 +28,7 @@ func WithPageSize(pageSize int) Option {
 }
 
 // WithKeyBinding replace key map.
-func WithKeyBinding(keymap selectd.KeyMap) Option {
+func WithKeyBinding(keymap selection.KeyMap) Option {
 	return func(s *Select) {
 		s.inner.Apply(multiselect.WithKeyBinding(keymap))
 	}
@@ -69,7 +69,7 @@ func WithPromptStyle(style lipgloss.Style) Option {
 	}
 }
 
-// WithPrompt default is "Please selectd your options:"
+// WithPrompt default is "Please selection your options:"
 func WithPrompt(prompt ...string) Option {
 	return func(s *Select) {
 		s.inner.Apply(multiselect.WithPrompt(prompt...))

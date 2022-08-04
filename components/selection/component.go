@@ -1,4 +1,4 @@
-package selectd
+package selection
 
 import (
 	"fmt"
@@ -70,7 +70,7 @@ func NewComponent(choices []string) *Component {
 		UnCursorSymbol:      " ",
 		CursorSymbolStyle:   theme.DefaultTheme.CursorSymbolStyle,
 		ChoiceTextStyle:     theme.DefaultTheme.ChoiceTextStyle,
-		Prompt:              "Please selectd your options:",
+		Prompt:              "Please selection your options:",
 		PromptStyle:         theme.DefaultTheme.PromptStyle,
 		HintSymbol:          "✓",
 		HintSymbolStyle:     theme.DefaultTheme.MultiSelectedHintSymbolStyle,

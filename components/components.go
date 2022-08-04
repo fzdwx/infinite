@@ -2,6 +2,14 @@ package components
 
 import tea "github.com/charmbracelet/bubbletea"
 
+/*
+
+ input.component
+ selection.component
+ spinner.component
+
+*/
+
 type (
 	Components struct {
 		tea.Model

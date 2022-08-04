@@ -1,4 +1,4 @@
-package selectd
+package selection
 
 import "github.com/charmbracelet/bubbles/key"
 

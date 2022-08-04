@@ -1,8 +1,8 @@
 package inf
 
 import (
-	"github.com/fzdwx/infinite/components/selectd/multiselect"
-	"github.com/fzdwx/infinite/components/selectd/singleselect"
+	"github.com/fzdwx/infinite/components/selection/multiselect"
+	"github.com/fzdwx/infinite/components/selection/singleselect"
 	"github.com/fzdwx/infinite/components/spinner"
 )
 

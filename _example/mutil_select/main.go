@@ -2,7 +2,7 @@ package main
 
 import (
 	inf "github.com/fzdwx/infinite"
-	"github.com/fzdwx/infinite/components/selectd/multiselect"
+	"github.com/fzdwx/infinite/components/selection/multiselect"
 	"github.com/fzdwx/infinite/emoji"
 )
 
