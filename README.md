@@ -45,7 +45,7 @@ go get github.com/fzdwx/infinite@latest
 
 ### input text
 
-[source code](https://github.com/fzdwx/infinite/blob/main/examples/spinner/main.go)
+[source code](https://github.com/fzdwx/infinite/blob/main/examples/input/main.go)
 
 ![input_text](https://user-images.githubusercontent.com/65269574/182850907-4b1c8e03-e008-40a2-804e-73cbfcba0c70.gif)
 
