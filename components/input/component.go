@@ -106,6 +106,16 @@ func (c *Component) Init() tea.Cmd {
 
 	c.Status = c.DefaultStatus
 	c.Model.Prompt = c.Prompt
+	c.Model.Placeholder = c.Placeholder
+	c.Model.BlinkSpeed = c.BlinkSpeed
+	c.Model.EchoMode = textinput.EchoMode(c.EchoMode)
+	c.Model.EchoCharacter = c.EchoCharacter
+	c.Model.PromptStyle = c.PromptStyle
+	c.Model.TextStyle = c.TextStyle
+	c.Model.BackgroundStyle = c.BackgroundStyle
+	c.Model.PlaceholderStyle = c.PlaceholderStyle
+	c.Model.CursorStyle = c.CursorStyle
+	c.Model.CharLimit = c.CharLimit
 
 	return tea.Batch(textinput.Blink, func() tea.Msg {
 		return c.DefaultStatus
@@ -114,10 +124,6 @@ func (c *Component) Init() tea.Cmd {
 
 func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
-
-	var cmd tea.Cmd
-	c.Model, cmd = c.Model.Update(msg)
-	cmds = append(cmds, cmd)
 
 	switch msg := msg.(type) {
 	case Status:
@@ -132,7 +138,10 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmds = append(cmds, c.tickStatus(c.Status))
 	}
 
-	return c, tea.Sequentially(cmds...)
+	_, modelCmd := c.Model.Update(msg)
+
+	cmds = append(cmds, modelCmd)
+	return c, tea.Batch(cmds...)
 }
 
 func (c *Component) View() string {

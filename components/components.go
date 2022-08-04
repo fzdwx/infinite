@@ -20,3 +20,7 @@ func (c *Components) Start(ops ...tea.ProgramOption) error {
 func (c *Components) Kill() {
 	c.P.Kill()
 }
+
+func Seq(cmd ...tea.Cmd) tea.Cmd {
+	return tea.Sequentially(cmd...)
+}
