@@ -105,7 +105,7 @@ func (c *Component) Init() tea.Cmd {
 	c.Model.Prompt = c.Prompt
 	c.Model.Placeholder = c.Placeholder
 	c.Model.BlinkSpeed = c.BlinkSpeed
-	//c.Model.EchoMode = textinput.EchoMode(c.EchoMode)
+	c.Model.EchoMode = textinput.EchoMode(c.EchoMode)
 	c.Model.EchoCharacter = c.EchoCharacter
 	c.Model.PromptStyle = c.PromptStyle
 	c.Model.TextStyle = c.TextStyle

@@ -49,7 +49,7 @@ go get github.com/fzdwx/infinite@latest
 
 ![input](https://user-images.githubusercontent.com/65269574/182850907-4b1c8e03-e008-40a2-804e-73cbfcba0c70.gif)
 
-## built With
+## built with
 - https://github.com/charmbracelet/bubbletea
 - https://github.com/charmbracelet/bubbles
 - https://github.com/charmbracelet/lipgloss
