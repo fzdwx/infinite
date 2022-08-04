@@ -4,6 +4,7 @@ import (
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/theme"
 	"time"
 )
@@ -14,6 +15,8 @@ type (
 	}
 
 	InnerSpinner struct {
+		components.Component
+
 		Model spinner.Model
 
 		/* options start */
@@ -27,27 +30,28 @@ type (
 )
 
 func NewInner() *InnerSpinner {
-	return &InnerSpinner{
+	i := &InnerSpinner{
 		Model:           spinner.New(),
 		TickStatusDelay: time.Millisecond * 50,
 		Shape:           Line,
 		ShapeStyle:      theme.DefaultTheme.SpinnerShapeStyle,
 	}
-}
 
-func (i *InnerSpinner) Start() error {
-	return tea.NewProgram(i).Start()
+	i.Component = components.Component{
+		Model: i,
+	}
+
+	return i
 }
 
 func (i *InnerSpinner) Init() tea.Cmd {
-
 	i.Model.Spinner = spinner.Spinner{
 		Frames: i.Shape.Frames,
 		FPS:    i.Shape.FPS,
 	}
 	i.Model.Style = i.ShapeStyle
 
-	return tea.Sequentially(i.Model.Tick, func() tea.Msg {
+	return tea.Batch(i.Model.Tick, func() tea.Msg {
 		return StatusMsg{Quited: false}
 	})
 }

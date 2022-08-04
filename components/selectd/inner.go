@@ -8,12 +8,15 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/duke-git/lancet/v2/mathutil"
 	"github.com/duke-git/lancet/v2/strutil"
+	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/stringx"
 	"github.com/fzdwx/infinite/theme"
 	"github.com/mattn/go-runewidth"
 )
 
 type InnerSelect struct {
+	components.Component
+
 	// result
 	Selected map[int]struct{}
 	// if true then quit.
@@ -60,7 +63,7 @@ type InnerSelect struct {
 }
 
 func New(choices []string) *InnerSelect {
-	return &InnerSelect{
+	i := &InnerSelect{
 		Choices:             choices,
 		Selected:            make(map[int]struct{}),
 		CursorSymbol:        ">",
@@ -82,10 +85,12 @@ func New(choices []string) *InnerSelect {
 			return fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
 		},
 	}
-}
 
-func (is *InnerSelect) Start() error {
-	return tea.NewProgram(is).Start()
+	i.Component = components.Component{
+		Model: i,
+	}
+
+	return i
 }
 
 func (is *InnerSelect) Init() tea.Cmd {
