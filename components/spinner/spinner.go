@@ -1,5 +1,7 @@
 package spinner
 
+import "fmt"
+
 type Spinner struct {
 	inner *Component
 	err   error
@@ -31,9 +33,23 @@ func (s *Spinner) Show() *Spinner {
 	}()
 	return s
 }
-
-func (s *Spinner) Finish() error {
+func (s *Spinner) Finish(prompt ...string) error {
+	s.refresh(prompt...)
 	s.inner.Quited = true
 
 	return s.err
+}
+
+func (s *Spinner) Refresh(prompt string) {
+	s.refresh(prompt)
+}
+
+func (s *Spinner) RefreshF(format string, a ...any) {
+	s.refresh(fmt.Sprintf(format, a...))
+}
+
+func (s *Spinner) refresh(prompt ...string) {
+	if len(prompt) > 0 {
+		s.inner.Prompt = prompt[0]
+	}
 }

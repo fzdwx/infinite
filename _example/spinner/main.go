@@ -8,10 +8,17 @@ import (
 
 func main() {
 	sp := inf.NewSpinner(
-		spinner.WithShape(spinner.Running),
+		spinner.WithShape(spinner.Dot),
+		//spinner.WithDisableOutputResult(),
 	).Show()
 
-	time.Sleep(time.Second * 3)
+	go func() {
+		for i := 0; i < 10; i++ {
+			time.Sleep(time.Millisecond * 100)
+			sp.RefreshF("hello world %d", i)
+		}
+		sp.Finish("qqqqqqqqqqqqqqqqqqq")
+	}()
 
-	sp.Finish()
+	time.Sleep(time.Second * 5)
 }

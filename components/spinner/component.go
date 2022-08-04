@@ -5,6 +5,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/stringx"
 	"github.com/fzdwx/infinite/theme"
 	"time"
 )
@@ -20,9 +21,11 @@ type (
 		Model spinner.Model
 
 		/* options start */
-		Shape           Shape
-		ShapeStyle      lipgloss.Style
-		TickStatusDelay time.Duration
+		Shape               Shape
+		ShapeStyle          lipgloss.Style
+		Prompt              string
+		TickStatusDelay     time.Duration
+		DisableOutPutResult bool
 		/* options end */
 
 		Quited bool
@@ -31,10 +34,12 @@ type (
 
 func NewComponent() *Component {
 	c := &Component{
-		Model:           spinner.New(),
-		TickStatusDelay: time.Millisecond * 50,
-		Shape:           Line,
-		ShapeStyle:      theme.DefaultTheme.SpinnerShapeStyle,
+		Model:               spinner.New(),
+		TickStatusDelay:     time.Millisecond * 50,
+		Shape:               Line,
+		ShapeStyle:          theme.DefaultTheme.SpinnerShapeStyle,
+		Prompt:              "Loading...",
+		DisableOutPutResult: false,
 	}
 
 	c.Components = components.Components{
@@ -76,7 +81,19 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (c *Component) View() string {
-	return c.Model.View()
+	viewBuilder := stringx.NewFluentSb().
+		Write(c.Model.View()).
+		Write(c.Prompt)
+
+	if c.shouldAppendNewLine() {
+		viewBuilder.Write("\n")
+	}
+
+	return viewBuilder.String()
+}
+
+func (c *Component) shouldAppendNewLine() bool {
+	return c.Quited && !c.DisableOutPutResult
 }
 
 func (c *Component) TickStatus(quited bool) tea.Cmd {

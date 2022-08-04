@@ -27,3 +27,10 @@ func WithTickStatusDelay(delay time.Duration) Option {
 		s.inner.TickStatusDelay = delay
 	}
 }
+
+// WithDisableOutputResult disable output result.
+func WithDisableOutputResult() Option {
+	return func(s *Spinner) {
+		s.inner.DisableOutPutResult = true
+	}
+}
