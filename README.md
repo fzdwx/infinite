@@ -7,7 +7,7 @@
 - [multi select](https://github.com/fzdwx/infinite#multi-select)
 - [single select](https://github.com/fzdwx/infinite#single-select)
 - [spinner](https://github.com/fzdwx/infinite#spinner)
-- [input](https://github.com/fzdwx/infinite#input)
+- [input text](https://github.com/fzdwx/infinite#input-text)
 
 同时也提供一些更基础的,你可以将它们组装起来使用:
 
@@ -43,17 +43,19 @@ go get github.com/fzdwx/infinite@latest
 
 ![spinner](https://user-images.githubusercontent.com/65269574/182842629-6c80daab-5bde-467f-9691-ed2731aeb419.gif)
 
-### input
+### input text
 
 [source code](https://github.com/fzdwx/infinite/blob/main/examples/spinner/main.go)
 
-![input](https://user-images.githubusercontent.com/65269574/182850907-4b1c8e03-e008-40a2-804e-73cbfcba0c70.gif)
+![input_text](https://user-images.githubusercontent.com/65269574/182850907-4b1c8e03-e008-40a2-804e-73cbfcba0c70.gif)
 
 ## built with
+
 - https://github.com/charmbracelet/bubbletea
 - https://github.com/charmbracelet/bubbles
 - https://github.com/charmbracelet/lipgloss
 - https://github.com/muesli/termenv
+
 ## License
 
 MIT

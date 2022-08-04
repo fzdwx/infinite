@@ -19,6 +19,6 @@ func NewSpinner(ops ...spinner.Option) *spinner.Spinner {
 	return spinner.New(ops...)
 }
 
-func NewInput(ops ...input.Option) *input.Input {
+func NewInput(ops ...input.Option) *input.Text {
 	return input.New(ops...)
 }
