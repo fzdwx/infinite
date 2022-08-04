@@ -4,10 +4,10 @@
 
 `infinite` 提供一些开箱即用的组件,例如:
 
-- multi select
-- single select
-- spinner
-- input
+- [multi select](https://github.com/fzdwx/infinite#multi-select)
+- [single select](https://github.com/fzdwx/infinite#single-select)
+- [spinner](https://github.com/fzdwx/infinite#spinner)
+- [input](https://github.com/fzdwx/infinite#input)
 
 同时也提供一些更基础的,你可以将它们组装起来使用:
 
