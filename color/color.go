@@ -14,6 +14,7 @@ var (
 	Aqua      = New(86)
 	HotPink   = New(201)
 	Orange    = New(202)
+	RedPink   = New(205)
 
 	FullBlue = NewHex("#0000FF")
 	DarkGray = NewHex("#3C3C3C")

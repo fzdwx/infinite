@@ -7,14 +7,17 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/duke-git/lancet/v2/mathutil"
+	"github.com/duke-git/lancet/v2/strutil"
 	"github.com/fzdwx/infinite/stringx"
 	"github.com/fzdwx/infinite/theme"
+	"github.com/mattn/go-runewidth"
 )
 
 type InnerSelect struct {
-	Choices  []string
+	// result
 	Selected map[int]struct{}
-
+	// if true then quit.
+	Quited bool
 	// current Cursor index in CurrentChoices
 	Cursor int
 	// the offset of screen
@@ -23,6 +26,9 @@ type InnerSelect struct {
 	AvailableChoices int
 	// currently valid option
 	CurrentChoices []string
+
+	/* options start */
+	Choices []string
 	// how many options to display at a time
 	PageSize int
 
@@ -32,6 +38,7 @@ type InnerSelect struct {
 	Help help.Model
 
 	CursorSymbol      string
+	UnCursorSymbol    string
 	CursorSymbolStyle lipgloss.Style
 
 	ChoiceTextStyle lipgloss.Style
@@ -46,11 +53,10 @@ type InnerSelect struct {
 	UnHintSymbolStyle lipgloss.Style
 
 	DisableOutPutResult bool
-	Quited              bool
-
 	// RowRender output options
 	// CursorSymbol,HintSymbol,choice
 	RowRender func(string, string, string) string
+	/* options end */
 }
 
 func New(choices []string) *InnerSelect {
@@ -58,6 +64,7 @@ func New(choices []string) *InnerSelect {
 		Choices:             choices,
 		Selected:            make(map[int]struct{}),
 		CursorSymbol:        ">",
+		UnCursorSymbol:      " ",
 		CursorSymbolStyle:   theme.DefaultTheme.CursorSymbolStyle,
 		ChoiceTextStyle:     theme.DefaultTheme.ChoiceTextStyle,
 		Prompt:              "Please selectd your options:",
@@ -84,6 +91,7 @@ func (is *InnerSelect) Start() error {
 func (is *InnerSelect) Init() tea.Cmd {
 
 	is.refreshChoices()
+	is.UnCursorSymbol = strutil.PadEnd("", runewidth.StringWidth(is.CursorSymbol), " ")
 
 	return nil
 }
@@ -121,7 +129,7 @@ func (is *InnerSelect) View() string {
 	for i, choice := range is.CurrentChoices {
 
 		// Is the CursorSymbol pointing at this choice?
-		cursorSymbol := " " // no CursorSymbol
+		cursorSymbol := is.UnCursorSymbol // no CursorSymbol
 		if is.Cursor == i {
 			cursorSymbol = is.CursorSymbol // CursorSymbol!
 			choice = is.ChoiceTextStyle.Render(choice)

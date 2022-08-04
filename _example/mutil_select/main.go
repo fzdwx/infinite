@@ -5,6 +5,7 @@ import (
 	inf "github.com/fzdwx/infinite"
 	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/components/selectd/multiselect"
+	"github.com/fzdwx/infinite/emoji"
 	"github.com/fzdwx/infinite/style"
 )
 
@@ -22,7 +23,7 @@ func main() {
 			multiselect.WithHintSymbol("x"),
 			multiselect.WithUnHintSymbol("√"),
 			//multiselect.WithDisableOutputResult(),
-			multiselect.WithCursorSymbol("*"),
+			multiselect.WithCursorSymbol(emoji.PointRight),
 		).
 		Show("替换！！！")
 

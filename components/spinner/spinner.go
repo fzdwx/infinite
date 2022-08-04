@@ -1,14 +1,28 @@
 package spinner
 
 type Spinner struct {
-	inner *innerSpinner
+	inner *InnerSpinner
 	err   error
 }
 
-func New() *Spinner {
-	return &Spinner{
-		inner: newInner(),
+func New(ops ...Option) *Spinner {
+	s := &Spinner{
+		inner: NewInner(),
 	}
+
+	s.Apply(ops...)
+
+	return s
+}
+
+// Apply options on Select
+func (s *Spinner) Apply(ops ...Option) *Spinner {
+	if len(ops) > 0 {
+		for _, option := range ops {
+			option(s)
+		}
+	}
+	return s
 }
 
 func (s *Spinner) Show() *Spinner {
@@ -19,7 +33,7 @@ func (s *Spinner) Show() *Spinner {
 }
 
 func (s *Spinner) Finish() error {
-	s.inner.quited = true
+	s.inner.Quited = true
 
 	return s.err
 }
