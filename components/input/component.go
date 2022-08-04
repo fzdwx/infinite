@@ -4,6 +4,7 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/style"
 	"time"
@@ -44,16 +45,12 @@ func NewComponent() *Component {
 		Model:            textinput.New(),
 		DefaultStatus:    Focus,
 		TickStatusDelay:  time.Millisecond * 50,
-		Prompt:           ">",
+		Prompt:           "> ",
 		Placeholder:      "",
 		BlinkSpeed:       defaultBlinkSpeed,
 		EchoMode:         EchoNormal,
 		EchoCharacter:    '*',
-		PromptStyle:      style.New(),
-		TextStyle:        style.New(),
-		BackgroundStyle:  style.New(),
-		PlaceholderStyle: style.New(),
-		CursorStyle:      style.New(),
+		PlaceholderStyle: style.New().Foreground(color.Gray),
 		CharLimit:        0,
 	}
 
@@ -91,7 +88,7 @@ func (c *Component) Focused() bool {
 
 // CursorMode returns the model's cursor mode. For available cursor modes, see
 // type CursorMode.
-func (c Component) CursorMode() CursorMode {
+func (c *Component) CursorMode() CursorMode {
 	return newCursorMode(c.Model.CursorMode())
 }
 
@@ -108,7 +105,7 @@ func (c *Component) Init() tea.Cmd {
 	c.Model.Prompt = c.Prompt
 	c.Model.Placeholder = c.Placeholder
 	c.Model.BlinkSpeed = c.BlinkSpeed
-	c.Model.EchoMode = textinput.EchoMode(c.EchoMode)
+	//c.Model.EchoMode = textinput.EchoMode(c.EchoMode)
 	c.Model.EchoCharacter = c.EchoCharacter
 	c.Model.PromptStyle = c.PromptStyle
 	c.Model.TextStyle = c.TextStyle
@@ -138,9 +135,10 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmds = append(cmds, c.tickStatus(c.Status))
 	}
 
-	_, modelCmd := c.Model.Update(msg)
-
+	model, modelCmd := c.Model.Update(msg)
+	c.Model = model
 	cmds = append(cmds, modelCmd)
+
 	return c, tea.Batch(cmds...)
 }
 

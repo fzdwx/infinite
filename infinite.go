@@ -1,6 +1,7 @@
 package inf
 
 import (
+	"github.com/fzdwx/infinite/components/input"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
 	"github.com/fzdwx/infinite/components/selection/singleselect"
 	"github.com/fzdwx/infinite/components/spinner"
@@ -16,4 +17,8 @@ func NewSingleSelect(choices []string, ops ...singleselect.Option) *singleselect
 
 func NewSpinner(ops ...spinner.Option) *spinner.Spinner {
 	return spinner.New(ops...)
+}
+
+func NewInput(ops ...input.Option) *input.Input {
+	return input.New(ops...)
 }

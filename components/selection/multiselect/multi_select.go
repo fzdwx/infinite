@@ -18,7 +18,7 @@ func New(choices []string, ops ...Option) *Select {
 }
 
 // Show startup Select
-func (ms Select) Show(prompt ...string) ([]int, error) {
+func (ms *Select) Show(prompt ...string) ([]int, error) {
 	ms.Apply(WithPrompt(prompt...))
 
 	ms.inner.RenderColor()

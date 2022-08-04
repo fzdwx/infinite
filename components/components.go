@@ -13,7 +13,8 @@ import tea "github.com/charmbracelet/bubbletea"
 type (
 	Components struct {
 		tea.Model
-		P *tea.Program
+		P       *tea.Program
+		started bool
 	}
 )
 
@@ -21,12 +22,23 @@ type (
 func (c *Components) Start(ops ...tea.ProgramOption) error {
 	c.P = tea.NewProgram(c, ops...)
 
+	c.started = true
 	return c.P.Start()
 }
 
 // Kill Components
 func (c *Components) Kill() {
-	c.P.Kill()
+	if c.started {
+		c.P.Kill()
+		c.started = false
+	}
+}
+
+// Send message to component
+func (c *Components) Send(msg tea.Msg) {
+	if c.started {
+		c.P.Send(msg)
+	}
 }
 
 func Seq(cmd ...tea.Cmd) tea.Cmd {
