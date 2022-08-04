@@ -14,8 +14,8 @@ type (
 		Quited bool
 	}
 
-	InnerSpinner struct {
-		components.Component
+	Component struct {
+		components.Components
 
 		Model spinner.Model
 
@@ -29,58 +29,58 @@ type (
 	}
 )
 
-func NewInner() *InnerSpinner {
-	i := &InnerSpinner{
+func NewComponent() *Component {
+	c := &Component{
 		Model:           spinner.New(),
 		TickStatusDelay: time.Millisecond * 50,
 		Shape:           Line,
 		ShapeStyle:      theme.DefaultTheme.SpinnerShapeStyle,
 	}
 
-	i.Component = components.Component{
-		Model: i,
+	c.Components = components.Components{
+		Model: c,
 	}
 
-	return i
+	return c
 }
 
-func (i *InnerSpinner) Init() tea.Cmd {
-	i.Model.Spinner = spinner.Spinner{
-		Frames: i.Shape.Frames,
-		FPS:    i.Shape.FPS,
+func (c *Component) Init() tea.Cmd {
+	c.Model.Spinner = spinner.Spinner{
+		Frames: c.Shape.Frames,
+		FPS:    c.Shape.FPS,
 	}
-	i.Model.Style = i.ShapeStyle
+	c.Model.Style = c.ShapeStyle
 
-	return tea.Batch(i.Model.Tick, func() tea.Msg {
+	return tea.Batch(c.Model.Tick, func() tea.Msg {
 		return StatusMsg{Quited: false}
 	})
 }
 
-func (i *InnerSpinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case StatusMsg:
 		// check should quit
 		if msg.Quited {
-			return i, tea.Quit
+			return c, tea.Quit
 		}
 
-		return i, i.TickStatus(i.Quited)
+		return c, c.TickStatus(c.Quited)
 	case spinner.TickMsg:
 		// refresh spinner
 		var cmd tea.Cmd
-		i.Model, cmd = i.Model.Update(msg)
-		return i, cmd
+		c.Model, cmd = c.Model.Update(msg)
+		return c, cmd
 	default:
-		return i, nil
+		return c, nil
 	}
 }
 
-func (i *InnerSpinner) View() string {
-	return i.Model.View()
+func (c *Component) View() string {
+	return c.Model.View()
 }
 
-func (i *InnerSpinner) TickStatus(quited bool) tea.Cmd {
-	return tea.Tick(i.TickStatusDelay, func(t time.Time) tea.Msg {
+func (c *Component) TickStatus(quited bool) tea.Cmd {
+	return tea.Tick(c.TickStatusDelay, func(t time.Time) tea.Msg {
 		return StatusMsg{Quited: quited}
 	})
 }

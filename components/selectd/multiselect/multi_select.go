@@ -6,12 +6,12 @@ import (
 )
 
 type Select struct {
-	inner *selectd.InnerSelect
+	inner *selectd.Component
 }
 
 func New(choices []string, ops ...Option) *Select {
 	ms := &Select{
-		inner: selectd.New(choices),
+		inner: selectd.NewComponent(choices),
 	}
 
 	return ms.Apply(ops...)

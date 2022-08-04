@@ -1,13 +1,13 @@
 package spinner
 
 type Spinner struct {
-	inner *InnerSpinner
+	inner *Component
 	err   error
 }
 
 func New(ops ...Option) *Spinner {
 	s := &Spinner{
-		inner: NewInner(),
+		inner: NewComponent(),
 	}
 
 	s.Apply(ops...)
