@@ -19,14 +19,18 @@ func NewFluent() *FluentStringBuilder {
 	}
 }
 
-// NewLine append "\n"
+// NewLine append NewLine
 func (b *FluentStringBuilder) NewLine() *FluentStringBuilder {
-	return b.Write("\n")
+	return b.Write(NewLine)
 }
 
-// Space append " "
-func (b *FluentStringBuilder) Space() *FluentStringBuilder {
-	return b.Write(" ")
+// Space append Space
+func (b *FluentStringBuilder) Space(times ...int) *FluentStringBuilder {
+	count := 1
+	if len(times) > 0 {
+		count = times[0]
+	}
+	return b.Write(strings.Repeat(Space, count))
 }
 
 // Write append string

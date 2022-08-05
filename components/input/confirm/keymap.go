@@ -8,6 +8,16 @@ type KeyMap struct {
 	No   key.Binding
 }
 
+func (k KeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{
+		k.Yes, k.No, k.Quit,
+	}
+}
+
+func (k KeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{}
+}
+
 var (
 	DefaultKeyMap = KeyMap{
 		Quit: key.NewBinding(
@@ -20,7 +30,7 @@ var (
 		),
 		No: key.NewBinding(
 			key.WithKeys("N"),
-			key.WithHelp("N", "No"),
+			key.WithHelp("N", "no"),
 		),
 	}
 )

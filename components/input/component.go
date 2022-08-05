@@ -163,6 +163,7 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case Blur:
 			c.Model.Blur()
 		case Quit:
+			c.Model.Blur()
 			return c, tea.Quit
 		}
 		cmds = append(cmds, c.tickStatus(c.Status))

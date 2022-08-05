@@ -9,6 +9,7 @@ const (
 	Rocket      = "🚀"
 	Package     = "📦"
 	Snowboarder = "🏂🏻"
+	Question    = "❓"
 
 	PointRight = "👉🏻"
 	PointLeft  = "👈🏻"

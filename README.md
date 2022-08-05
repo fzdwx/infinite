@@ -1,9 +1,10 @@
 <div align="center">
 <h1>infinite</h1>
-<span>:art: <code>infinite</code> 的目标是成为一个易于使用的Tui组件库</span>
+<span>:art: <code>infinite</code> 的目标是成为一个易于使用的 tui 组件库</span>
 </div>
 <br>
 <br>
+
 `infinite` 提供一些开箱即用的组件,例如:
 
 - [multi select](https://github.com/fzdwx/infinite#multi-select)
@@ -21,8 +22,8 @@
 
 ## install
 
-```go
-go get github.com/fzdwx/infinite@latest
+```bash
+go get github.com/fzdwx/infinite
 ```
 
 ## showcase
