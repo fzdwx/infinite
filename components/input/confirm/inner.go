@@ -55,7 +55,7 @@ func newInner() *inner {
 // Init confirm
 func (i *inner) Init() tea.Cmd {
 	i.input.Prompt = strx.NewFluent().
-		Write(i.SymbolStyle.Render(i.Symbol)).Space().
+		Write(i.SymbolStyle.Render(i.Symbol)).
 		Write(i.input.Prompt).
 		Write(i.NoticeStyle.Render(i.Notice)).
 		String()

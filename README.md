@@ -1,6 +1,6 @@
 <div align="center">
 <h1>infinite</h1>
-<span>:art: <code>infinite</code> 的目标是成为一个易于使用的 tui 组件库</span>
+<span>:art: <code>infinite</code> 的目标是成为一个易于使用、定制能力强的 tui 组件库</span>
 </div>
 <br>
 <br>
