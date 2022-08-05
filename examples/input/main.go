@@ -15,7 +15,7 @@ func main() {
 		text.WithPlaceholder(" fzdwx (maybe)"),
 	)
 	go func() {
-		i.Show()
+		i.Display()
 	}()
 
 	go func() {

@@ -10,7 +10,7 @@ func main() {
 	sp := inf.NewSpinner(
 		spinner.WithShape(spinner.Dot),
 		//spinner.WithDisableOutputResult(),
-	).Show()
+	).Display()
 
 	go func() {
 		for i := 0; i < 10; i++ {

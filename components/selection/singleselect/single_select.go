@@ -21,9 +21,9 @@ func New(choices []string, ops ...Option) *Select {
 	return s
 }
 
-// Show startup Select
-func (s *Select) Show(prompt ...string) (int, error) {
-	hints, err := s.inner.Show(prompt...)
+// Display startup Select
+func (s *Select) Display(prompt ...string) (int, error) {
+	hints, err := s.inner.Display(prompt...)
 
 	if err != nil {
 		return -1, err

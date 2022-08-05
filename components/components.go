@@ -1,6 +1,9 @@
 package components
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	tea "github.com/charmbracelet/bubbletea"
+	"time"
+)
 
 /*
 
@@ -10,7 +13,17 @@ import tea "github.com/charmbracelet/bubbletea"
 
 */
 
+const GlobalTickStatusDelay = time.Millisecond * 10
+
 type (
+	/*
+		Components, You can use these components directly:
+			 	1.input.component
+			 	2.selection.component
+			 	3.spinner.component
+		Or use them inline in your custom component,
+		for how to embed them, you can refer to the implementation of `Confirm`.
+	*/
 	Components struct {
 		tea.Model
 		P       *tea.Program

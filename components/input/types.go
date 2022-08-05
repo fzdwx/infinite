@@ -3,6 +3,7 @@ package input
 import (
 	"fmt"
 	"github.com/charmbracelet/bubbles/textinput"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 // Status About the state of the Component
@@ -14,6 +15,18 @@ const (
 	Blur
 	Quit
 )
+
+func FocusCmd() tea.Msg {
+	return Focus
+}
+
+func BlurCmd() tea.Msg {
+	return Blur
+}
+
+func QuitCmd() tea.Msg {
+	return Quit
+}
 
 // CursorMode describes the behavior of the cursor.
 type CursorMode int

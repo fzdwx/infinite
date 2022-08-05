@@ -16,7 +16,7 @@ func main() {
 		"6 Buy car",
 		"7 Buy subway",
 	}
-	selected, err := inf.NewSingleSelect(options).Show("Hello world")
+	selected, err := inf.NewSingleSelect(options).Display("Hello world")
 	if err != nil {
 		fmt.Println(eris.ToString(err, true))
 		return

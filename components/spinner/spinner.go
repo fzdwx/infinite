@@ -28,8 +28,8 @@ func (s *Spinner) Apply(ops ...Option) *Spinner {
 	return s
 }
 
-// Show Spinner
-func (s *Spinner) Show() *Spinner {
+// Display Spinner
+func (s *Spinner) Display() *Spinner {
 	go func() {
 		s.err = s.inner.Start()
 	}()

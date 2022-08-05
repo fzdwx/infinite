@@ -1,6 +1,7 @@
 package inf
 
 import (
+	"github.com/fzdwx/infinite/components/input/confirm"
 	"github.com/fzdwx/infinite/components/input/text"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
 	"github.com/fzdwx/infinite/components/selection/singleselect"
@@ -21,4 +22,8 @@ func NewSpinner(ops ...spinner.Option) *spinner.Spinner {
 
 func NewText(ops ...text.Option) *text.Text {
 	return text.New(ops...)
+}
+
+func NewConfirm(ops ...confirm.Option) *confirm.Confirm {
+	return confirm.New(ops...)
 }

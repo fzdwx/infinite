@@ -35,7 +35,7 @@ type (
 func NewComponent() *Component {
 	c := &Component{
 		Model:               spinner.New(),
-		TickStatusDelay:     time.Millisecond * 50,
+		TickStatusDelay:     components.GlobalTickStatusDelay,
 		Shape:               Line,
 		ShapeStyle:          theme.DefaultTheme.SpinnerShapeStyle,
 		Prompt:              "Loading...",

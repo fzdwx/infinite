@@ -21,7 +21,7 @@ func WithShapeStyle(style lipgloss.Style) Option {
 	}
 }
 
-// WithTickStatusDelay default is time.Millisecond * 50
+// WithTickStatusDelay default is components.GlobalTickStatusDelay
 func WithTickStatusDelay(delay time.Duration) Option {
 	return func(s *Spinner) {
 		s.inner.TickStatusDelay = delay

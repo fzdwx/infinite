@@ -10,10 +10,11 @@ func New(ops ...Option) *Text {
 	i := &Text{inner: input.NewComponent()}
 
 	i.Apply(ops...)
+
 	return i
 }
 
-// Apply options on Select
+// Apply options on Text
 func (i *Text) Apply(ops ...Option) *Text {
 	if len(ops) > 0 {
 		for _, option := range ops {
@@ -23,7 +24,7 @@ func (i *Text) Apply(ops ...Option) *Text {
 	return i
 }
 
-func (i *Text) Show() error {
+func (i *Text) Display() error {
 	return i.inner.Start()
 }
 

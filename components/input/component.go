@@ -45,7 +45,7 @@ func NewComponent() *Component {
 	c := &Component{
 		Model:            textinput.New(),
 		DefaultStatus:    Focus,
-		TickStatusDelay:  time.Millisecond * 50,
+		TickStatusDelay:  components.GlobalTickStatusDelay,
 		Prompt:           "> ",
 		Placeholder:      "",
 		BlinkSpeed:       defaultBlinkSpeed,
