@@ -81,7 +81,7 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (c *Component) View() string {
-	viewBuilder := strx.NewFluentSb().
+	viewBuilder := strx.NewFluent().
 		Write(c.Model.View()).
 		Write(c.Prompt)
 

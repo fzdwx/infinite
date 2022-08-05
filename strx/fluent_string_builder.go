@@ -1,4 +1,4 @@
-package stringx
+package strx
 
 import "strings"
 
@@ -12,8 +12,8 @@ type (
 	WriteFunc func() string
 )
 
-// NewFluentSb new fluent string builder
-func NewFluentSb() *FluentStringBuilder {
+// NewFluent new fluent string builder
+func NewFluent() *FluentStringBuilder {
 	return &FluentStringBuilder{
 		sb: strings.Builder{},
 	}

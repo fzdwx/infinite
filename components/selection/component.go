@@ -125,7 +125,7 @@ func (c *Component) View() string {
 		return c.viewResult()
 	}
 
-	msg := strx.NewFluentSb()
+	msg := strx.NewFluent()
 
 	// The header
 	msg.Write(c.Prompt)
@@ -197,7 +197,7 @@ func (c Component) viewResult() string {
 		return ""
 	}
 
-	output := strx.NewFluentSb().Write(c.Prompt).Space()
+	output := strx.NewFluent().Write(c.Prompt).Space()
 
 	for i, _ := range c.Selected {
 		output.Write(c.Choices[i]).Space()
