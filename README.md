@@ -1,6 +1,7 @@
-# infinite
-
-:art: `infinite` 的目标是成为一个易于使用的Tui组件库
+<div align="center">
+<h1>infinite</h1>
+:art: <code>infinite</code> 的目标是成为一个易于使用的Tui组件库
+</div>
 
 `infinite` 提供一些开箱即用的组件,例如:
 
@@ -49,7 +50,7 @@ go get github.com/fzdwx/infinite@latest
 
 ![input_text](https://user-images.githubusercontent.com/65269574/182850907-4b1c8e03-e008-40a2-804e-73cbfcba0c70.gif)
 
-## built with
+## build with
 
 - https://github.com/charmbracelet/bubbletea
 - https://github.com/charmbracelet/bubbles
