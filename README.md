@@ -1,8 +1,9 @@
 <div align="center">
 <h1>infinite</h1>
-:art: <code>infinite</code> 的目标是成为一个易于使用的Tui组件库
+<span>:art: <code>infinite</code> 的目标是成为一个易于使用的Tui组件库</span>
 </div>
-
+<br>
+<br>
 `infinite` 提供一些开箱即用的组件,例如:
 
 - [multi select](https://github.com/fzdwx/infinite#multi-select)
