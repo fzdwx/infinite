@@ -13,8 +13,9 @@ update:
 
 #recode term
 rec:
+    rm -rf demo.cast
     asciinema rec demo.cast
 
-cast:
-    asciicast2gif demo.cast demo.gif
-    rm -rf demo.cast
+cast row="15":
+    asciicast2gif -h {{row}} demo.cast demo.gif
+#    rm -rf demo.cast

@@ -11,14 +11,16 @@
 - [single select](https://github.com/fzdwx/infinite#single-select)
 - [spinner](https://github.com/fzdwx/infinite#spinner)
 - [input text](https://github.com/fzdwx/infinite#input-text)
+- [confirm](https://github.com/fzdwx/infinite#confirm)
 
 同时也提供一些更基础的,你可以将它们组装起来使用:
 
-- [input.component](https://github.com/fzdwx/infinite/blob/main/components/input/component.go)
-- [selection.component](https://github.com/fzdwx/infinite/blob/main/components/selection/component.go)
-- [spinner.component](https://github.com/fzdwx/infinite/blob/main/components/spinner/component.go)
+- [input#component](https://github.com/fzdwx/infinite/blob/main/components/input/component.go)
+- [selection#component](https://github.com/fzdwx/infinite/blob/main/components/selection/component.go)
+- [spinner#component](https://github.com/fzdwx/infinite/blob/main/components/spinner/component.go)
 
-比如说`multi select` 和 `single select` 的基础组件就是 `selection.component`.
+比如说`multi select` 和 `single select` 的基础组件就是 `selection#component`、
+`input text` 和 `confirm` 是基于`input#component`.
 
 ## install
 
@@ -32,25 +34,31 @@ go get github.com/fzdwx/infinite
 
 [source code](https://github.com/fzdwx/infinite/blob/main/examples/mutil_select/main.go)
 
-![demo](https://user-images.githubusercontent.com/65269574/182607109-c5969485-4a21-4086-8476-bdb361a7e779.gif)
+![demo](https://user-images.githubusercontent.com/65269574/183073869-7de79068-0d52-46d2-84aa-4a5130df5634.gif)
 
 ### single select
 
 [source code](https://github.com/fzdwx/infinite/blob/main/examples/single_select/main.go)
 
-![single_select](https://user-images.githubusercontent.com/65269574/182606494-3462614c-3ffc-49de-884c-5cfa8685aed3.gif)
+![demo](https://user-images.githubusercontent.com/65269574/183074455-b09f747f-8f18-4d5e-8286-61d7c9bb963d.gif)
 
 ### spinner
 
 [source code](https://github.com/fzdwx/infinite/blob/main/examples/spinner/main.go)
 
-![spinner](https://user-images.githubusercontent.com/65269574/182842629-6c80daab-5bde-467f-9691-ed2731aeb419.gif)
+![demo](https://user-images.githubusercontent.com/65269574/183074665-42d7d902-a56c-420c-a740-3aacc7dc922c.gif)
 
 ### input text
 
 [source code](https://github.com/fzdwx/infinite/blob/main/examples/input/main.go)
 
-![input_text](https://user-images.githubusercontent.com/65269574/182850907-4b1c8e03-e008-40a2-804e-73cbfcba0c70.gif)
+![demo](https://user-images.githubusercontent.com/65269574/183075959-031a068d-6f88-40a0-8b5e-f3d5bba481af.gif)
+
+### confirm
+
+[source code](https://github.com/fzdwx/infinite/blob/main/examples/confirm/main.go)
+
+![demo](https://user-images.githubusercontent.com/65269574/183076452-5fa73013-42de-47df-97b4-7be743d074c1.gif)
 
 ## build with
 
