@@ -1,11 +1,13 @@
-package input
+package text
+
+import "github.com/fzdwx/infinite/components/input"
 
 type Text struct {
-	inner *Component
+	inner *input.Component
 }
 
 func New(ops ...Option) *Text {
-	i := &Text{inner: NewComponent()}
+	i := &Text{inner: input.NewComponent()}
 
 	i.Apply(ops...)
 	return i
@@ -52,15 +54,47 @@ func (i *Text) Focused() bool {
 	return i.inner.Focused()
 }
 
+// Cursor returns the cursor position.
+func (i *Text) Cursor() int {
+	return i.inner.Cursor()
+}
+
+// Blink returns whether or not to draw the cursor.
+func (i *Text) Blink() bool {
+	return i.inner.Blink()
+}
+
+// SetCursor moves the cursor to the given position. If the position is
+// out of bounds the cursor will be moved to the start or end accordingly.
+func (i *Text) SetCursor(pos int) {
+	i.inner.SetCursor(pos)
+}
+
 // CursorMode returns the model's cursor mode. For available cursor modes, see
 // type CursorMode.
-func (i *Text) CursorMode() CursorMode {
+func (i *Text) CursorMode() input.CursorMode {
 	return i.inner.CursorMode()
 }
 
 // SetCursorMode sets the model's cursor mode. This method returns a command.
 //
 // For available cursor modes, see type CursorMode.
-func (i *Text) SetCursorMode(model CursorMode) {
+func (i *Text) SetCursorMode(model input.CursorMode) {
 	i.inner.SetCursorMode(model)
+}
+
+// CursorStart moves the cursor to the start of the input field.
+func (i *Text) CursorStart() {
+	i.inner.CursorStart()
+}
+
+// CursorEnd moves the cursor to the end of the input field.
+func (i *Text) CursorEnd() {
+	i.inner.CursorEnd()
+}
+
+// Reset sets the input to its default state with no input. Returns whether
+// or not the cursor blink should reset.
+func (i *Text) Reset() bool {
+	return i.inner.Reset()
 }

@@ -12,6 +12,7 @@ import (
 
 const defaultBlinkSpeed = time.Millisecond * 530
 
+// Component the input component.
 type Component struct {
 	components.Components
 
@@ -81,9 +82,41 @@ func (c *Component) Value() string {
 	return c.Model.Value()
 }
 
+// Cursor returns the cursor position.
+func (c *Component) Cursor() int {
+	return c.Model.Cursor()
+}
+
+// Blink returns whether or not to draw the cursor.
+func (c *Component) Blink() bool {
+	return c.Model.Blink()
+}
+
+// SetCursor moves the cursor to the given position. If the position is
+// out of bounds the cursor will be moved to the start or end accordingly.
+func (c *Component) SetCursor(pos int) {
+	c.Model.SetCursor(pos)
+}
+
 // Focused returns the focus state on the model.
 func (c *Component) Focused() bool {
 	return c.Model.Focused()
+}
+
+// CursorStart moves the cursor to the start of the input field.
+func (c *Component) CursorStart() {
+	c.Model.CursorStart()
+}
+
+// CursorEnd moves the cursor to the end of the input field.
+func (c *Component) CursorEnd() {
+	c.Model.CursorEnd()
+}
+
+// Reset sets the input to its default state with no input. Returns whether
+// or not the cursor blink should reset.
+func (c *Component) Reset() bool {
+	return c.Model.Reset()
 }
 
 // CursorMode returns the model's cursor mode. For available cursor modes, see

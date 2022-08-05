@@ -9,7 +9,7 @@ import (
 	"github.com/duke-git/lancet/v2/mathutil"
 	"github.com/duke-git/lancet/v2/strutil"
 	"github.com/fzdwx/infinite/components"
-	"github.com/fzdwx/infinite/stringx"
+	"github.com/fzdwx/infinite/strx"
 	"github.com/fzdwx/infinite/theme"
 	"github.com/mattn/go-runewidth"
 )
@@ -125,7 +125,7 @@ func (c *Component) View() string {
 		return c.viewResult()
 	}
 
-	msg := stringx.NewFluentSb()
+	msg := strx.NewFluentSb()
 
 	// The header
 	msg.Write(c.Prompt)
@@ -197,7 +197,7 @@ func (c Component) viewResult() string {
 		return ""
 	}
 
-	output := stringx.NewFluentSb().Write(c.Prompt).Space()
+	output := strx.NewFluentSb().Write(c.Prompt).Space()
 
 	for i, _ := range c.Selected {
 		output.Write(c.Choices[i]).Space()

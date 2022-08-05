@@ -1,7 +1,8 @@
-package input
+package text
 
 import (
 	"github.com/charmbracelet/lipgloss"
+	"github.com/fzdwx/infinite/components/input"
 	"time"
 )
 
@@ -29,7 +30,7 @@ func WithBlinkSpeed(blinkSpeed time.Duration) Option {
 }
 
 // WithEchoMode sets the input behavior of the text input field.
-func WithEchoMode(echoMode EchoMode) Option {
+func WithEchoMode(echoMode input.EchoMode) Option {
 	return func(i *Text) {
 		i.inner.EchoMode = echoMode
 	}

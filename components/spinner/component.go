@@ -5,7 +5,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/components"
-	"github.com/fzdwx/infinite/stringx"
+	"github.com/fzdwx/infinite/strx"
 	"github.com/fzdwx/infinite/theme"
 	"time"
 )
@@ -81,7 +81,7 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (c *Component) View() string {
-	viewBuilder := stringx.NewFluentSb().
+	viewBuilder := strx.NewFluentSb().
 		Write(c.Model.View()).
 		Write(c.Prompt)
 

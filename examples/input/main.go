@@ -2,17 +2,17 @@ package main
 
 import (
 	inf "github.com/fzdwx/infinite"
-	"github.com/fzdwx/infinite/components/input"
+	"github.com/fzdwx/infinite/components/input/text"
 	"github.com/fzdwx/infinite/theme"
 	"time"
 )
 
 func main() {
 
-	i := inf.NewInput(
-		input.WithPrompt("what's your name? "),
-		input.WithPromptStyle(theme.DefaultTheme.PromptStyle),
-		input.WithPlaceholder(" fzdwx (maybe)"),
+	i := inf.NewText(
+		text.WithPrompt("what's your name? "),
+		text.WithPromptStyle(theme.DefaultTheme.PromptStyle),
+		text.WithPlaceholder(" fzdwx (maybe)"),
 	)
 	go func() {
 		i.Show()
