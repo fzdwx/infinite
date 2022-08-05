@@ -1,6 +1,9 @@
 package text
 
-import "github.com/fzdwx/infinite/components/input"
+import (
+	"github.com/charmbracelet/bubbles/key"
+	"github.com/fzdwx/infinite/components/input"
+)
 
 type Text struct {
 	inner *input.Component
@@ -8,6 +11,8 @@ type Text struct {
 
 func New(ops ...Option) *Text {
 	i := &Text{inner: input.NewComponent()}
+
+	i.inner.QuitKey = key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "quit input text"))
 
 	i.Apply(ops...)
 

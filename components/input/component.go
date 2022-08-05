@@ -1,6 +1,7 @@
 package input
 
 import (
+	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -35,6 +36,8 @@ type Component struct {
 	PlaceholderStyle lipgloss.Style
 	CursorStyle      lipgloss.Style
 
+	// default is disable
+	QuitKey key.Binding
 	// CharLimit is the maximum amount of characters this input element will
 	// accept. If 0 or less, there's no limit.
 	CharLimit int
@@ -53,6 +56,7 @@ func NewComponent() *Component {
 		EchoCharacter:    '*',
 		PlaceholderStyle: style.New().Foreground(color.Gray),
 		CharLimit:        0,
+		QuitKey:          key.NewBinding(),
 	}
 
 	c.Components = components.Components{Model: c}
@@ -156,6 +160,12 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch {
+		case key.Matches(msg, c.QuitKey):
+			c.Model.Blur()
+			return c, tea.Quit
+		}
 	case Status:
 		switch msg {
 		case Focus:

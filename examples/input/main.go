@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	inf "github.com/fzdwx/infinite"
 	"github.com/fzdwx/infinite/components/input/text"
 	"github.com/fzdwx/infinite/theme"
-	"time"
 )
 
 func main() {
@@ -14,14 +14,18 @@ func main() {
 		text.WithPromptStyle(theme.DefaultTheme.PromptStyle),
 		text.WithPlaceholder(" fzdwx (maybe)"),
 	)
-	go func() {
-		i.Display()
-	}()
+	//go func() {
+	//	i.Display()
+	//}()
+	//
+	//go func() {
+	//	time.Sleep(time.Second * 10)
+	//	i.Quit()
+	//}()
+	//
+	//time.Sleep(time.Second * 11)
 
-	go func() {
-		time.Sleep(time.Second * 10)
-		i.Quit()
-	}()
+	_ = i.Display()
 
-	time.Sleep(time.Second * 11)
+	fmt.Printf("you input: %s\n", i.Value())
 }

@@ -1,12 +1,20 @@
 package text
 
 import (
+	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/components/input"
 	"time"
 )
 
 type Option func(i *Text)
+
+// WithQuitKey bindQuitKey,default is "enter"
+func WithQuitKey(quitKey key.Binding) Option {
+	return func(i *Text) {
+		i.inner.QuitKey = quitKey
+	}
+}
 
 // WithPrompt set the prompt
 func WithPrompt(prompt string) Option {
