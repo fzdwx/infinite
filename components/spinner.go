@@ -41,7 +41,7 @@ func NewSpinner() *Spinner {
 }
 
 // RefreshPrompt refresh prompt.
-func (s Spinner) RefreshPrompt(str string) {
+func (s *Spinner) RefreshPrompt(str string) {
 	s.program.Send(RefreshPromptMsg(str))
 }
 

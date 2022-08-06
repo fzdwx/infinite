@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	inf "github.com/fzdwx/infinite"
+	"github.com/fzdwx/infinite/components/selection/singleselect"
 	"github.com/rotisserie/eris"
 )
 
@@ -16,12 +17,14 @@ func main() {
 		"6 Buy car",
 		"7 Buy subway",
 	}
-	selected, err := inf.NewSingleSelect(options).Display("Hello world")
+	selected, err := inf.NewSingleSelect(
+		options,
+		singleselect.WithDisableFilter(),
+	).Display("Hello world")
 	if err != nil {
 		fmt.Println(eris.ToString(err, true))
 		return
 	}
 
 	fmt.Printf("you selection %s\n", options[selected])
-
 }

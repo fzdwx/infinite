@@ -17,7 +17,7 @@ import (
 	"sort"
 )
 
-type Item struct {
+type SelectionItem struct {
 	idx int
 	val string
 }
@@ -34,10 +34,10 @@ type Selection struct {
 	// usually len(currentChoices)
 	availableChoices int
 	// currently valid option
-	currentChoices []Item
+	currentChoices []SelectionItem
 
 	/* options start */
-	Choices []Item
+	Choices []SelectionItem
 	// how many options to display at a time
 	PageSize            int
 	DisableOutPutResult bool
@@ -65,22 +65,22 @@ type Selection struct {
 
 	EnableFilter bool
 	FilterInput  *Input
-	FilterFunc   func(input string, items []Item) []Item
+	FilterFunc   func(input string, items []SelectionItem) []SelectionItem
 	/* options end */
 }
 
 func DefaultRowRender(cursorSymbol string, hintSymbol string, choice string) string {
 	return fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
 }
-func DefaultFilterFunc(input string, items []Item) []Item {
-	choiceVals := slice.Map[Item, string](items, func(index int, item Item) string {
+func DefaultFilterFunc(input string, items []SelectionItem) []SelectionItem {
+	choiceVals := slice.Map[SelectionItem, string](items, func(index int, item SelectionItem) string {
 		return item.val
 	})
 
 	var ranks = fuzzy.Find(input, choiceVals)
 	sort.Stable(ranks)
 
-	return slice.Map[fuzzy.Match, Item](ranks, func(index int, item fuzzy.Match) Item {
+	return slice.Map[fuzzy.Match, SelectionItem](ranks, func(index int, item fuzzy.Match) SelectionItem {
 		return items[item.Index]
 	})
 }
@@ -88,8 +88,8 @@ func DefaultFilterFunc(input string, items []Item) []Item {
 // NewSelection constructor
 func NewSelection(choices []string) *Selection {
 
-	items := slice.Map[string, Item](choices, func(idx int, item string) Item {
-		return Item{idx, item}
+	items := slice.Map[string, SelectionItem](choices, func(idx int, item string) SelectionItem {
+		return SelectionItem{idx, item}
 	})
 
 	c := &Selection{
@@ -209,8 +209,6 @@ func (s *Selection) View() string {
 	// The footer
 	msg.NewLine().Write(s.Help.View(s.Keymap))
 
-	msg.NewLine().Write(fmt.Sprintf("%v %v", s.cursor, s.scrollOffset))
-
 	// Send the UI for rendering
 	return msg.String()
 }
@@ -224,7 +222,7 @@ func (s *Selection) SetProgram(program *tea.Program) {
 // Value get all Selected
 func (s *Selection) Value() []int {
 	var selected []int
-	for s, _ := range s.Selected {
+	for s := range s.Selected {
 		selected = append(selected, s)
 	}
 	return selected
@@ -240,8 +238,8 @@ func (s *Selection) RenderColor() {
 
 // refreshChoices refresh Choices
 func (s *Selection) refreshChoices() {
-	var choices []Item
-	var filterChoices []Item
+	var choices []SelectionItem
+	var filterChoices []SelectionItem
 	var available, ignored int
 
 	// filter choice
@@ -273,14 +271,14 @@ func (s *Selection) refreshChoices() {
 }
 
 // viewResult get result
-func (s Selection) viewResult() string {
+func (s *Selection) viewResult() string {
 	if s.DisableOutPutResult || len(s.Selected) == 0 {
 		return ""
 	}
 
 	output := strx.NewFluent().Write(s.Prompt).Space()
 
-	for i, _ := range s.Selected {
+	for i := range s.Selected {
 		output.Write(s.Choices[i].val).Space()
 	}
 
@@ -314,7 +312,7 @@ func (s *Selection) moveDown() {
 
 // choice
 // The "enter" key and the spacebar (a literal space) toggle
-// the Selected state for the Item that the cursor is pointing at.
+// the Selected state for the SelectionItem that the cursor is pointing at.
 func (s *Selection) choice() {
 	// get current choice.
 	idx := s.currentChoices[s.cursor].idx
