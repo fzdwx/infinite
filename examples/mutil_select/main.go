@@ -24,7 +24,7 @@ func main() {
 		multiselect.WithUnHintSymbol("√"),
 		//multiselect.WithDisableOutputResult(),
 		multiselect.WithCursorSymbol(emoji.PointRight),
-		multiselect.WithDisableFilter(),
+		//multiselect.WithDisableFilter(),
 	).
 		Display("替换！！！")
 

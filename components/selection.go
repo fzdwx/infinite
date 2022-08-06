@@ -87,11 +87,10 @@ func DefaultFilterFunc(input string, items []Item) []Item {
 
 // NewSelection constructor
 func NewSelection(choices []string) *Selection {
-	var items []Item
 
-	for i, choice := range choices {
-		items = append(items, Item{i, choice})
-	}
+	items := slice.Map[string, Item](choices, func(idx int, item string) Item {
+		return Item{idx, item}
+	})
 
 	c := &Selection{
 		Choices:             items,
@@ -318,7 +317,7 @@ func (s *Selection) moveDown() {
 // the Selected state for the Item that the cursor is pointing at.
 func (s *Selection) choice() {
 	// get current choice.
-	idx := s.currentChoices[s.cursor+s.scrollOffset].idx
+	idx := s.currentChoices[s.cursor].idx
 
 	_, ok := s.Selected[idx]
 	if ok {
