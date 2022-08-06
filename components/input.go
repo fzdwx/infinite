@@ -41,6 +41,7 @@ type (
 	}
 )
 
+// NewInput constructor
 func NewInput() *Input {
 	c := &Input{
 		Model:            textinput.New(),
@@ -62,17 +63,26 @@ func NewInput() *Input {
 
 // Focus sets the Focus state on the model. When the model is in Focus it can
 // receive keyboard input and the cursor will be hidden.
+//
+// Do not call this method if you are using it as an inline component.
+// You can replace with the following code: tea.Program.Send(Focus)
 func (c *Input) Focus() {
 	c.Send(Focus)
 }
 
 // Blur removes the Focus state on the model.  When the model is blurred it can
 // not receive keyboard input and the cursor will be hidden.
+//
+// Do not call this method if you are using it as an inline component.
+// You can replace with the following code: tea.Program.Send(Blur)
 func (c *Input) Blur() {
 	c.Send(Blur)
 }
 
 // Quit Input
+//
+// Do not call this method if you are using it as an inline component.
+// You can replace with the following code: tea.Program.Send(Quit)
 func (c *Input) Quit() {
 	c.Send(Quit)
 }

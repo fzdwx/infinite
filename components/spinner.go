@@ -24,9 +24,10 @@ type (
 		Status Status
 	}
 
-	refreshPromptMsg string
+	RefreshPromptMsg string
 )
 
+// NewSpinner constructor
 func NewSpinner() *Spinner {
 	c := &Spinner{
 		Model:               spinner.New(),
@@ -44,14 +45,23 @@ func NewSpinner() *Spinner {
 	return c
 }
 
+// RefreshPrompt refresh prompt.
+//
+// Do not call this method if you are using it as an inline component.
+// You can replace with the following code: tea.Program.Send(RefreshPromptMsg(str))
 func (s Spinner) RefreshPrompt(str string) {
-	s.P.Send(refreshPromptMsg(str))
+	s.P.Send(RefreshPromptMsg(str))
 }
 
+// Quit Spinner
+//
+// Do not call this method if you are using it as an inline component.
+// You can replace with the following code: tea.Program.Send(QuitCmd())
 func (s *Spinner) Quit() {
 	s.P.Send(QuitCmd())
 }
 
+// Quited get quit state.
 func (s *Spinner) Quited() bool {
 	return s.Status == Quit
 }
@@ -76,7 +86,7 @@ func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	case spinner.TickMsg:
 		return s.refreshSpinner(msg)
-	case refreshPromptMsg:
+	case RefreshPromptMsg:
 		if !s.Quited() {
 			s.Prompt = string(msg)
 		}

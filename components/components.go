@@ -8,20 +8,12 @@ import (
 	"time"
 )
 
-/*
-
- input.component
- selection.component
- spinner.component
-
-*/
-
 type (
 	/*
 		Components, You can use these components directly:
-			 	1.input.component
-			 	2.selection.component
-			 	3.spinner.component
+			 	1. Input
+			 	2. Selection
+			 	3. Spinner
 		Or use them inline in your custom component,
 		for how to embed them, you can refer to the implementation of `Confirm`.
 	*/
@@ -34,17 +26,17 @@ type (
 
 // Start Components
 func (c *Components) Start(ops ...tea.ProgramOption) error {
+	c.started = true
 	c.P = tea.NewProgram(c, ops...)
 
-	c.started = true
 	return c.P.Start()
 }
 
 // Kill Components
 func (c *Components) Kill() {
 	if c.started {
-		c.P.Kill()
 		c.started = false
+		c.P.Kill()
 	}
 }
 

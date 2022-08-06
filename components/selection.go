@@ -62,6 +62,7 @@ type Selection struct {
 	/* options end */
 }
 
+// NewSelection constructor
 func NewSelection(choices []string) *Selection {
 	c := &Selection{
 		Choices:             choices,
