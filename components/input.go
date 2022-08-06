@@ -156,8 +156,8 @@ func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, in.QuitKey):
-			in.Model.Blur()
-			return in, tea.Quit
+			// todo Verification function can be added
+			return in.quit()
 		}
 	case Status:
 		in.Status = msg
@@ -167,8 +167,7 @@ func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case Blur:
 			in.Model.Blur()
 		case Quit:
-			in.Model.Blur()
-			return in, tea.Quit
+			return in.quit()
 		}
 	}
 
@@ -185,4 +184,9 @@ func (in *Input) View() string {
 
 func (in *Input) SetProgram(program *tea.Program) {
 	in.program = program
+}
+
+func (in *Input) quit() (tea.Model, tea.Cmd) {
+	in.Model.Blur()
+	return in, tea.Quit
 }

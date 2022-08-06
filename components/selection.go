@@ -7,12 +7,20 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/duke-git/lancet/v2/mathutil"
+	"github.com/duke-git/lancet/v2/slice"
 	"github.com/duke-git/lancet/v2/strutil"
 	"github.com/fzdwx/infinite/components/selection"
 	"github.com/fzdwx/infinite/strx"
 	"github.com/fzdwx/infinite/theme"
 	"github.com/mattn/go-runewidth"
+	"github.com/sahilm/fuzzy"
+	"sort"
 )
+
+type Item struct {
+	idx int
+	val string
+}
 
 type Selection struct {
 	// result
@@ -26,12 +34,13 @@ type Selection struct {
 	// usually len(currentChoices)
 	availableChoices int
 	// currently valid option
-	currentChoices []string
+	currentChoices []Item
 
 	/* options start */
-	Choices []string
+	Choices []Item
 	// how many options to display at a time
-	PageSize int
+	PageSize            int
+	DisableOutPutResult bool
 
 	// key binding
 	Keymap selection.KeyMap
@@ -50,21 +59,42 @@ type Selection struct {
 	UnHintSymbolStyle lipgloss.Style
 	ChoiceTextStyle   lipgloss.Style
 
-	DisableOutPutResult bool
 	// RowRender output options
 	// CursorSymbol,HintSymbol,choice
 	RowRender func(string, string, string) string
+
+	EnableFilter bool
+	FilterInput  *Input
+	FilterFunc   func(input string, items []Item) []Item
 	/* options end */
 }
 
 func DefaultRowRender(cursorSymbol string, hintSymbol string, choice string) string {
 	return fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
 }
+func DefaultFilterFunc(input string, items []Item) []Item {
+	choiceVals := slice.Map[Item, string](items, func(index int, item Item) string {
+		return item.val
+	})
+
+	var ranks = fuzzy.Find(input, choiceVals)
+	sort.Stable(ranks)
+
+	return slice.Map[fuzzy.Match, Item](ranks, func(index int, item fuzzy.Match) Item {
+		return items[item.Index]
+	})
+}
 
 // NewSelection constructor
 func NewSelection(choices []string) *Selection {
+	var items []Item
+
+	for i, choice := range choices {
+		items = append(items, Item{i, choice})
+	}
+
 	c := &Selection{
-		Choices:             choices,
+		Choices:             items,
 		Selected:            make(map[int]struct{}),
 		CursorSymbol:        ">",
 		UnCursorSymbol:      " ",
@@ -82,32 +112,62 @@ func NewSelection(choices []string) *Selection {
 		Keymap:              selection.DefaultMultiKeyMap,
 		Help:                help.New(),
 		RowRender:           DefaultRowRender,
+		EnableFilter:        true,
+		FilterInput:         NewInput(),
+		FilterFunc:          DefaultFilterFunc,
 	}
+
 	return c
 }
 
 func (s *Selection) Init() tea.Cmd {
+	var cmd tea.Cmd
 
 	s.refreshChoices()
+
 	s.UnCursorSymbol = strutil.PadEnd("", runewidth.StringWidth(s.CursorSymbol), " ")
 
-	return nil
+	if s.shouldFilter() {
+		cmd = s.FilterInput.Init()
+	}
+
+	return cmd
 }
 
 func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	shouldSkipFiler := false
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		if key.Matches(msg, s.Keymap.Choice) {
-			s.choice()
-		}
 		if key.Matches(msg, s.Keymap.Up) {
 			s.moveUp()
+			shouldSkipFiler = true
 		}
+
 		if key.Matches(msg, s.Keymap.Down) {
 			s.moveDown()
+			shouldSkipFiler = true
 		}
+
+		if key.Matches(msg, s.Keymap.Choice) {
+			s.choice()
+			shouldSkipFiler = true
+		}
+
 		if key.Matches(msg, s.Keymap.Confirm) {
 			return s.quit()
+		}
+
+		if !shouldSkipFiler && s.shouldFilter() {
+			_, cmd := s.FilterInput.Update(msg)
+			s.moveToTop()
+			return s, cmd
+		}
+
+	case Status:
+		if s.shouldFilter() {
+			_, cmd := s.FilterInput.Update(msg)
+			return s, cmd
 		}
 	}
 	return s, nil
@@ -122,25 +182,29 @@ func (s *Selection) View() string {
 
 	// The header
 	msg.Write(s.Prompt)
+	if s.shouldFilter() {
+		msg.NewLine().Write(s.FilterInput.View())
+	}
 
 	// Iterate over our Choices
 	for i, choice := range s.currentChoices {
+		val := choice.val
 
 		// Is the CursorSymbol pointing at this choice?
 		cursorSymbol := s.UnCursorSymbol // no CursorSymbol
 		if s.cursor == i {
 			cursorSymbol = s.CursorSymbol // CursorSymbol!
-			choice = s.ChoiceTextStyle.Render(choice)
+			val = s.ChoiceTextStyle.Render(val)
 		}
 
 		// Is this choice Selected?
 		hintSymbol := s.UnHintSymbol // not Selected
-		if _, ok := s.Selected[i+s.scrollOffset]; ok {
+		if _, ok := s.Selected[choice.idx]; ok {
 			hintSymbol = s.HintSymbol // Selected!
 		}
 
 		// Render the row
-		msg.NewLine().Write(s.RowRender(cursorSymbol, hintSymbol, choice))
+		msg.NewLine().Write(s.RowRender(cursorSymbol, hintSymbol, val))
 	}
 
 	// The footer
@@ -151,6 +215,9 @@ func (s *Selection) View() string {
 }
 
 func (s *Selection) SetProgram(program *tea.Program) {
+	if s.shouldFilter() {
+		s.FilterInput.SetProgram(program)
+	}
 }
 
 // Value get all Selected
@@ -162,12 +229,29 @@ func (s *Selection) Value() []int {
 	return selected
 }
 
+// RenderColor set color to text
+func (s *Selection) RenderColor() {
+	s.CursorSymbol = s.CursorSymbolStyle.Render(s.CursorSymbol)
+	s.Prompt = s.PromptStyle.Render(s.Prompt)
+	s.HintSymbol = s.HintSymbolStyle.Render(s.HintSymbol)
+	s.UnHintSymbol = s.UnHintSymbolStyle.Render(s.UnHintSymbol)
+}
+
 // refreshChoices refresh Choices
 func (s *Selection) refreshChoices() {
-	var choices []string
+	var choices []Item
+	var filterChoices []Item
 	var available, ignored int
 
-	for _, choice := range s.Choices {
+	// filter choice
+	if s.shouldFilter() && len(s.FilterInput.Value()) > 0 {
+		// do filter
+		filterChoices = s.FilterFunc(s.FilterInput.Value(), s.Choices)
+	} else {
+		filterChoices = s.Choices
+	}
+
+	for _, choice := range filterChoices {
 		available++
 
 		if s.PageSize > 0 && len(choices) >= s.PageSize {
@@ -196,7 +280,7 @@ func (s Selection) viewResult() string {
 	output := strx.NewFluent().Write(s.Prompt).Space()
 
 	for i, _ := range s.Selected {
-		output.Write(s.Choices[i]).Space()
+		output.Write(s.Choices[i].val).Space()
 	}
 
 	output.NewLine()
@@ -229,13 +313,16 @@ func (s *Selection) moveDown() {
 
 // choice
 // The "enter" key and the spacebar (a literal space) toggle
-// the Selected state for the item that the cursor is pointing at.
+// the Selected state for the Item that the cursor is pointing at.
 func (s *Selection) choice() {
-	_, ok := s.Selected[s.cursor+s.scrollOffset]
+	// get current choice.
+	idx := s.currentChoices[s.cursor+s.scrollOffset].idx
+
+	_, ok := s.Selected[idx]
 	if ok {
-		delete(s.Selected, s.cursor+s.scrollOffset)
+		delete(s.Selected, idx)
 	} else {
-		s.Selected[s.cursor+s.scrollOffset] = struct{}{}
+		s.Selected[idx] = struct{}{}
 	}
 }
 
@@ -243,14 +330,6 @@ func (s *Selection) choice() {
 func (s *Selection) quit() (tea.Model, tea.Cmd) {
 	s.quited = true
 	return s, tea.Quit
-}
-
-// RenderColor set color to text
-func (s *Selection) RenderColor() {
-	s.CursorSymbol = s.CursorSymbolStyle.Render(s.CursorSymbol)
-	s.Prompt = s.PromptStyle.Render(s.Prompt)
-	s.HintSymbol = s.HintSymbolStyle.Render(s.HintSymbol)
-	s.UnHintSymbol = s.UnHintSymbolStyle.Render(s.UnHintSymbol)
 }
 
 // shouldMoveToTop should move to top?
@@ -309,4 +388,8 @@ func (s *Selection) canScrollDown() bool {
 
 func (s *Selection) canScrollUp() bool {
 	return s.scrollOffset > 0
+}
+
+func (s *Selection) shouldFilter() bool {
+	return s.EnableFilter && s.FilterFunc != nil && s.FilterInput != nil
 }

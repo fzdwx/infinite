@@ -30,8 +30,8 @@ var DefaultMultiKeyMap = KeyMap{
 		key.WithHelp("↓", "move down"),
 	),
 	Choice: key.NewBinding(
-		key.WithKeys(" "),
-		key.WithHelp("space", "choice it"),
+		key.WithKeys("tab"),
+		key.WithHelp("tab", "choice it"),
 	),
 	Confirm: key.NewBinding(
 		key.WithKeys("enter"),
@@ -49,11 +49,11 @@ var DefaultSingleKeyMap = KeyMap{
 		key.WithHelp("↓", "move down"),
 	),
 	Choice: key.NewBinding(
-		key.WithKeys("enter"),
-		key.WithHelp("enter", "choice it"),
+		key.WithKeys("tab"),
+		key.WithHelp("tab", "choice it"),
 	),
 	Confirm: key.NewBinding(
-		key.WithKeys("ctrl+c", "enter"),
-		key.WithHelp("ctrl+c/enter", "quit"),
+		key.WithKeys("ctrl+c", "tab"),
+		key.WithHelp("ctrl+c/tab", "quit"),
 	),
 }

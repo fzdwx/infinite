@@ -23,7 +23,7 @@ func main() {
 	).
 		Display("替换！！！")
 
-	_, _ = inf.
-		NewMultiSelect([]string{"f1", "f2", "f3"}).
-		Display()
+	//_, _ = inf.
+	//	NewMultiSelect([]string{"f1", "f2", "f3"}).
+	//	Display()
 }

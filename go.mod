@@ -9,6 +9,7 @@ require (
 	github.com/duke-git/lancet/v2 v2.1.4
 	github.com/mattn/go-runewidth v0.0.13
 	github.com/rotisserie/eris v0.5.4
+	github.com/sahilm/fuzzy v0.1.0
 )
 
 require (
