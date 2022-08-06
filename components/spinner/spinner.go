@@ -42,7 +42,7 @@ func (s *Spinner) Display() *Spinner {
 // Finish quit Spinner
 func (s *Spinner) Finish(prompt ...string) error {
 	s.refresh(prompt...)
-	s.inner.Quited = true
+	s.inner.Quit()
 
 	return s.err
 }
@@ -59,6 +59,6 @@ func (s *Spinner) Refreshf(format string, a ...any) {
 
 func (s *Spinner) refresh(prompt ...string) {
 	if len(prompt) > 0 {
-		s.inner.Prompt = prompt[0]
+		s.inner.RefreshPrompt(prompt[0])
 	}
 }

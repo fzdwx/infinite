@@ -30,49 +30,42 @@ type (
 		P       *tea.Program
 		started bool
 	}
+)
 
-	// Status About the state of the Component
-	Status int
+// Start Components
+func (c *Components) Start(ops ...tea.ProgramOption) error {
+	c.P = tea.NewProgram(c, ops...)
 
-	// CursorMode describes the behavior of the cursor.
-	CursorMode int
+	c.started = true
+	return c.P.Start()
+}
 
-	// EchoMode sets the input behavior of the text input field.
-	EchoMode int
+// Kill Components
+func (c *Components) Kill() {
+	if c.started {
+		c.P.Kill()
+		c.started = false
+	}
+}
 
+// Send message to component
+func (c *Components) Send(msg tea.Msg) {
+	if c.started {
+		c.P.Send(msg)
+	}
+}
+
+const (
+	GlobalTickStatusDelay = time.Millisecond * 10
+	DefaultBlinkSpeed     = time.Millisecond * 530
+)
+
+type (
 	// Shape the SpinnerComponent Shape
 	Shape struct {
 		Frames []string
 		FPS    time.Duration
 	}
-)
-
-const (
-	GlobalTickStatusDelay = time.Millisecond * 10
-
-	DefaultBlinkSpeed = time.Millisecond * 530
-
-	Focus Status = iota
-	Blur
-	Quit
-	Normal
-
-	CursorBlink CursorMode = iota
-	CursorStatic
-	CursorHide
-
-	// EchoNormal displays text as is. This is the default behavior.
-	EchoNormal EchoMode = iota
-
-	// EchoPassword displays the EchoCharacter mask instead of actual
-	// characters.  This is commonly used for password fields.
-	EchoPassword
-
-	// EchoNone displays nothing as characters are entered. This is commonly
-	// seen for password fields on the command line.
-	EchoNone
-
-	// EchoOnEdit.
 )
 
 // Some spinners to choose from. You could also make your own.
@@ -135,28 +128,40 @@ var (
 	}
 )
 
-// Start Components
-func (c *Components) Start(ops ...tea.ProgramOption) error {
-	c.P = tea.NewProgram(c, ops...)
+type (
+	// Status About the state of the Component
+	Status int
 
-	c.started = true
-	return c.P.Start()
-}
+	// CursorMode describes the behavior of the cursor.
+	CursorMode int
 
-// Kill Components
-func (c *Components) Kill() {
-	if c.started {
-		c.P.Kill()
-		c.started = false
-	}
-}
+	// EchoMode sets the input behavior of the text input field.
+	EchoMode int
+)
 
-// Send message to component
-func (c *Components) Send(msg tea.Msg) {
-	if c.started {
-		c.P.Send(msg)
-	}
-}
+const (
+	Focus Status = iota
+	Blur
+	Quit
+	Normal
+
+	CursorBlink CursorMode = iota
+	CursorStatic
+	CursorHide
+
+	// EchoNormal displays text as is. This is the default behavior.
+	EchoNormal EchoMode = iota
+
+	// EchoPassword displays the EchoCharacter mask instead of actual
+	// characters.  This is commonly used for password fields.
+	EchoPassword
+
+	// EchoNone displays nothing as characters are entered. This is commonly
+	// seen for password fields on the command line.
+	EchoNone
+
+	// EchoOnEdit.
+)
 
 // String returns a the cursor mode in a human-readable format. This method is
 // provisional and for informational purposes only.
@@ -192,16 +197,4 @@ func newCursorMode(other textinput.CursorMode) CursorMode {
 	}
 
 	panic(fmt.Sprintf("unknow cursorMode :%s", other))
-}
-
-func FocusCmd() tea.Msg {
-	return Focus
-}
-
-func BlurCmd() tea.Msg {
-	return Blur
-}
-
-func QuitCmd() tea.Msg {
-	return Quit
 }

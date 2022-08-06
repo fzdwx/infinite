@@ -3,7 +3,6 @@ package spinner
 import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/components"
-	"time"
 )
 
 type Option func(s *Spinner)
@@ -19,13 +18,6 @@ func WithShape(shape components.Shape) Option {
 func WithShapeStyle(style lipgloss.Style) Option {
 	return func(s *Spinner) {
 		s.inner.ShapeStyle = style
-	}
-}
-
-// WithTickStatusDelay default is components.GlobalTickStatusDelay
-func WithTickStatusDelay(delay time.Duration) Option {
-	return func(s *Spinner) {
-		s.inner.TickStatusDelay = delay
 	}
 }
 

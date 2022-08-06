@@ -6,14 +6,9 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/strx"
 	"github.com/fzdwx/infinite/theme"
-	"time"
 )
 
 type (
-	StatusMsg struct {
-		Quited bool
-	}
-
 	SpinnerComponent struct {
 		Components
 
@@ -23,22 +18,23 @@ type (
 		Shape               Shape
 		ShapeStyle          lipgloss.Style
 		Prompt              string
-		TickStatusDelay     time.Duration
 		DisableOutPutResult bool
 		/* options end */
 
-		Quited bool
+		Status Status
 	}
+
+	refreshPromptMsg string
 )
 
 func NewSpinner() *SpinnerComponent {
 	c := &SpinnerComponent{
 		Model:               spinner.New(),
-		TickStatusDelay:     GlobalTickStatusDelay,
 		Shape:               Line,
 		ShapeStyle:          theme.DefaultTheme.SpinnerShapeStyle,
 		Prompt:              "Loading...",
 		DisableOutPutResult: false,
+		Status:              Normal,
 	}
 
 	c.Components = Components{
@@ -48,55 +44,68 @@ func NewSpinner() *SpinnerComponent {
 	return c
 }
 
-func (c *SpinnerComponent) Init() tea.Cmd {
-	c.Model.Spinner = spinner.Spinner{
-		Frames: c.Shape.Frames,
-		FPS:    c.Shape.FPS,
-	}
-	c.Model.Style = c.ShapeStyle
-
-	return tea.Batch(c.Model.Tick, func() tea.Msg {
-		return StatusMsg{Quited: false}
-	})
+func (s SpinnerComponent) RefreshPrompt(str string) {
+	s.P.Send(refreshPromptMsg(str))
 }
 
-func (c *SpinnerComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (s *SpinnerComponent) Quit() {
+	s.P.Send(QuitCmd())
+}
+
+func (s *SpinnerComponent) Quited() bool {
+	return s.Status == Quit
+}
+
+func (s *SpinnerComponent) Init() tea.Cmd {
+	s.Model.Spinner = spinner.Spinner{
+		Frames: s.Shape.Frames,
+		FPS:    s.Shape.FPS,
+	}
+	s.Model.Style = s.ShapeStyle
+
+	return s.Model.Tick
+}
+
+func (s *SpinnerComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case StatusMsg:
-		// check should quit
-		if msg.Quited {
-			return c, tea.Quit
+	case Status:
+		switch msg {
+		case Quit:
+			s.Status = Quit
+			return s, tea.Quit
 		}
-
-		return c, c.tickStatus(c.Quited)
 	case spinner.TickMsg:
-		// refresh spinner
-		var cmd tea.Cmd
-		c.Model, cmd = c.Model.Update(msg)
-		return c, cmd
+		return s.refreshSpinner(msg)
+	case refreshPromptMsg:
+		if !s.Quited() {
+			s.Prompt = string(msg)
+		}
+		return s.refreshSpinner(msg)
 	default:
-		return c, nil
+		return s, nil
 	}
+
+	return s, nil
 }
 
-func (c *SpinnerComponent) View() string {
+func (s *SpinnerComponent) View() string {
 	viewBuilder := strx.NewFluent().
-		Write(c.Model.View()).
-		Write(c.Prompt)
+		Write(s.Model.View()).
+		Write(s.Prompt)
 
-	if c.shouldAppendNewLine() {
-		viewBuilder.Write("\n")
+	if s.shouldAppendNewLine() {
+		viewBuilder.NewLine()
 	}
 
 	return viewBuilder.String()
 }
 
-func (c *SpinnerComponent) shouldAppendNewLine() bool {
-	return c.Quited && !c.DisableOutPutResult
+func (s *SpinnerComponent) refreshSpinner(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmd tea.Cmd
+	s.Model, cmd = s.Model.Update(msg)
+	return s, cmd
 }
 
-func (c *SpinnerComponent) tickStatus(quited bool) tea.Cmd {
-	return tea.Tick(c.TickStatusDelay, func(t time.Time) tea.Msg {
-		return StatusMsg{Quited: quited}
-	})
+func (s *SpinnerComponent) shouldAppendNewLine() bool {
+	return s.Quited() && !s.DisableOutPutResult
 }
