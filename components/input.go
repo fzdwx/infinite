@@ -13,9 +13,8 @@ import (
 type (
 	// Input the input component.
 	Input struct {
-		Components
-
-		Model textinput.Model
+		Model   textinput.Model
+		program *tea.Program
 
 		/* option start */
 		Status Status
@@ -56,141 +55,134 @@ func NewInput() *Input {
 		QuitKey:          key.NewBinding(),
 	}
 
-	c.Components = Components{Model: c}
-
 	return c
 }
 
 // Focus sets the Focus state on the model. When the model is in Focus it can
 // receive keyboard input and the cursor will be hidden.
-//
-// Do not call this method if you are using it as an inline component.
-// You can replace with the following code: tea.Program.Send(Focus)
-func (c *Input) Focus() {
-	c.Send(Focus)
+func (in *Input) Focus() {
+	in.program.Send(Focus)
 }
 
 // Blur removes the Focus state on the model.  When the model is blurred it can
 // not receive keyboard input and the cursor will be hidden.
-//
-// Do not call this method if you are using it as an inline component.
-// You can replace with the following code: tea.Program.Send(Blur)
-func (c *Input) Blur() {
-	c.Send(Blur)
+func (in *Input) Blur() {
+	in.program.Send(Blur)
 }
 
 // Quit Input
-//
-// Do not call this method if you are using it as an inline component.
-// You can replace with the following code: tea.Program.Send(Quit)
-func (c *Input) Quit() {
-	c.Send(Quit)
+func (in *Input) Quit() {
+	in.program.Send(Quit)
 }
 
 // Value returns the value of the text input.
-func (c *Input) Value() string {
-	return c.Model.Value()
+func (in *Input) Value() string {
+	return in.Model.Value()
 }
 
 // Cursor returns the cursor position.
-func (c *Input) Cursor() int {
-	return c.Model.Cursor()
+func (in *Input) Cursor() int {
+	return in.Model.Cursor()
 }
 
 // Blink returns whether or not to draw the cursor.
-func (c *Input) Blink() bool {
-	return c.Model.Blink()
+func (in *Input) Blink() bool {
+	return in.Model.Blink()
 }
 
 // SetCursor moves the cursor to the given position. If the position is
 // out of bounds the cursor will be moved to the start or end accordingly.
-func (c *Input) SetCursor(pos int) {
-	c.Model.SetCursor(pos)
+func (in *Input) SetCursor(pos int) {
+	in.Model.SetCursor(pos)
 }
 
 // Focused returns the focus state on the model.
-func (c *Input) Focused() bool {
-	return c.Model.Focused()
+func (in *Input) Focused() bool {
+	return in.Model.Focused()
 }
 
 // CursorStart moves the cursor to the start of the input field.
-func (c *Input) CursorStart() {
-	c.Model.CursorStart()
+func (in *Input) CursorStart() {
+	in.Model.CursorStart()
 }
 
 // CursorEnd moves the cursor to the end of the input field.
-func (c *Input) CursorEnd() {
-	c.Model.CursorEnd()
+func (in *Input) CursorEnd() {
+	in.Model.CursorEnd()
 }
 
 // Reset sets the input to its default state with no input. Returns whether
 // or not the cursor blink should reset.
-func (c *Input) Reset() bool {
-	return c.Model.Reset()
+func (in *Input) Reset() bool {
+	return in.Model.Reset()
 }
 
 // CursorMode returns the model's cursor mode. For available cursor modes, see
 // type CursorMode.
-func (c *Input) CursorMode() CursorMode {
-	return newCursorMode(c.Model.CursorMode())
+func (in *Input) CursorMode() CursorMode {
+	return newCursorMode(in.Model.CursorMode())
 }
 
 // SetCursorMode sets the model's cursor mode. This method returns a command.
 //
 // For available cursor modes, see type CursorMode.
-func (c *Input) SetCursorMode(model CursorMode) {
-	c.Model.SetCursorMode(model.Map())
+func (in *Input) SetCursorMode(model CursorMode) {
+	in.Model.SetCursorMode(model.Map())
 }
 
-func (c *Input) Init() tea.Cmd {
+func (in *Input) Init() tea.Cmd {
 
-	c.Model.Prompt = c.Prompt
-	c.Model.Placeholder = c.Placeholder
-	c.Model.BlinkSpeed = c.BlinkSpeed
-	c.Model.EchoMode = textinput.EchoMode(c.EchoMode)
-	c.Model.EchoCharacter = c.EchoCharacter
-	c.Model.PromptStyle = c.PromptStyle
-	c.Model.TextStyle = c.TextStyle
-	c.Model.BackgroundStyle = c.BackgroundStyle
-	c.Model.PlaceholderStyle = c.PlaceholderStyle
-	c.Model.CursorStyle = c.CursorStyle
-	c.Model.CharLimit = c.CharLimit
+	in.Model.Prompt = in.Prompt
+	in.Model.Placeholder = in.Placeholder
+	in.Model.BlinkSpeed = in.BlinkSpeed
+	in.Model.EchoMode = textinput.EchoMode(in.EchoMode)
+	in.Model.EchoCharacter = in.EchoCharacter
+	in.Model.PromptStyle = in.PromptStyle
+	in.Model.TextStyle = in.TextStyle
+	in.Model.BackgroundStyle = in.BackgroundStyle
+	in.Model.PlaceholderStyle = in.PlaceholderStyle
+	in.Model.CursorStyle = in.CursorStyle
+	in.Model.CharLimit = in.CharLimit
 
 	return tea.Batch(textinput.Blink, func() tea.Msg {
-		return c.Status
+		return in.Status
 	})
 }
 
-func (c *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
-		case key.Matches(msg, c.QuitKey):
-			c.Model.Blur()
-			return c, tea.Quit
+		case key.Matches(msg, in.QuitKey):
+			in.Model.Blur()
+			return in, tea.Quit
 		}
 	case Status:
-		c.Status = msg
+		in.Status = msg
 		switch msg {
 		case Focus:
-			cmds = append(cmds, c.Model.Focus())
+			cmds = append(cmds, in.Model.Focus())
 		case Blur:
-			c.Model.Blur()
+			in.Model.Blur()
 		case Quit:
-			c.Model.Blur()
-			return c, tea.Quit
+			in.Model.Blur()
+			return in, tea.Quit
 		}
 	}
 
-	model, modelCmd := c.Model.Update(msg)
-	c.Model = model
+	model, modelCmd := in.Model.Update(msg)
+	in.Model = model
 	cmds = append(cmds, modelCmd)
 
-	return c, tea.Batch(cmds...)
+	return in, tea.Batch(cmds...)
 }
 
-func (c *Input) View() string {
-	return c.Model.View()
+func (in *Input) View() string {
+	return in.Model.View()
+}
+
+func (in *Input) SetProgram(program *tea.Program) {
+	in.program = program
 }

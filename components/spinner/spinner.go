@@ -6,14 +6,17 @@ import (
 )
 
 type Spinner struct {
-	inner *components.Spinner
-	err   error
+	inner   *components.Spinner
+	startUp *components.StartUp
+	err     error
 }
 
 // New Spinner
 func New(ops ...Option) *Spinner {
+	inner := components.NewSpinner()
 	s := &Spinner{
-		inner: components.NewSpinner(),
+		inner:   inner,
+		startUp: components.NewStartUp(inner),
 	}
 
 	s.Apply(ops...)
@@ -34,7 +37,7 @@ func (s *Spinner) Apply(ops ...Option) *Spinner {
 // Display Spinner
 func (s *Spinner) Display() *Spinner {
 	go func() {
-		s.err = s.inner.Start()
+		s.err = s.startUp.Start()
 	}()
 	return s
 }

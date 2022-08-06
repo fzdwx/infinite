@@ -6,11 +6,13 @@ import (
 )
 
 type Text struct {
-	inner *components.Input
+	inner   *components.Input
+	startUp *components.StartUp
 }
 
 func New(ops ...Option) *Text {
-	i := &Text{inner: components.NewInput()}
+	inner := components.NewInput()
+	i := &Text{inner: inner, startUp: components.NewStartUp(inner)}
 
 	i.inner.QuitKey = key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "quit input text"))
 
@@ -30,7 +32,7 @@ func (i *Text) Apply(ops ...Option) *Text {
 }
 
 func (i *Text) Display() error {
-	return i.inner.Start()
+	return i.startUp.Start()
 }
 
 // Focus sets the Focus state on the model. When the model is in Focus it can

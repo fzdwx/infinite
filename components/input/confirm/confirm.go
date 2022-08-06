@@ -1,11 +1,20 @@
 package confirm
 
+import "github.com/fzdwx/infinite/components"
+
 type Confirm struct {
-	inner *inner
+	startUp *components.StartUp
+	inner   *inner
 }
 
 func New(ops ...Option) *Confirm {
-	c := &Confirm{inner: newInner()}
+
+	i := newInner()
+
+	c := &Confirm{
+		inner:   i,
+		startUp: components.NewStartUp(i),
+	}
 
 	c.Apply(ops...)
 
@@ -14,7 +23,7 @@ func New(ops ...Option) *Confirm {
 
 // Display Confirm component.
 func (c *Confirm) Display() error {
-	return c.inner.Start()
+	return c.startUp.Start()
 }
 
 // Value returns whether the user has chosen to confirm or deny.

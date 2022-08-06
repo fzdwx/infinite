@@ -10,7 +10,7 @@ import (
 
 type (
 	Spinner struct {
-		Components
+		program *tea.Program
 
 		Model spinner.Model
 
@@ -37,28 +37,17 @@ func NewSpinner() *Spinner {
 		DisableOutPutResult: false,
 		Status:              Normal,
 	}
-
-	c.Components = Components{
-		Model: c,
-	}
-
 	return c
 }
 
 // RefreshPrompt refresh prompt.
-//
-// Do not call this method if you are using it as an inline component.
-// You can replace with the following code: tea.Program.Send(RefreshPromptMsg(str))
 func (s Spinner) RefreshPrompt(str string) {
-	s.P.Send(RefreshPromptMsg(str))
+	s.program.Send(RefreshPromptMsg(str))
 }
 
 // Quit Spinner
-//
-// Do not call this method if you are using it as an inline component.
-// You can replace with the following code: tea.Program.Send(QuitCmd())
 func (s *Spinner) Quit() {
-	s.P.Send(QuitCmd())
+	s.program.Send(QuitCmd())
 }
 
 // Quited get quit state.
@@ -108,6 +97,10 @@ func (s *Spinner) View() string {
 	}
 
 	return viewBuilder.String()
+}
+
+func (s *Spinner) SetProgram(program *tea.Program) {
+	s.program = program
 }
 
 func (s *Spinner) refreshSpinner(msg tea.Msg) (tea.Model, tea.Cmd) {

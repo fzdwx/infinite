@@ -13,9 +13,8 @@ import (
 
 // inner is confirm impl
 type inner struct {
-	components.Components
-
-	input *components.Input
+	input   *components.Input
+	program tea.Program
 
 	/* option start */
 	// the KeyMap of Confirm
@@ -47,7 +46,6 @@ func newInner() *inner {
 
 	i.input.Prompt = "Are you handsome?"
 
-	i.Components = components.Components{Model: i}
 	return i
 }
 
@@ -97,4 +95,8 @@ func (i *inner) View() string {
 	}
 
 	return i.input.View()
+}
+
+func (i *inner) SetProgram(program *tea.Program) {
+	i.input.SetProgram(program)
 }

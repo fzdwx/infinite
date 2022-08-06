@@ -15,20 +15,18 @@ import (
 )
 
 type Selection struct {
-	Components
-
 	// result
 	Selected map[int]struct{}
 	// if true then quit.
-	Quited bool
-	// current Cursor index in CurrentChoices
-	Cursor int
+	quited bool
+	// current cursor index in currentChoices
+	cursor int
 	// the offset of screen
-	ScrollOffset int
-	// usually len(CurrentChoices)
-	AvailableChoices int
+	scrollOffset int
+	// usually len(currentChoices)
+	availableChoices int
 	// currently valid option
-	CurrentChoices []string
+	currentChoices []string
 
 	/* options start */
 	Choices []string
@@ -40,26 +38,27 @@ type Selection struct {
 	// key Help text
 	Help help.Model
 
-	CursorSymbol      string
-	UnCursorSymbol    string
+	Prompt         string
+	CursorSymbol   string
+	UnCursorSymbol string
+	HintSymbol     string
+	UnHintSymbol   string
+
+	PromptStyle       lipgloss.Style
 	CursorSymbolStyle lipgloss.Style
-
-	ChoiceTextStyle lipgloss.Style
-
-	Prompt      string
-	PromptStyle lipgloss.Style
-
-	HintSymbol      string
-	HintSymbolStyle lipgloss.Style
-
-	UnHintSymbol      string
+	HintSymbolStyle   lipgloss.Style
 	UnHintSymbolStyle lipgloss.Style
+	ChoiceTextStyle   lipgloss.Style
 
 	DisableOutPutResult bool
 	// RowRender output options
 	// CursorSymbol,HintSymbol,choice
 	RowRender func(string, string, string) string
 	/* options end */
+}
+
+func DefaultRowRender(cursorSymbol string, hintSymbol string, choice string) string {
+	return fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
 }
 
 // NewSelection constructor
@@ -77,109 +76,105 @@ func NewSelection(choices []string) *Selection {
 		HintSymbolStyle:     theme.DefaultTheme.MultiSelectedHintSymbolStyle,
 		UnHintSymbol:        "✗",
 		UnHintSymbolStyle:   theme.DefaultTheme.UnHintSymbolStyle,
-		Quited:              false,
+		quited:              false,
 		DisableOutPutResult: false,
 		PageSize:            5,
 		Keymap:              selection.DefaultMultiKeyMap,
 		Help:                help.New(),
-		RowRender: func(cursorSymbol string, hintSymbol string, choice string) string {
-			return fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
-		},
+		RowRender:           DefaultRowRender,
 	}
-
-	c.Components = Components{
-		Model: c,
-	}
-
 	return c
 }
 
-func (c *Selection) Init() tea.Cmd {
+func (s *Selection) Init() tea.Cmd {
 
-	c.refreshChoices()
-	c.UnCursorSymbol = strutil.PadEnd("", runewidth.StringWidth(c.CursorSymbol), " ")
+	s.refreshChoices()
+	s.UnCursorSymbol = strutil.PadEnd("", runewidth.StringWidth(s.CursorSymbol), " ")
 
 	return nil
 }
 
-func (c *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		if key.Matches(msg, c.Keymap.Choice) {
-			c.choice()
+		if key.Matches(msg, s.Keymap.Choice) {
+			s.choice()
 		}
-		if key.Matches(msg, c.Keymap.Up) {
-			c.moveUp()
+		if key.Matches(msg, s.Keymap.Up) {
+			s.moveUp()
 		}
-		if key.Matches(msg, c.Keymap.Down) {
-			c.moveDown()
+		if key.Matches(msg, s.Keymap.Down) {
+			s.moveDown()
 		}
-		if key.Matches(msg, c.Keymap.Confirm) {
-			return c.quit()
+		if key.Matches(msg, s.Keymap.Confirm) {
+			return s.quit()
 		}
 	}
-	return c, nil
+	return s, nil
 }
 
-func (c *Selection) View() string {
-	if c.Quited {
-		return c.viewResult()
+func (s *Selection) View() string {
+	if s.quited {
+		return s.viewResult()
 	}
 
 	msg := strx.NewFluent()
 
 	// The header
-	msg.Write(c.Prompt)
+	msg.Write(s.Prompt)
 
 	// Iterate over our Choices
-	for i, choice := range c.CurrentChoices {
+	for i, choice := range s.currentChoices {
 
 		// Is the CursorSymbol pointing at this choice?
-		cursorSymbol := c.UnCursorSymbol // no CursorSymbol
-		if c.Cursor == i {
-			cursorSymbol = c.CursorSymbol // CursorSymbol!
-			choice = c.ChoiceTextStyle.Render(choice)
+		cursorSymbol := s.UnCursorSymbol // no CursorSymbol
+		if s.cursor == i {
+			cursorSymbol = s.CursorSymbol // CursorSymbol!
+			choice = s.ChoiceTextStyle.Render(choice)
 		}
 
 		// Is this choice Selected?
-		hintSymbol := c.UnHintSymbol // not Selected
-		if _, ok := c.Selected[i+c.ScrollOffset]; ok {
-			hintSymbol = c.HintSymbol // Selected!
+		hintSymbol := s.UnHintSymbol // not Selected
+		if _, ok := s.Selected[i+s.scrollOffset]; ok {
+			hintSymbol = s.HintSymbol // Selected!
 		}
 
 		// Render the row
-		msg.NewLine().Write(c.RowRender(cursorSymbol, hintSymbol, choice))
+		msg.NewLine().Write(s.RowRender(cursorSymbol, hintSymbol, choice))
 	}
 
 	// The footer
-	msg.NewLine().Write(c.Help.View(c.Keymap))
+	msg.NewLine().Write(s.Help.View(s.Keymap))
 
 	// Send the UI for rendering
 	return msg.String()
 }
 
+func (s *Selection) SetProgram(program *tea.Program) {
+}
+
 // Value get all Selected
-func (c *Selection) Value() []int {
+func (s *Selection) Value() []int {
 	var selected []int
-	for s, _ := range c.Selected {
+	for s, _ := range s.Selected {
 		selected = append(selected, s)
 	}
 	return selected
 }
 
 // refreshChoices refresh Choices
-func (c *Selection) refreshChoices() {
+func (s *Selection) refreshChoices() {
 	var choices []string
 	var available, ignored int
 
-	for _, choice := range c.Choices {
+	for _, choice := range s.Choices {
 		available++
 
-		if c.PageSize > 0 && len(choices) >= c.PageSize {
+		if s.PageSize > 0 && len(choices) >= s.PageSize {
 			break
 		}
 
-		if (c.PageSize > 0) && (ignored < c.ScrollOffset) {
+		if (s.PageSize > 0) && (ignored < s.scrollOffset) {
 			ignored++
 
 			continue
@@ -188,20 +183,20 @@ func (c *Selection) refreshChoices() {
 		choices = append(choices, choice)
 	}
 
-	c.CurrentChoices = choices
-	c.AvailableChoices = available
+	s.currentChoices = choices
+	s.availableChoices = available
 }
 
 // viewResult get result
-func (c Selection) viewResult() string {
-	if c.DisableOutPutResult || len(c.Selected) == 0 {
+func (s Selection) viewResult() string {
+	if s.DisableOutPutResult || len(s.Selected) == 0 {
 		return ""
 	}
 
-	output := strx.NewFluent().Write(c.Prompt).Space()
+	output := strx.NewFluent().Write(s.Prompt).Space()
 
-	for i, _ := range c.Selected {
-		output.Write(c.Choices[i]).Space()
+	for i, _ := range s.Selected {
+		output.Write(s.Choices[i]).Space()
 	}
 
 	output.NewLine()
@@ -209,109 +204,109 @@ func (c Selection) viewResult() string {
 	return output.String()
 }
 
-// moveUp The "up" and "k" keys move the Cursor up
-func (c *Selection) moveUp() {
-	if c.shouldScrollUp() {
-		c.scrollUp()
+// moveUp The "up" and "k" keys move the cursor up
+func (s *Selection) moveUp() {
+	if s.shouldScrollUp() {
+		s.scrollUp()
 	}
 
-	c.Cursor = mathutil.Max(0, c.Cursor-1)
+	s.cursor = mathutil.Max(0, s.cursor-1)
 }
 
-// moveDown The "down" and "j" keys move the Cursor down
-func (c *Selection) moveDown() {
-	if c.shouldMoveToTop() {
-		c.moveToTop()
+// moveDown The "down" and "j" keys move the cursor down
+func (s *Selection) moveDown() {
+	if s.shouldMoveToTop() {
+		s.moveToTop()
 		return
 	}
 
-	if c.shouldScrollDown() {
-		c.scrollDown()
+	if s.shouldScrollDown() {
+		s.scrollDown()
 	}
 
-	c.Cursor = mathutil.Min(len(c.CurrentChoices)-1, c.Cursor+1)
+	s.cursor = mathutil.Min(len(s.currentChoices)-1, s.cursor+1)
 }
 
 // choice
 // The "enter" key and the spacebar (a literal space) toggle
-// the Selected state for the item that the Cursor is pointing at.
-func (c *Selection) choice() {
-	_, ok := c.Selected[c.Cursor+c.ScrollOffset]
+// the Selected state for the item that the cursor is pointing at.
+func (s *Selection) choice() {
+	_, ok := s.Selected[s.cursor+s.scrollOffset]
 	if ok {
-		delete(c.Selected, c.Cursor+c.ScrollOffset)
+		delete(s.Selected, s.cursor+s.scrollOffset)
 	} else {
-		c.Selected[c.Cursor+c.ScrollOffset] = struct{}{}
+		s.Selected[s.cursor+s.scrollOffset] = struct{}{}
 	}
 }
 
 // quit These keys should exit the program.
-func (c *Selection) quit() (tea.Model, tea.Cmd) {
-	c.Quited = true
-	return c, tea.Quit
+func (s *Selection) quit() (tea.Model, tea.Cmd) {
+	s.quited = true
+	return s, tea.Quit
 }
 
 // RenderColor set color to text
-func (c *Selection) RenderColor() {
-	c.CursorSymbol = c.CursorSymbolStyle.Render(c.CursorSymbol)
-	c.Prompt = c.PromptStyle.Render(c.Prompt)
-	c.HintSymbol = c.HintSymbolStyle.Render(c.HintSymbol)
-	c.UnHintSymbol = c.UnHintSymbolStyle.Render(c.UnHintSymbol)
+func (s *Selection) RenderColor() {
+	s.CursorSymbol = s.CursorSymbolStyle.Render(s.CursorSymbol)
+	s.Prompt = s.PromptStyle.Render(s.Prompt)
+	s.HintSymbol = s.HintSymbolStyle.Render(s.HintSymbol)
+	s.UnHintSymbol = s.UnHintSymbolStyle.Render(s.UnHintSymbol)
 }
 
 // shouldMoveToTop should move to top?
-func (c *Selection) shouldMoveToTop() bool {
-	return (c.Cursor + c.ScrollOffset) == (len(c.Choices) - 1)
+func (s *Selection) shouldMoveToTop() bool {
+	return (s.cursor + s.scrollOffset) == (len(s.Choices) - 1)
 }
 
 // shouldScrollDown should scroll down?
-func (c *Selection) shouldScrollDown() bool {
-	return c.Cursor == len(c.CurrentChoices)-1 && c.canScrollDown()
+func (s *Selection) shouldScrollDown() bool {
+	return s.cursor == len(s.currentChoices)-1 && s.canScrollDown()
 }
 
 // shouldScrollUp should scroll up?
-func (c *Selection) shouldScrollUp() bool {
-	return c.Cursor == 0 && c.canScrollUp()
+func (s *Selection) shouldScrollUp() bool {
+	return s.cursor == 0 && s.canScrollUp()
 }
 
-// moveToTop  move Cursor to top
-func (c *Selection) moveToTop() {
-	c.Cursor = 0
-	c.ScrollOffset = 0
-	c.refreshChoices()
+// moveToTop  move cursor to top
+func (s *Selection) moveToTop() {
+	s.cursor = 0
+	s.scrollOffset = 0
+	s.refreshChoices()
 }
 
-func (c *Selection) scrollUp() {
-	if c.PageSize <= 0 || c.ScrollOffset <= 0 {
+func (s *Selection) scrollUp() {
+	if s.PageSize <= 0 || s.scrollOffset <= 0 {
 		return
 	}
 
-	c.Cursor = mathutil.Min(len(c.CurrentChoices)-1, c.Cursor+1)
-	c.ScrollOffset--
-	c.refreshChoices()
+	s.cursor = mathutil.Min(len(s.currentChoices)-1, s.cursor+1)
+	s.scrollOffset--
+	s.refreshChoices()
 }
 
-func (c *Selection) scrollDown() {
-	if c.PageSize <= 0 || c.ScrollOffset+c.PageSize >= c.AvailableChoices {
+func (s *Selection) scrollDown() {
+	if s.PageSize <= 0 || s.scrollOffset+s.PageSize >= s.availableChoices {
 		return
 	}
 
-	c.Cursor = mathutil.Max(0, c.Cursor-1)
-	c.ScrollOffset++
-	c.refreshChoices()
+	s.cursor = mathutil.Max(0, s.cursor-1)
+	s.scrollOffset++
+	s.refreshChoices()
 }
 
-func (c *Selection) canScrollDown() bool {
-	if c.PageSize <= 0 || c.AvailableChoices <= c.PageSize {
+func (s *Selection) canScrollDown() bool {
+	if s.PageSize <= 0 || s.availableChoices <= s.PageSize {
 		return false
 	}
 
-	if c.ScrollOffset+c.PageSize >= len(c.Choices) {
+	if s.scrollOffset+s.PageSize >= len(s.Choices) {
 		return false
 	}
 
 	return true
 }
 
-func (c *Selection) canScrollUp() bool {
-	return c.ScrollOffset > 0
+func (s *Selection) canScrollUp() bool {
+	return s.scrollOffset > 0
 }

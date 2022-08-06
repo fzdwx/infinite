@@ -6,12 +6,17 @@ import (
 )
 
 type Select struct {
-	inner *components.Selection
+	startUp *components.StartUp
+	inner   *components.Selection
 }
 
 func New(choices []string, ops ...Option) *Select {
+	inner := components.NewSelection(choices)
+	startUp := components.NewStartUp(inner)
+
 	ms := &Select{
-		inner: components.NewSelection(choices),
+		inner:   inner,
+		startUp: startUp,
 	}
 
 	return ms.Apply(ops...)
@@ -23,7 +28,7 @@ func (ms *Select) Display(prompt ...string) ([]int, error) {
 
 	ms.inner.RenderColor()
 
-	err := ms.inner.Start()
+	err := ms.startUp.Start()
 	if err != nil {
 		return nil, eris.Wrap(err, "start inner selection fail")
 	}

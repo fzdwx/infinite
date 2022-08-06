@@ -17,33 +17,49 @@ type (
 		Or use them inline in your custom component,
 		for how to embed them, you can refer to the implementation of `Confirm`.
 	*/
-	Components struct {
+	Components interface {
 		tea.Model
+
+		// SetProgram this method will be called back when the tea.Program starts.
+		// please keep passing this method
+		SetProgram(program *tea.Program)
+	}
+
+	StartUp struct {
 		P       *tea.Program
 		started bool
 	}
 )
 
-// Start Components
-func (c *Components) Start(ops ...tea.ProgramOption) error {
-	c.started = true
-	c.P = tea.NewProgram(c, ops...)
+// NewStartUp new StartUp
+func NewStartUp(c Components, ops ...tea.ProgramOption) *StartUp {
+	program := tea.NewProgram(c, ops...)
 
-	return c.P.Start()
+	c.SetProgram(program)
+
+	return &StartUp{
+		P:       program,
+		started: false,
+	}
+}
+
+func (s *StartUp) Start() error {
+	s.started = true
+	return s.P.Start()
 }
 
 // Kill Components
-func (c *Components) Kill() {
-	if c.started {
-		c.started = false
-		c.P.Kill()
+func (s *StartUp) Kill() {
+	if s.started {
+		s.started = false
+		s.P.Kill()
 	}
 }
 
 // Send message to component
-func (c *Components) Send(msg tea.Msg) {
-	if c.started {
-		c.P.Send(msg)
+func (s *StartUp) Send(msg tea.Msg) {
+	if s.started {
+		s.P.Send(msg)
 	}
 }
 
