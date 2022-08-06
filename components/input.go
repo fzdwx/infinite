@@ -1,4 +1,4 @@
-package input
+package components
 
 import (
 	"github.com/charmbracelet/bubbles/key"
@@ -6,52 +6,51 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/color"
-	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/style"
 	"time"
 )
 
-const defaultBlinkSpeed = time.Millisecond * 530
+type (
+	// InputComponent the input component.
+	InputComponent struct {
+		Components
 
-// Component the input component.
-type Component struct {
-	components.Components
+		Status Status
+		Model  textinput.Model
 
-	Status Status
-	Model  textinput.Model
+		/* option start */
+		DefaultStatus   Status
+		TickStatusDelay time.Duration
 
-	/* option start */
-	DefaultStatus   Status
-	TickStatusDelay time.Duration
+		Prompt        string
+		Placeholder   string
+		BlinkSpeed    time.Duration
+		EchoMode      EchoMode
+		EchoCharacter rune
 
-	Prompt        string
-	Placeholder   string
-	BlinkSpeed    time.Duration
-	EchoMode      EchoMode
-	EchoCharacter rune
+		PromptStyle      lipgloss.Style
+		TextStyle        lipgloss.Style
+		BackgroundStyle  lipgloss.Style
+		PlaceholderStyle lipgloss.Style
+		CursorStyle      lipgloss.Style
 
-	PromptStyle      lipgloss.Style
-	TextStyle        lipgloss.Style
-	BackgroundStyle  lipgloss.Style
-	PlaceholderStyle lipgloss.Style
-	CursorStyle      lipgloss.Style
+		// default is disable
+		QuitKey key.Binding
+		// CharLimit is the maximum amount of characters this input element will
+		// accept. If 0 or less, there's no limit.
+		CharLimit int
+		/* option end */
+	}
+)
 
-	// default is disable
-	QuitKey key.Binding
-	// CharLimit is the maximum amount of characters this input element will
-	// accept. If 0 or less, there's no limit.
-	CharLimit int
-	/* option end */
-}
-
-func NewComponent() *Component {
-	c := &Component{
+func NewInput() *InputComponent {
+	c := &InputComponent{
 		Model:            textinput.New(),
 		DefaultStatus:    Focus,
-		TickStatusDelay:  components.GlobalTickStatusDelay,
+		TickStatusDelay:  GlobalTickStatusDelay,
 		Prompt:           "> ",
 		Placeholder:      "",
-		BlinkSpeed:       defaultBlinkSpeed,
+		BlinkSpeed:       DefaultBlinkSpeed,
 		EchoMode:         EchoNormal,
 		EchoCharacter:    '*',
 		PlaceholderStyle: style.New().Foreground(color.Gray),
@@ -59,84 +58,84 @@ func NewComponent() *Component {
 		QuitKey:          key.NewBinding(),
 	}
 
-	c.Components = components.Components{Model: c}
+	c.Components = Components{Model: c}
 
 	return c
 }
 
 // Focus sets the Focus state on the model. When the model is in Focus it can
 // receive keyboard input and the cursor will be hidden.
-func (c *Component) Focus() {
+func (c *InputComponent) Focus() {
 	c.Status = Focus
 }
 
 // Blur removes the Focus state on the model.  When the model is blurred it can
 // not receive keyboard input and the cursor will be hidden.
-func (c *Component) Blur() {
+func (c *InputComponent) Blur() {
 	c.Status = Blur
 }
 
-// Quit Component
-func (c *Component) Quit() {
+// Quit InputComponent
+func (c *InputComponent) Quit() {
 	c.Status = Quit
 }
 
 // Value returns the value of the text input.
-func (c *Component) Value() string {
+func (c *InputComponent) Value() string {
 	return c.Model.Value()
 }
 
 // Cursor returns the cursor position.
-func (c *Component) Cursor() int {
+func (c *InputComponent) Cursor() int {
 	return c.Model.Cursor()
 }
 
 // Blink returns whether or not to draw the cursor.
-func (c *Component) Blink() bool {
+func (c *InputComponent) Blink() bool {
 	return c.Model.Blink()
 }
 
 // SetCursor moves the cursor to the given position. If the position is
 // out of bounds the cursor will be moved to the start or end accordingly.
-func (c *Component) SetCursor(pos int) {
+func (c *InputComponent) SetCursor(pos int) {
 	c.Model.SetCursor(pos)
 }
 
 // Focused returns the focus state on the model.
-func (c *Component) Focused() bool {
+func (c *InputComponent) Focused() bool {
 	return c.Model.Focused()
 }
 
 // CursorStart moves the cursor to the start of the input field.
-func (c *Component) CursorStart() {
+func (c *InputComponent) CursorStart() {
 	c.Model.CursorStart()
 }
 
 // CursorEnd moves the cursor to the end of the input field.
-func (c *Component) CursorEnd() {
+func (c *InputComponent) CursorEnd() {
 	c.Model.CursorEnd()
 }
 
 // Reset sets the input to its default state with no input. Returns whether
 // or not the cursor blink should reset.
-func (c *Component) Reset() bool {
+func (c *InputComponent) Reset() bool {
 	return c.Model.Reset()
 }
 
 // CursorMode returns the model's cursor mode. For available cursor modes, see
 // type CursorMode.
-func (c *Component) CursorMode() CursorMode {
+func (c *InputComponent) CursorMode() CursorMode {
 	return newCursorMode(c.Model.CursorMode())
 }
 
 // SetCursorMode sets the model's cursor mode. This method returns a command.
 //
 // For available cursor modes, see type CursorMode.
-func (c *Component) SetCursorMode(model CursorMode) {
+func (c *InputComponent) SetCursorMode(model CursorMode) {
 	c.Model.SetCursorMode(model.Map())
 }
 
-func (c *Component) Init() tea.Cmd {
+func (c *InputComponent) Init() tea.Cmd {
 
 	c.Status = c.DefaultStatus
 	c.Model.Prompt = c.Prompt
@@ -156,7 +155,7 @@ func (c *Component) Init() tea.Cmd {
 	})
 }
 
-func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (c *InputComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
@@ -186,11 +185,11 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return c, tea.Batch(cmds...)
 }
 
-func (c *Component) View() string {
+func (c *InputComponent) View() string {
 	return c.Model.View()
 }
 
-func (c *Component) tickStatus(status Status) tea.Cmd {
+func (c *InputComponent) tickStatus(status Status) tea.Cmd {
 	return tea.Tick(c.TickStatusDelay, func(t time.Time) tea.Msg {
 		return status
 	})

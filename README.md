@@ -15,9 +15,9 @@
 
 同时也提供一些更基础的,你可以将它们组装起来使用:
 
-- [input#component](https://github.com/fzdwx/infinite/blob/main/components/input/component.go)
-- [selection#component](https://github.com/fzdwx/infinite/blob/main/components/selection/component.go)
-- [spinner#component](https://github.com/fzdwx/infinite/blob/main/components/spinner/component.go)
+- [component#input](https://github.com/fzdwx/infinite/blob/main/components/input.go)
+- [component#selection](https://github.com/fzdwx/infinite/blob/main/components/selection.go)
+- [component#spinner](https://github.com/fzdwx/infinite/blob/main/components/spinner.go)
 
 比如说`multi select` 和 `single select` 的基础组件就是 `selection#component`、
 `input text` 和 `confirm` 是基于`input#component`.

@@ -7,7 +7,6 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/components"
-	"github.com/fzdwx/infinite/components/input"
 	"github.com/fzdwx/infinite/strx"
 	"github.com/fzdwx/infinite/style"
 )
@@ -16,7 +15,7 @@ import (
 type inner struct {
 	components.Components
 
-	input *input.Component
+	input *components.InputComponent
 
 	/* option start */
 	// the KeyMap of Confirm
@@ -35,7 +34,7 @@ type inner struct {
 
 func newInner() *inner {
 	i := &inner{
-		input:       input.NewComponent(),
+		input:       components.NewInput(),
 		KeyMap:      DefaultKeyMap,
 		Help:        help.New(),
 		DisplayHelp: false,
@@ -62,7 +61,7 @@ func (i *inner) Init() tea.Cmd {
 
 	i.input.Init()
 
-	return input.FocusCmd
+	return components.FocusCmd
 }
 
 func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -71,12 +70,12 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msgCast, i.KeyMap.Quit):
-			msg = input.Quit
+			msg = components.Quit
 		case key.Matches(msgCast, i.KeyMap.Yes):
-			msg = input.Quit
+			msg = components.Quit
 			i.Value = true
 		case key.Matches(msgCast, i.KeyMap.No):
-			msg = input.Quit
+			msg = components.Quit
 			i.Value = false
 		default:
 			// discard, maybe output some error msg to user?

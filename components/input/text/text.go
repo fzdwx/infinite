@@ -2,15 +2,15 @@ package text
 
 import (
 	"github.com/charmbracelet/bubbles/key"
-	"github.com/fzdwx/infinite/components/input"
+	"github.com/fzdwx/infinite/components"
 )
 
 type Text struct {
-	inner *input.Component
+	inner *components.InputComponent
 }
 
 func New(ops ...Option) *Text {
-	i := &Text{inner: input.NewComponent()}
+	i := &Text{inner: components.NewInput()}
 
 	i.inner.QuitKey = key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "quit input text"))
 
@@ -45,7 +45,7 @@ func (i *Text) Blur() {
 	i.inner.Blur()
 }
 
-// Quit Component
+// Quit InputComponent
 func (i *Text) Quit() {
 	i.inner.Quit()
 }
@@ -78,14 +78,14 @@ func (i *Text) SetCursor(pos int) {
 
 // CursorMode returns the model's cursor mode. For available cursor modes, see
 // type CursorMode.
-func (i *Text) CursorMode() input.CursorMode {
+func (i *Text) CursorMode() components.CursorMode {
 	return i.inner.CursorMode()
 }
 
 // SetCursorMode sets the model's cursor mode. This method returns a command.
 //
 // For available cursor modes, see type CursorMode.
-func (i *Text) SetCursorMode(model input.CursorMode) {
+func (i *Text) SetCursorMode(model components.CursorMode) {
 	i.inner.SetCursorMode(model)
 }
 

@@ -3,7 +3,7 @@ package text
 import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/fzdwx/infinite/components/input"
+	"github.com/fzdwx/infinite/components"
 	"time"
 )
 
@@ -38,7 +38,7 @@ func WithBlinkSpeed(blinkSpeed time.Duration) Option {
 }
 
 // WithEchoMode sets the input behavior of the text input field.
-func WithEchoMode(echoMode input.EchoMode) Option {
+func WithEchoMode(echoMode components.EchoMode) Option {
 	return func(i *Text) {
 		i.inner.EchoMode = echoMode
 	}

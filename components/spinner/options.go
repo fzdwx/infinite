@@ -2,13 +2,14 @@ package spinner
 
 import (
 	"github.com/charmbracelet/lipgloss"
+	"github.com/fzdwx/infinite/components"
 	"time"
 )
 
 type Option func(s *Spinner)
 
 // WithShape default is Line
-func WithShape(shape Shape) Option {
+func WithShape(shape components.Shape) Option {
 	return func(s *Spinner) {
 		s.inner.Shape = shape
 	}

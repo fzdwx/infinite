@@ -2,9 +2,10 @@ package strx
 
 import "strings"
 
-//FluentStringBuilder is strings.Builder wrapper,
-// but  its api is fluent.
 type (
+
+	// FluentStringBuilder is strings.Builder wrapper,
+	// but its api is fluent.
 	FluentStringBuilder struct {
 		sb strings.Builder
 	}

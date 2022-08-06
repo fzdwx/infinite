@@ -1,17 +1,17 @@
 package multiselect
 
 import (
-	"github.com/fzdwx/infinite/components/selection"
+	"github.com/fzdwx/infinite/components"
 	"github.com/rotisserie/eris"
 )
 
 type Select struct {
-	inner *selection.Component
+	inner *components.SelectionComponent
 }
 
 func New(choices []string, ops ...Option) *Select {
 	ms := &Select{
-		inner: selection.NewComponent(choices),
+		inner: components.NewSelection(choices),
 	}
 
 	return ms.Apply(ops...)

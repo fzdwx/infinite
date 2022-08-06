@@ -1,10 +1,9 @@
-package spinner
+package components
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/strx"
 	"github.com/fzdwx/infinite/theme"
 	"time"
@@ -15,8 +14,8 @@ type (
 		Quited bool
 	}
 
-	Component struct {
-		components.Components
+	SpinnerComponent struct {
+		Components
 
 		Model spinner.Model
 
@@ -32,24 +31,24 @@ type (
 	}
 )
 
-func NewComponent() *Component {
-	c := &Component{
+func NewSpinner() *SpinnerComponent {
+	c := &SpinnerComponent{
 		Model:               spinner.New(),
-		TickStatusDelay:     components.GlobalTickStatusDelay,
+		TickStatusDelay:     GlobalTickStatusDelay,
 		Shape:               Line,
 		ShapeStyle:          theme.DefaultTheme.SpinnerShapeStyle,
 		Prompt:              "Loading...",
 		DisableOutPutResult: false,
 	}
 
-	c.Components = components.Components{
+	c.Components = Components{
 		Model: c,
 	}
 
 	return c
 }
 
-func (c *Component) Init() tea.Cmd {
+func (c *SpinnerComponent) Init() tea.Cmd {
 	c.Model.Spinner = spinner.Spinner{
 		Frames: c.Shape.Frames,
 		FPS:    c.Shape.FPS,
@@ -61,7 +60,7 @@ func (c *Component) Init() tea.Cmd {
 	})
 }
 
-func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (c *SpinnerComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case StatusMsg:
 		// check should quit
@@ -80,7 +79,7 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 }
 
-func (c *Component) View() string {
+func (c *SpinnerComponent) View() string {
 	viewBuilder := strx.NewFluent().
 		Write(c.Model.View()).
 		Write(c.Prompt)
@@ -92,11 +91,11 @@ func (c *Component) View() string {
 	return viewBuilder.String()
 }
 
-func (c *Component) shouldAppendNewLine() bool {
+func (c *SpinnerComponent) shouldAppendNewLine() bool {
 	return c.Quited && !c.DisableOutPutResult
 }
 
-func (c *Component) tickStatus(quited bool) tea.Cmd {
+func (c *SpinnerComponent) tickStatus(quited bool) tea.Cmd {
 	return tea.Tick(c.TickStatusDelay, func(t time.Time) tea.Msg {
 		return StatusMsg{Quited: quited}
 	})

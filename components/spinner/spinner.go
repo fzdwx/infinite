@@ -1,16 +1,19 @@
 package spinner
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/fzdwx/infinite/components"
+)
 
 type Spinner struct {
-	inner *Component
+	inner *components.SpinnerComponent
 	err   error
 }
 
 // New Spinner
 func New(ops ...Option) *Spinner {
 	s := &Spinner{
-		inner: NewComponent(),
+		inner: components.NewSpinner(),
 	}
 
 	s.Apply(ops...)

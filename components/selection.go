@@ -1,4 +1,4 @@
-package selection
+package components
 
 import (
 	"fmt"
@@ -8,14 +8,14 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/duke-git/lancet/v2/mathutil"
 	"github.com/duke-git/lancet/v2/strutil"
-	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/components/selection"
 	"github.com/fzdwx/infinite/strx"
 	"github.com/fzdwx/infinite/theme"
 	"github.com/mattn/go-runewidth"
 )
 
-type Component struct {
-	components.Components
+type SelectionComponent struct {
+	Components
 
 	// result
 	Selected map[int]struct{}
@@ -36,7 +36,7 @@ type Component struct {
 	PageSize int
 
 	// key binding
-	Keymap KeyMap
+	Keymap selection.KeyMap
 	// key Help text
 	Help help.Model
 
@@ -62,8 +62,8 @@ type Component struct {
 	/* options end */
 }
 
-func NewComponent(choices []string) *Component {
-	c := &Component{
+func NewSelection(choices []string) *SelectionComponent {
+	c := &SelectionComponent{
 		Choices:             choices,
 		Selected:            make(map[int]struct{}),
 		CursorSymbol:        ">",
@@ -79,21 +79,21 @@ func NewComponent(choices []string) *Component {
 		Quited:              false,
 		DisableOutPutResult: false,
 		PageSize:            5,
-		Keymap:              DefaultMultiKeyMap,
+		Keymap:              selection.DefaultMultiKeyMap,
 		Help:                help.New(),
 		RowRender: func(cursorSymbol string, hintSymbol string, choice string) string {
 			return fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
 		},
 	}
 
-	c.Components = components.Components{
+	c.Components = Components{
 		Model: c,
 	}
 
 	return c
 }
 
-func (c *Component) Init() tea.Cmd {
+func (c *SelectionComponent) Init() tea.Cmd {
 
 	c.refreshChoices()
 	c.UnCursorSymbol = strutil.PadEnd("", runewidth.StringWidth(c.CursorSymbol), " ")
@@ -101,7 +101,7 @@ func (c *Component) Init() tea.Cmd {
 	return nil
 }
 
-func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (c *SelectionComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		if key.Matches(msg, c.Keymap.Choice) {
@@ -120,7 +120,7 @@ func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return c, nil
 }
 
-func (c *Component) View() string {
+func (c *SelectionComponent) View() string {
 	if c.Quited {
 		return c.viewResult()
 	}
@@ -158,7 +158,7 @@ func (c *Component) View() string {
 }
 
 // Value get all Selected
-func (c *Component) Value() []int {
+func (c *SelectionComponent) Value() []int {
 	var selected []int
 	for s, _ := range c.Selected {
 		selected = append(selected, s)
@@ -167,7 +167,7 @@ func (c *Component) Value() []int {
 }
 
 // refreshChoices refresh Choices
-func (c *Component) refreshChoices() {
+func (c *SelectionComponent) refreshChoices() {
 	var choices []string
 	var available, ignored int
 
@@ -192,7 +192,7 @@ func (c *Component) refreshChoices() {
 }
 
 // viewResult get result
-func (c Component) viewResult() string {
+func (c SelectionComponent) viewResult() string {
 	if c.DisableOutPutResult || len(c.Selected) == 0 {
 		return ""
 	}
@@ -209,7 +209,7 @@ func (c Component) viewResult() string {
 }
 
 // moveUp The "up" and "k" keys move the Cursor up
-func (c *Component) moveUp() {
+func (c *SelectionComponent) moveUp() {
 	if c.shouldScrollUp() {
 		c.scrollUp()
 	}
@@ -218,7 +218,7 @@ func (c *Component) moveUp() {
 }
 
 // moveDown The "down" and "j" keys move the Cursor down
-func (c *Component) moveDown() {
+func (c *SelectionComponent) moveDown() {
 	if c.shouldMoveToTop() {
 		c.moveToTop()
 		return
@@ -234,7 +234,7 @@ func (c *Component) moveDown() {
 // choice
 // The "enter" key and the spacebar (a literal space) toggle
 // the Selected state for the item that the Cursor is pointing at.
-func (c *Component) choice() {
+func (c *SelectionComponent) choice() {
 	_, ok := c.Selected[c.Cursor+c.ScrollOffset]
 	if ok {
 		delete(c.Selected, c.Cursor+c.ScrollOffset)
@@ -244,13 +244,13 @@ func (c *Component) choice() {
 }
 
 // quit These keys should exit the program.
-func (c *Component) quit() (tea.Model, tea.Cmd) {
+func (c *SelectionComponent) quit() (tea.Model, tea.Cmd) {
 	c.Quited = true
 	return c, tea.Quit
 }
 
 // RenderColor set color to text
-func (c *Component) RenderColor() {
+func (c *SelectionComponent) RenderColor() {
 	c.CursorSymbol = c.CursorSymbolStyle.Render(c.CursorSymbol)
 	c.Prompt = c.PromptStyle.Render(c.Prompt)
 	c.HintSymbol = c.HintSymbolStyle.Render(c.HintSymbol)
@@ -258,28 +258,28 @@ func (c *Component) RenderColor() {
 }
 
 // shouldMoveToTop should move to top?
-func (c *Component) shouldMoveToTop() bool {
+func (c *SelectionComponent) shouldMoveToTop() bool {
 	return (c.Cursor + c.ScrollOffset) == (len(c.Choices) - 1)
 }
 
 // shouldScrollDown should scroll down?
-func (c *Component) shouldScrollDown() bool {
+func (c *SelectionComponent) shouldScrollDown() bool {
 	return c.Cursor == len(c.CurrentChoices)-1 && c.canScrollDown()
 }
 
 // shouldScrollUp should scroll up?
-func (c *Component) shouldScrollUp() bool {
+func (c *SelectionComponent) shouldScrollUp() bool {
 	return c.Cursor == 0 && c.canScrollUp()
 }
 
 // moveToTop  move Cursor to top
-func (c *Component) moveToTop() {
+func (c *SelectionComponent) moveToTop() {
 	c.Cursor = 0
 	c.ScrollOffset = 0
 	c.refreshChoices()
 }
 
-func (c *Component) scrollUp() {
+func (c *SelectionComponent) scrollUp() {
 	if c.PageSize <= 0 || c.ScrollOffset <= 0 {
 		return
 	}
@@ -289,7 +289,7 @@ func (c *Component) scrollUp() {
 	c.refreshChoices()
 }
 
-func (c *Component) scrollDown() {
+func (c *SelectionComponent) scrollDown() {
 	if c.PageSize <= 0 || c.ScrollOffset+c.PageSize >= c.AvailableChoices {
 		return
 	}
@@ -299,7 +299,7 @@ func (c *Component) scrollDown() {
 	c.refreshChoices()
 }
 
-func (c *Component) canScrollDown() bool {
+func (c *SelectionComponent) canScrollDown() bool {
 	if c.PageSize <= 0 || c.AvailableChoices <= c.PageSize {
 		return false
 	}
@@ -311,6 +311,6 @@ func (c *Component) canScrollDown() bool {
 	return true
 }
 
-func (c *Component) canScrollUp() bool {
+func (c *SelectionComponent) canScrollUp() bool {
 	return c.ScrollOffset > 0
 }
