@@ -7,6 +7,10 @@ import (
 )
 
 func main() {
+
+	//FilterPrompt:        "Filtering: ",
+	//FilterPromptStyle:   style.New().Bold().Italic().Bg(color.NewAdaptive("63", "63")).Fg(color.NewAdaptive("#ffffff", "#ffffff")),
+	//	FilterPromptStyle: style.New().Bold().Italic().Fg(color.LightBlue),
 	_, _ = inf.NewMultiSelect([]string{
 		"Buy carrots",
 		"Buy celery",
@@ -20,6 +24,7 @@ func main() {
 		multiselect.WithUnHintSymbol("√"),
 		//multiselect.WithDisableOutputResult(),
 		multiselect.WithCursorSymbol(emoji.PointRight),
+		multiselect.WithDisableFilter(),
 	).
 		Display("替换！！！")
 

@@ -7,23 +7,23 @@ import (
 )
 
 type Theme struct {
-	PromptStyle                  lipgloss.Style
-	MultiSelectedHintSymbolStyle lipgloss.Style
-	ChoiceTextStyle              lipgloss.Style
-	CursorSymbolStyle            lipgloss.Style
-	UnHintSymbolStyle            lipgloss.Style
-	SpinnerShapeStyle            lipgloss.Style
-	PlaceholderStyle             lipgloss.Style
+	PromptStyle                  *style.Style
+	MultiSelectedHintSymbolStyle *style.Style
+	ChoiceTextStyle              *style.Style
+	CursorSymbolStyle            *style.Style
+	UnHintSymbolStyle            *style.Style
+	SpinnerShapeStyle            *style.Style
+	PlaceholderStyle             *style.Style
 }
 
 var (
 	DefaultTheme = Theme{
-		PromptStyle:                  style.New().Foreground(color.Cyan),
-		MultiSelectedHintSymbolStyle: style.New().Foreground(color.Special),
-		ChoiceTextStyle:              style.New().Foreground(color.Highlight).Bold(true),
+		PromptStyle:                  style.New().Fg(color.Cyan),
+		MultiSelectedHintSymbolStyle: style.New().Fg(color.Special),
+		ChoiceTextStyle:              style.New().Fg(color.Highlight).Bold(),
 		CursorSymbolStyle:            style.New(),
-		UnHintSymbolStyle:            style.New().Foreground(color.Red),
-		SpinnerShapeStyle:            style.New().Foreground(color.RedPink),
-		PlaceholderStyle:             style.New().Foreground(lipgloss.Color("240")),
+		UnHintSymbolStyle:            style.New().Fg(color.Red),
+		SpinnerShapeStyle:            style.New().Fg(color.RedPink),
+		PlaceholderStyle:             style.New().Fg(lipgloss.Color("240")),
 	}
 )

@@ -1,9 +1,9 @@
 package singleselect
 
 import (
-	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/components/selection"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
+	"github.com/fzdwx/infinite/style"
 )
 
 // Option the option of Select
@@ -42,14 +42,14 @@ func WithCursorSymbol(symbol string) Option {
 }
 
 // WithCursorSymbolStyle default is theme.DefaultTheme.CursorSymbolStyle.
-func WithCursorSymbolStyle(style lipgloss.Style) Option {
+func WithCursorSymbolStyle(style *style.Style) Option {
 	return func(s *Select) {
 		s.inner.Apply(multiselect.WithCursorSymbolStyle(style))
 	}
 }
 
 // WithChoiceTextStyle default is theme.DefaultTheme.ChoiceTextStyle.
-func WithChoiceTextStyle(style lipgloss.Style) Option {
+func WithChoiceTextStyle(style *style.Style) Option {
 	return func(s *Select) {
 		s.inner.Apply(multiselect.WithChoiceTextStyle(style))
 	}
@@ -63,7 +63,7 @@ func WithDisableOutputResult() Option {
 }
 
 // WithPromptStyle default is Theme.PromptStyle.
-func WithPromptStyle(style lipgloss.Style) Option {
+func WithPromptStyle(style *style.Style) Option {
 	return func(s *Select) {
 		s.inner.Apply(multiselect.WithPromptStyle(style))
 	}

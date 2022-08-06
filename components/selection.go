@@ -5,12 +5,12 @@ import (
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/duke-git/lancet/v2/mathutil"
 	"github.com/duke-git/lancet/v2/slice"
 	"github.com/duke-git/lancet/v2/strutil"
 	"github.com/fzdwx/infinite/components/selection"
 	"github.com/fzdwx/infinite/strx"
+	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
 	"github.com/mattn/go-runewidth"
 	"github.com/sahilm/fuzzy"
@@ -53,11 +53,11 @@ type Selection struct {
 	HintSymbol     string
 	UnHintSymbol   string
 
-	PromptStyle       lipgloss.Style
-	CursorSymbolStyle lipgloss.Style
-	HintSymbolStyle   lipgloss.Style
-	UnHintSymbolStyle lipgloss.Style
-	ChoiceTextStyle   lipgloss.Style
+	PromptStyle       *style.Style
+	CursorSymbolStyle *style.Style
+	HintSymbolStyle   *style.Style
+	UnHintSymbolStyle *style.Style
+	ChoiceTextStyle   *style.Style
 
 	// RowRender output options
 	// CursorSymbol,HintSymbol,choice
@@ -209,6 +209,8 @@ func (s *Selection) View() string {
 
 	// The footer
 	msg.NewLine().Write(s.Help.View(s.Keymap))
+
+	msg.NewLine().Write(fmt.Sprintf("%v %v", s.cursor, s.scrollOffset))
 
 	// Send the UI for rendering
 	return msg.String()

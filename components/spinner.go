@@ -3,8 +3,8 @@ package components
 import (
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/strx"
+	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
 )
 
@@ -16,7 +16,7 @@ type (
 
 		/* options start */
 		Shape               Shape
-		ShapeStyle          lipgloss.Style
+		ShapeStyle          *style.Style
 		Prompt              string
 		DisableOutPutResult bool
 		/* options end */
@@ -60,7 +60,7 @@ func (s *Spinner) Init() tea.Cmd {
 		Frames: s.Shape.Frames,
 		FPS:    s.Shape.FPS,
 	}
-	s.Model.Style = s.ShapeStyle
+	s.Model.Style = s.ShapeStyle.Inner()
 
 	return s.Model.Tick
 }

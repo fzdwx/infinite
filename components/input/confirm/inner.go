@@ -4,7 +4,6 @@ import (
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/strx"
@@ -25,9 +24,9 @@ type inner struct {
 	// default is false
 	Value       bool
 	Notice      string
-	NoticeStyle lipgloss.Style
+	NoticeStyle *style.Style
 	Symbol      string
-	SymbolStyle lipgloss.Style
+	SymbolStyle *style.Style
 	/* option end */
 }
 
@@ -41,7 +40,7 @@ func newInner() *inner {
 		Notice:      " ( y/N ) ",
 		NoticeStyle: style.New(),
 		Symbol:      "?",
-		SymbolStyle: style.New().Foreground(color.Special),
+		SymbolStyle: style.New().Fg(color.Special),
 	}
 
 	i.input.Prompt = "Are you handsome?"

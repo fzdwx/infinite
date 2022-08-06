@@ -4,7 +4,6 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/style"
 	"time"
@@ -25,11 +24,11 @@ type (
 		EchoMode      EchoMode
 		EchoCharacter rune
 
-		PromptStyle      lipgloss.Style
-		TextStyle        lipgloss.Style
-		BackgroundStyle  lipgloss.Style
-		PlaceholderStyle lipgloss.Style
-		CursorStyle      lipgloss.Style
+		PromptStyle      *style.Style
+		TextStyle        *style.Style
+		BackgroundStyle  *style.Style
+		PlaceholderStyle *style.Style
+		CursorStyle      *style.Style
 
 		// default is disable
 		QuitKey key.Binding
@@ -50,9 +49,13 @@ func NewInput() *Input {
 		BlinkSpeed:       DefaultBlinkSpeed,
 		EchoMode:         EchoNormal,
 		EchoCharacter:    '*',
-		PlaceholderStyle: style.New().Foreground(color.Gray),
 		CharLimit:        0,
 		QuitKey:          key.NewBinding(),
+		PlaceholderStyle: style.New().Fg(color.Gray),
+		PromptStyle:      style.New(),
+		TextStyle:        style.New(),
+		BackgroundStyle:  style.New(),
+		CursorStyle:      style.New(),
 	}
 
 	return c
@@ -137,11 +140,11 @@ func (in *Input) Init() tea.Cmd {
 	in.Model.BlinkSpeed = in.BlinkSpeed
 	in.Model.EchoMode = textinput.EchoMode(in.EchoMode)
 	in.Model.EchoCharacter = in.EchoCharacter
-	in.Model.PromptStyle = in.PromptStyle
-	in.Model.TextStyle = in.TextStyle
-	in.Model.BackgroundStyle = in.BackgroundStyle
-	in.Model.PlaceholderStyle = in.PlaceholderStyle
-	in.Model.CursorStyle = in.CursorStyle
+	in.Model.PromptStyle = in.PromptStyle.Inner()
+	in.Model.TextStyle = in.TextStyle.Inner()
+	in.Model.BackgroundStyle = in.BackgroundStyle.Inner()
+	in.Model.PlaceholderStyle = in.PlaceholderStyle.Inner()
+	in.Model.CursorStyle = in.CursorStyle.Inner()
 	in.Model.CharLimit = in.CharLimit
 
 	return tea.Batch(textinput.Blink, func() tea.Msg {

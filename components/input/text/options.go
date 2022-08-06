@@ -2,8 +2,8 @@ package text
 
 import (
 	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/style"
 	"time"
 )
 
@@ -23,14 +23,14 @@ func WithPrompt(prompt string) Option {
 	}
 }
 
-// WithPlaceholder setthe placeholder
+// WithPlaceholder set the placeholder
 func WithPlaceholder(placeholder string) Option {
 	return func(i *Text) {
 		i.inner.Placeholder = placeholder
 	}
 }
 
-// WithBlinkSpeed setthe blink speed
+// WithBlinkSpeed set the blink speed
 func WithBlinkSpeed(blinkSpeed time.Duration) Option {
 	return func(i *Text) {
 		i.inner.BlinkSpeed = blinkSpeed
@@ -51,36 +51,36 @@ func WithEchoCharacter(echoCharacter rune) Option {
 	}
 }
 
-// WithPromptStyle setthe prompt style
-func WithPromptStyle(style lipgloss.Style) Option {
+// WithPromptStyle set the prompt style
+func WithPromptStyle(style *style.Style) Option {
 	return func(i *Text) {
 		i.inner.PromptStyle = style
 	}
 }
 
-// WithTextStyle setthe text style
-func WithTextStyle(style lipgloss.Style) Option {
+// WithTextStyle set the text style
+func WithTextStyle(style *style.Style) Option {
 	return func(i *Text) {
 		i.inner.TextStyle = style
 	}
 }
 
-// WithBackgroundStyle setthe background style
-func WithBackgroundStyle(style lipgloss.Style) Option {
+// WithBackgroundStyle set the background style
+func WithBackgroundStyle(style *style.Style) Option {
 	return func(i *Text) {
 		i.inner.BackgroundStyle = style
 	}
 }
 
 // WithPlaceholderStyle set the placeholder style
-func WithPlaceholderStyle(style lipgloss.Style) Option {
+func WithPlaceholderStyle(style *style.Style) Option {
 	return func(i *Text) {
 		i.inner.PlaceholderStyle = style
 	}
 }
 
 // WithCursorStyle setthe cursor style
-func WithCursorStyle(style lipgloss.Style) Option {
+func WithCursorStyle(style *style.Style) Option {
 	return func(i *Text) {
 		i.inner.CursorStyle = style
 	}

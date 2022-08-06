@@ -1,8 +1,8 @@
 package spinner
 
 import (
-	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/style"
 )
 
 type Option func(s *Spinner)
@@ -15,7 +15,7 @@ func WithShape(shape components.Shape) Option {
 }
 
 // WithShapeStyle default theme.DefaultTheme#SpinnerShapeStyle
-func WithShapeStyle(style lipgloss.Style) Option {
+func WithShapeStyle(style *style.Style) Option {
 	return func(s *Spinner) {
 		s.inner.ShapeStyle = style
 	}

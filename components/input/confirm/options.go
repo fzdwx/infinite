@@ -2,7 +2,7 @@ package confirm
 
 import (
 	"github.com/charmbracelet/bubbles/help"
-	"github.com/charmbracelet/lipgloss"
+	"github.com/fzdwx/infinite/style"
 )
 
 type Option func(confirm *Confirm)
@@ -23,7 +23,7 @@ func WithPrompt(prompt string) Option {
 }
 
 // WithPromptStyle change `confirm` default promptStyle.
-func WithPromptStyle(style lipgloss.Style) Option {
+func WithPromptStyle(style *style.Style) Option {
 	return func(c *Confirm) {
 		c.inner.input.PromptStyle = style
 	}
@@ -58,7 +58,7 @@ func WithNotice(notice string) Option {
 }
 
 // WithNoticeStyle replace notice style.
-func WithNoticeStyle(style lipgloss.Style) Option {
+func WithNoticeStyle(style *style.Style) Option {
 	return func(c *Confirm) {
 		c.inner.NoticeStyle = style
 	}
@@ -72,7 +72,7 @@ func WithSymbol(symbol string) Option {
 }
 
 // WithSymbolStyle replace symbol style.
-func WithSymbolStyle(style lipgloss.Style) Option {
+func WithSymbolStyle(style *style.Style) Option {
 	return func(c *Confirm) {
 		c.inner.SymbolStyle = style
 	}
