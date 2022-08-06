@@ -15,12 +15,10 @@ type (
 	InputComponent struct {
 		Components
 
-		Status Status
-		Model  textinput.Model
+		Model textinput.Model
 
 		/* option start */
-		DefaultStatus   Status
-		TickStatusDelay time.Duration
+		Status Status
 
 		Prompt        string
 		Placeholder   string
@@ -46,8 +44,7 @@ type (
 func NewInput() *InputComponent {
 	c := &InputComponent{
 		Model:            textinput.New(),
-		DefaultStatus:    Focus,
-		TickStatusDelay:  GlobalTickStatusDelay,
+		Status:           Focus,
 		Prompt:           "> ",
 		Placeholder:      "",
 		BlinkSpeed:       DefaultBlinkSpeed,
@@ -66,18 +63,18 @@ func NewInput() *InputComponent {
 // Focus sets the Focus state on the model. When the model is in Focus it can
 // receive keyboard input and the cursor will be hidden.
 func (c *InputComponent) Focus() {
-	c.Status = Focus
+	c.Send(Focus)
 }
 
 // Blur removes the Focus state on the model.  When the model is blurred it can
 // not receive keyboard input and the cursor will be hidden.
 func (c *InputComponent) Blur() {
-	c.Status = Blur
+	c.Send(Blur)
 }
 
 // Quit InputComponent
 func (c *InputComponent) Quit() {
-	c.Status = Quit
+	c.Send(Quit)
 }
 
 // Value returns the value of the text input.
@@ -137,7 +134,6 @@ func (c *InputComponent) SetCursorMode(model CursorMode) {
 
 func (c *InputComponent) Init() tea.Cmd {
 
-	c.Status = c.DefaultStatus
 	c.Model.Prompt = c.Prompt
 	c.Model.Placeholder = c.Placeholder
 	c.Model.BlinkSpeed = c.BlinkSpeed
@@ -151,7 +147,7 @@ func (c *InputComponent) Init() tea.Cmd {
 	c.Model.CharLimit = c.CharLimit
 
 	return tea.Batch(textinput.Blink, func() tea.Msg {
-		return c.DefaultStatus
+		return c.Status
 	})
 }
 
@@ -166,6 +162,7 @@ func (c *InputComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return c, tea.Quit
 		}
 	case Status:
+		c.Status = msg
 		switch msg {
 		case Focus:
 			cmds = append(cmds, c.Model.Focus())
@@ -175,7 +172,6 @@ func (c *InputComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			c.Model.Blur()
 			return c, tea.Quit
 		}
-		cmds = append(cmds, c.tickStatus(c.Status))
 	}
 
 	model, modelCmd := c.Model.Update(msg)
@@ -187,10 +183,4 @@ func (c *InputComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (c *InputComponent) View() string {
 	return c.Model.View()
-}
-
-func (c *InputComponent) tickStatus(status Status) tea.Cmd {
-	return tea.Tick(c.TickStatusDelay, func(t time.Time) tea.Msg {
-		return status
-	})
 }

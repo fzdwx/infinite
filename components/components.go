@@ -56,8 +56,7 @@ func (c *Components) Send(msg tea.Msg) {
 }
 
 const (
-	GlobalTickStatusDelay = time.Millisecond * 10
-	DefaultBlinkSpeed     = time.Millisecond * 530
+	DefaultBlinkSpeed = time.Millisecond * 530
 )
 
 type (
@@ -140,9 +139,13 @@ type (
 )
 
 const (
+	// Focus only use InputComponent
 	Focus Status = iota
+	// Blur only use InputComponent
 	Blur
+	// Quit component
 	Quit
+	// Normal ignore it
 	Normal
 
 	CursorBlink CursorMode = iota
