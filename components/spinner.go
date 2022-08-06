@@ -9,7 +9,7 @@ import (
 )
 
 type (
-	SpinnerComponent struct {
+	Spinner struct {
 		Components
 
 		Model spinner.Model
@@ -27,8 +27,8 @@ type (
 	refreshPromptMsg string
 )
 
-func NewSpinner() *SpinnerComponent {
-	c := &SpinnerComponent{
+func NewSpinner() *Spinner {
+	c := &Spinner{
 		Model:               spinner.New(),
 		Shape:               Line,
 		ShapeStyle:          theme.DefaultTheme.SpinnerShapeStyle,
@@ -44,19 +44,19 @@ func NewSpinner() *SpinnerComponent {
 	return c
 }
 
-func (s SpinnerComponent) RefreshPrompt(str string) {
+func (s Spinner) RefreshPrompt(str string) {
 	s.P.Send(refreshPromptMsg(str))
 }
 
-func (s *SpinnerComponent) Quit() {
+func (s *Spinner) Quit() {
 	s.P.Send(QuitCmd())
 }
 
-func (s *SpinnerComponent) Quited() bool {
+func (s *Spinner) Quited() bool {
 	return s.Status == Quit
 }
 
-func (s *SpinnerComponent) Init() tea.Cmd {
+func (s *Spinner) Init() tea.Cmd {
 	s.Model.Spinner = spinner.Spinner{
 		Frames: s.Shape.Frames,
 		FPS:    s.Shape.FPS,
@@ -66,7 +66,7 @@ func (s *SpinnerComponent) Init() tea.Cmd {
 	return s.Model.Tick
 }
 
-func (s *SpinnerComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case Status:
 		switch msg {
@@ -88,7 +88,7 @@ func (s *SpinnerComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return s, nil
 }
 
-func (s *SpinnerComponent) View() string {
+func (s *Spinner) View() string {
 	viewBuilder := strx.NewFluent().
 		Write(s.Model.View()).
 		Write(s.Prompt)
@@ -100,12 +100,12 @@ func (s *SpinnerComponent) View() string {
 	return viewBuilder.String()
 }
 
-func (s *SpinnerComponent) refreshSpinner(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (s *Spinner) refreshSpinner(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	s.Model, cmd = s.Model.Update(msg)
 	return s, cmd
 }
 
-func (s *SpinnerComponent) shouldAppendNewLine() bool {
+func (s *Spinner) shouldAppendNewLine() bool {
 	return s.Quited() && !s.DisableOutPutResult
 }

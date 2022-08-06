@@ -6,7 +6,7 @@ import (
 )
 
 type Spinner struct {
-	inner *components.SpinnerComponent
+	inner *components.Spinner
 	err   error
 }
 

@@ -6,7 +6,7 @@ import (
 )
 
 type Text struct {
-	inner *components.InputComponent
+	inner *components.Input
 }
 
 func New(ops ...Option) *Text {
@@ -45,7 +45,7 @@ func (i *Text) Blur() {
 	i.inner.Blur()
 }
 
-// Quit InputComponent
+// Quit Input
 func (i *Text) Quit() {
 	i.inner.Quit()
 }

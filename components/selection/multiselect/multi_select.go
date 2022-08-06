@@ -6,7 +6,7 @@ import (
 )
 
 type Select struct {
-	inner *components.SelectionComponent
+	inner *components.Selection
 }
 
 func New(choices []string, ops ...Option) *Select {

@@ -15,7 +15,7 @@ import (
 type inner struct {
 	components.Components
 
-	input *components.InputComponent
+	input *components.Input
 
 	/* option start */
 	// the KeyMap of Confirm

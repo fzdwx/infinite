@@ -14,7 +14,7 @@ import (
 	"github.com/mattn/go-runewidth"
 )
 
-type SelectionComponent struct {
+type Selection struct {
 	Components
 
 	// result
@@ -62,8 +62,8 @@ type SelectionComponent struct {
 	/* options end */
 }
 
-func NewSelection(choices []string) *SelectionComponent {
-	c := &SelectionComponent{
+func NewSelection(choices []string) *Selection {
+	c := &Selection{
 		Choices:             choices,
 		Selected:            make(map[int]struct{}),
 		CursorSymbol:        ">",
@@ -93,7 +93,7 @@ func NewSelection(choices []string) *SelectionComponent {
 	return c
 }
 
-func (c *SelectionComponent) Init() tea.Cmd {
+func (c *Selection) Init() tea.Cmd {
 
 	c.refreshChoices()
 	c.UnCursorSymbol = strutil.PadEnd("", runewidth.StringWidth(c.CursorSymbol), " ")
@@ -101,7 +101,7 @@ func (c *SelectionComponent) Init() tea.Cmd {
 	return nil
 }
 
-func (c *SelectionComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (c *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		if key.Matches(msg, c.Keymap.Choice) {
@@ -120,7 +120,7 @@ func (c *SelectionComponent) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return c, nil
 }
 
-func (c *SelectionComponent) View() string {
+func (c *Selection) View() string {
 	if c.Quited {
 		return c.viewResult()
 	}
@@ -158,7 +158,7 @@ func (c *SelectionComponent) View() string {
 }
 
 // Value get all Selected
-func (c *SelectionComponent) Value() []int {
+func (c *Selection) Value() []int {
 	var selected []int
 	for s, _ := range c.Selected {
 		selected = append(selected, s)
@@ -167,7 +167,7 @@ func (c *SelectionComponent) Value() []int {
 }
 
 // refreshChoices refresh Choices
-func (c *SelectionComponent) refreshChoices() {
+func (c *Selection) refreshChoices() {
 	var choices []string
 	var available, ignored int
 
@@ -192,7 +192,7 @@ func (c *SelectionComponent) refreshChoices() {
 }
 
 // viewResult get result
-func (c SelectionComponent) viewResult() string {
+func (c Selection) viewResult() string {
 	if c.DisableOutPutResult || len(c.Selected) == 0 {
 		return ""
 	}
@@ -209,7 +209,7 @@ func (c SelectionComponent) viewResult() string {
 }
 
 // moveUp The "up" and "k" keys move the Cursor up
-func (c *SelectionComponent) moveUp() {
+func (c *Selection) moveUp() {
 	if c.shouldScrollUp() {
 		c.scrollUp()
 	}
@@ -218,7 +218,7 @@ func (c *SelectionComponent) moveUp() {
 }
 
 // moveDown The "down" and "j" keys move the Cursor down
-func (c *SelectionComponent) moveDown() {
+func (c *Selection) moveDown() {
 	if c.shouldMoveToTop() {
 		c.moveToTop()
 		return
@@ -234,7 +234,7 @@ func (c *SelectionComponent) moveDown() {
 // choice
 // The "enter" key and the spacebar (a literal space) toggle
 // the Selected state for the item that the Cursor is pointing at.
-func (c *SelectionComponent) choice() {
+func (c *Selection) choice() {
 	_, ok := c.Selected[c.Cursor+c.ScrollOffset]
 	if ok {
 		delete(c.Selected, c.Cursor+c.ScrollOffset)
@@ -244,13 +244,13 @@ func (c *SelectionComponent) choice() {
 }
 
 // quit These keys should exit the program.
-func (c *SelectionComponent) quit() (tea.Model, tea.Cmd) {
+func (c *Selection) quit() (tea.Model, tea.Cmd) {
 	c.Quited = true
 	return c, tea.Quit
 }
 
 // RenderColor set color to text
-func (c *SelectionComponent) RenderColor() {
+func (c *Selection) RenderColor() {
 	c.CursorSymbol = c.CursorSymbolStyle.Render(c.CursorSymbol)
 	c.Prompt = c.PromptStyle.Render(c.Prompt)
 	c.HintSymbol = c.HintSymbolStyle.Render(c.HintSymbol)
@@ -258,28 +258,28 @@ func (c *SelectionComponent) RenderColor() {
 }
 
 // shouldMoveToTop should move to top?
-func (c *SelectionComponent) shouldMoveToTop() bool {
+func (c *Selection) shouldMoveToTop() bool {
 	return (c.Cursor + c.ScrollOffset) == (len(c.Choices) - 1)
 }
 
 // shouldScrollDown should scroll down?
-func (c *SelectionComponent) shouldScrollDown() bool {
+func (c *Selection) shouldScrollDown() bool {
 	return c.Cursor == len(c.CurrentChoices)-1 && c.canScrollDown()
 }
 
 // shouldScrollUp should scroll up?
-func (c *SelectionComponent) shouldScrollUp() bool {
+func (c *Selection) shouldScrollUp() bool {
 	return c.Cursor == 0 && c.canScrollUp()
 }
 
 // moveToTop  move Cursor to top
-func (c *SelectionComponent) moveToTop() {
+func (c *Selection) moveToTop() {
 	c.Cursor = 0
 	c.ScrollOffset = 0
 	c.refreshChoices()
 }
 
-func (c *SelectionComponent) scrollUp() {
+func (c *Selection) scrollUp() {
 	if c.PageSize <= 0 || c.ScrollOffset <= 0 {
 		return
 	}
@@ -289,7 +289,7 @@ func (c *SelectionComponent) scrollUp() {
 	c.refreshChoices()
 }
 
-func (c *SelectionComponent) scrollDown() {
+func (c *Selection) scrollDown() {
 	if c.PageSize <= 0 || c.ScrollOffset+c.PageSize >= c.AvailableChoices {
 		return
 	}
@@ -299,7 +299,7 @@ func (c *SelectionComponent) scrollDown() {
 	c.refreshChoices()
 }
 
-func (c *SelectionComponent) canScrollDown() bool {
+func (c *Selection) canScrollDown() bool {
 	if c.PageSize <= 0 || c.AvailableChoices <= c.PageSize {
 		return false
 	}
@@ -311,6 +311,6 @@ func (c *SelectionComponent) canScrollDown() bool {
 	return true
 }
 
-func (c *SelectionComponent) canScrollUp() bool {
+func (c *Selection) canScrollUp() bool {
 	return c.ScrollOffset > 0
 }

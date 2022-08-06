@@ -60,7 +60,7 @@ const (
 )
 
 type (
-	// Shape the SpinnerComponent Shape
+	// Shape the Spinner Shape
 	Shape struct {
 		Frames []string
 		FPS    time.Duration
@@ -139,9 +139,9 @@ type (
 )
 
 const (
-	// Focus only use InputComponent
+	// Focus only use Input
 	Focus Status = iota
-	// Blur only use InputComponent
+	// Blur only use Input
 	Blur
 	// Quit component
 	Quit
