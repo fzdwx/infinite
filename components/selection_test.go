@@ -24,8 +24,8 @@ func TestFilter(t *testing.T) {
 
 	selection.choice()
 
-	items := DefaultFilterFunc("car", slice.Map[string, Item](strings, func(idx int, item string) Item {
-		return Item{idx, item}
+	items := DefaultFilterFunc("car", slice.Map[string, SelectionItem](strings, func(idx int, item string) SelectionItem {
+		return SelectionItem{idx, item}
 	}))
 
 	got := items[selection.Value()[0]].val

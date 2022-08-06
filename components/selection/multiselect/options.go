@@ -1,6 +1,7 @@
 package multiselect
 
 import (
+	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/components/selection"
 	"github.com/fzdwx/infinite/style"
 )
@@ -8,9 +9,24 @@ import (
 // Option the option of Select
 type Option func(s *Select)
 
+// WithDisableFilter disable filter.
 func WithDisableFilter() Option {
 	return func(s *Select) {
 		s.inner.EnableFilter = false
+	}
+}
+
+// WithFilterInput replace filter input.
+func WithFilterInput(input *components.Input) Option {
+	return func(s *Select) {
+		s.inner.FilterInput = input
+	}
+}
+
+// WithFilterFunc replace filter func.
+func WithFilterFunc(f func(input string, items []components.SelectionItem) []components.SelectionItem) Option {
+	return func(s *Select) {
+		s.inner.FilterFunc = f
 	}
 }
 
