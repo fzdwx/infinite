@@ -35,9 +35,10 @@ func (s *Spinner) Apply(ops ...Option) *Spinner {
 }
 
 // Display Spinner
-func (s *Spinner) Display() *Spinner {
+func (s *Spinner) Display(prompt ...string) *Spinner {
 	go func() {
 		s.err = s.startUp.Start()
+		s.refresh(prompt...)
 	}()
 	return s
 }
