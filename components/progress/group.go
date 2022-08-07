@@ -60,10 +60,11 @@ func NewGroup(progressList ...*components.Progress) *Group {
 	return group
 }
 
-func (g *Group) AppendRunner(f func(progress *components.Progress) func(progress *components.Progress)) {
+func (g *Group) AppendRunner(f func(progress *components.Progress) func(progress *components.Progress)) *Group {
 	for _, updater := range g.m {
 		updater.runner = f(updater.progress)
 	}
+	return g
 }
 
 func (g *Group) Display() error {
