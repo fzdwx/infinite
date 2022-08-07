@@ -14,7 +14,7 @@ func WithPrompt(prompt string) Option {
 	}
 }
 
-func WithFunc(f func()) Option {
+func WithFunc(f func(spinner *Spinner)) Option {
 	return func(s *Spinner) {
 		s.runner = f
 	}
