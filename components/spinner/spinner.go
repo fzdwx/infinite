@@ -8,6 +8,7 @@ import (
 type Spinner struct {
 	inner   *components.Spinner
 	startUp *components.StartUp
+	runner  func()
 }
 
 // New Spinner
@@ -35,6 +36,12 @@ func (s *Spinner) Apply(ops ...Option) *Spinner {
 
 // Display Spinner
 func (s *Spinner) Display() error {
+	if s.runner != nil {
+		go func() {
+			s.runner()
+			s.Finish()
+		}()
+	}
 	return s.startUp.Start()
 }
 
