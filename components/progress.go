@@ -30,8 +30,10 @@ const (
 	defaultWidth = 40
 )
 
-type ProgressMsg int
-
+type ProgressMsg struct {
+	Id     int
+	Amount int64
+}
 type Progress struct {
 	program *tea.Program
 	Id      int
@@ -96,7 +98,10 @@ func NewProgress() *Progress {
 
 // Change current val, add or sub.
 func (pro *Progress) Change(amount int64) {
-	pro.program.Send(ProgressMsg(amount))
+	pro.program.Send(ProgressMsg{
+		Id:     pro.Id,
+		Amount: amount,
+	})
 }
 
 // Incr current val
@@ -126,7 +131,9 @@ func (pro *Progress) Init() tea.Cmd {
 func (pro *Progress) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case ProgressMsg:
-		pro.refresh(msg)
+		if msg.Id == pro.Id {
+			pro.refresh(msg)
+		}
 	}
 	return pro, nil
 }
@@ -197,7 +204,7 @@ func (pro *Progress) color(c string) termenv.Color {
 }
 
 func (pro *Progress) refresh(msg ProgressMsg) {
-	pro.Current += int64(msg)
+	pro.Current += msg.Amount
 
 	if pro.Current < 0 {
 		pro.Current = 0
@@ -212,7 +219,7 @@ func (pro *Progress) refresh(msg ProgressMsg) {
 
 func (pro *Progress) viewPercentage() string {
 	if !pro.ShowPercentage {
-		return ""
+		return strx.Empty
 	}
 
 	return pro.PercentAgeStyle.Render(pro.PercentAgeFunc(pro.Total, pro.Current, pro.percent))
