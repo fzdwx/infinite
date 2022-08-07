@@ -8,10 +8,10 @@ import (
 )
 
 func main() {
-	group := progress.NewGroup(newP(10), newP(100))
+	group := progress.NewGroup(newP(10), newP(15), newP(20))
 
 	go func() {
-		for i := 0; i < 300; i++ {
+		for i := 0; i < 65; i++ {
 			sleep()
 		}
 		group.Kill()
