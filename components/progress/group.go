@@ -17,7 +17,7 @@ type Group struct {
 
 type progressUpdater struct {
 	progress *components.Progress
-	runner   func(progress *components.Progress)
+	runner   func()
 }
 
 type done int
@@ -60,7 +60,7 @@ func NewGroup(progressList ...*components.Progress) *Group {
 	return group
 }
 
-func (g *Group) AppendRunner(f func(progress *components.Progress) func(progress *components.Progress)) *Group {
+func (g *Group) AppendRunner(f func(progress *components.Progress) func()) *Group {
 	for _, updater := range g.m {
 		updater.runner = f(updater.progress)
 	}
@@ -71,7 +71,7 @@ func (g *Group) Display() error {
 	for _, updater := range g.m {
 		temp := updater
 		go func() {
-			temp.runner(temp.progress)
+			temp.runner()
 			g.startUp.Send(done(1))
 		}()
 	}
