@@ -7,6 +7,13 @@ import (
 
 type Option func(s *Spinner)
 
+// WithPrompt replace default prompt
+func WithPrompt(prompt string) Option {
+	return func(s *Spinner) {
+		s.inner.Prompt = prompt
+	}
+}
+
 // WithShape default is Line
 func WithShape(shape components.Shape) Option {
 	return func(s *Spinner) {

@@ -8,7 +8,6 @@ import (
 type Spinner struct {
 	inner   *components.Spinner
 	startUp *components.StartUp
-	err     error
 }
 
 // New Spinner
@@ -35,20 +34,14 @@ func (s *Spinner) Apply(ops ...Option) *Spinner {
 }
 
 // Display Spinner
-func (s *Spinner) Display(prompt ...string) *Spinner {
-	go func() {
-		s.err = s.startUp.Start()
-		s.refresh(prompt...)
-	}()
-	return s
+func (s *Spinner) Display() error {
+	return s.startUp.Start()
 }
 
 // Finish quit Spinner
-func (s *Spinner) Finish(prompt ...string) error {
+func (s *Spinner) Finish(prompt ...string) {
 	s.refresh(prompt...)
 	s.inner.Quit()
-
-	return s.err
 }
 
 // Refresh Spinner prompt
