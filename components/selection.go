@@ -27,7 +27,7 @@ type Selection struct {
 	Selected map[int]struct{}
 	// if true then quit.
 	quited bool
-	// current cursor index in currentChoices
+	// Current cursor index in currentChoices
 	cursor int
 	// the offset of screen
 	scrollOffset int
@@ -314,7 +314,7 @@ func (s *Selection) moveDown() {
 // The "enter" key and the spacebar (a literal space) toggle
 // the Selected state for the SelectionItem that the cursor is pointing at.
 func (s *Selection) choice() {
-	// get current choice.
+	// get Current choice.
 	idx := s.currentChoices[s.cursor].idx
 
 	_, ok := s.Selected[idx]

@@ -14,13 +14,15 @@
     * [Selection](#selection)
     * [Input](#input)
     * [Spinner](#spinner)
+    * [Progress](#progress)
 * [How to use](#how-to-use)
+    * [Progress](#progress)
     * [Multi select](#multi-select)
     * [Single select](#single-select)
     * [Spinner](#spinner)
     * [Input text](#input-text)
     * [Confirm](#confirm)
-* [build with](#build-with)
+* [Build with](#build-with)
 * [License](#license)
 
 <!-- TOC -->
@@ -60,9 +62,73 @@ go get github.com/fzdwx/infinite
 微调控制项,什么翻译,就是可以根据定义的一系列的服务,周期性的变换.
 除了这个基本功能外,它还可以在刷新提示文字.
 
+### Progress
+
+进度条
+
 ## How to use
 
 这里是`infinite`提供的一些开箱即用的组件,它们都是基于上面的基础组件封装而来.
+
+### Progress
+
+这是一个进度条组件的使用案例
+
+<details>
+<summary>代码</summary>
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/fzdwx/infinite/components"
+	"time"
+)
+
+func main() {
+
+	var total = 10
+	progress := components.NewProgress().
+		WithTotal(int64(total)).
+		WithDefaultGradient().
+		WithPercentAgeFunc(func(total int64, current int64, percent float64) string {
+			return fmt.Sprintf(" %d/%d", current, total)
+		})
+
+	startUp := components.NewStartUp(progress)
+	go func() {
+		sleep()
+
+		for i := 0; i < total+1; i++ {
+			progress.IncrOne()
+			sleep()
+		}
+
+		for i := 0; i < total; i++ {
+			progress.DecrOne()
+			sleep()
+		}
+
+		for i := 0; i < total+1; i++ {
+			progress.IncrOne()
+			sleep()
+		}
+
+		startUp.Kill()
+	}()
+
+	startUp.Start()
+}
+
+func sleep() {
+	time.Sleep(time.Millisecond * 100)
+}
+```
+
+</details>
+
+![demo](https://user-images.githubusercontent.com/65269574/183285338-fb930b31-91c3-4be2-9068-a36ec51a5f23.gif)
 
 ### Multi select
 
