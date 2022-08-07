@@ -5,14 +5,10 @@
 <br>
 <br>
 
-比如说`multi select` 和 `single select` 的基础组件就是 `selection#component`、
-`input text` 和 `confirm` 是基于`input#component`.
-
 ## TOC
 
 <!-- TOC -->
 
-* [TOC](#toc)
 * [Install](#install)
 * [Components](#components)
     * [Selection](#selection)
@@ -48,7 +44,7 @@ go get github.com/fzdwx/infinite
 3. 每一行输出结果
 4. Filter
 
-比如说自定义2和3,我们就可以实现一个`sulti select` -> `single select`.
+比如说自定义2和3,我们就可以实现一个`multi select` -> `single select`.
 
 ### Input
 
@@ -268,7 +264,7 @@ func main() {
 
 ![demo](https://user-images.githubusercontent.com/65269574/183076452-5fa73013-42de-47df-97b4-7be743d074c1.gif)
 
-## build with
+## Build with
 
 - https://github.com/charmbracelet/bubbletea
 - https://github.com/charmbracelet/bubbles
