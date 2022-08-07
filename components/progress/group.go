@@ -64,6 +64,7 @@ func (g *Group) AppendRunner(f func(progress *components.Progress) func()) *Grou
 	for _, updater := range g.m {
 		updater.runner = f(updater.progress)
 	}
+
 	return g
 }
 
