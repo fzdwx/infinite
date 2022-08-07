@@ -292,31 +292,29 @@ func main() {
 package main
 
 import (
-	inf "github.com/fzdwx/infinite"
-	"github.com/fzdwx/infinite/components"
-	"github.com/fzdwx/infinite/components/spinner"
-	"time"
+  inf "github.com/fzdwx/infinite"
+  "github.com/fzdwx/infinite/components"
+  "github.com/fzdwx/infinite/components/spinner"
+  "time"
 )
 
 func main() {
-	sp := inf.NewSpinner(
-		spinner.WithShape(components.Dot),
-		//spinner.WithDisableOutputResult(),
-	).Display()
+  _ = inf.NewSpinner(
+    spinner.WithShape(components.Dot),
+    //spinner.WithDisableOutputResult(),
+    spinner.WithFunc(func(spinner *spinner.Spinner) {
+      for i := 0; i < 10; i++ {
+        time.Sleep(time.Millisecond * 100)
+        spinner.Refreshf("hello world %d", i)
+      }
 
-	go func() {
-		for i := 0; i < 10; i++ {
-			time.Sleep(time.Millisecond * 100)
-			sp.Refreshf("hello world %d", i)
-		}
+      spinner.Finish("finish")
 
-		sp.Finish("finish")
+      spinner.Refresh("is finish?")
+    }),
+  ).Display()
 
-		sp.Refresh("is finish?")
-
-	}()
-
-	time.Sleep(time.Millisecond * 100 * 15)
+  time.Sleep(time.Millisecond * 100 * 15)
 }
 ```
 

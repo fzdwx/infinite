@@ -8,22 +8,20 @@ import (
 )
 
 func main() {
-	sp := inf.NewSpinner(
+	_ = inf.NewSpinner(
 		spinner.WithShape(components.Dot),
 		//spinner.WithDisableOutputResult(),
+		spinner.WithFunc(func(spinner *spinner.Spinner) {
+			for i := 0; i < 10; i++ {
+				time.Sleep(time.Millisecond * 100)
+				spinner.Refreshf("hello world %d", i)
+			}
+
+			spinner.Finish("finish")
+
+			spinner.Refresh("is finish?")
+		}),
 	).Display()
-
-	go func() {
-		for i := 0; i < 10; i++ {
-			time.Sleep(time.Millisecond * 100)
-			sp.Refreshf("hello world %d", i)
-		}
-
-		sp.Finish("finish")
-
-		sp.Refresh("is finish?")
-
-	}()
 
 	time.Sleep(time.Millisecond * 100 * 15)
 }

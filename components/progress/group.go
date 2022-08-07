@@ -9,21 +9,44 @@ import (
 
 // Group the progress group
 type Group struct {
-	m       map[int]*components.Progress
+	m       map[int]*progressUpdater
 	ids     []int
 	startUp *components.StartUp
+	done    int
+}
+
+type progressUpdater struct {
+	progress *components.Progress
+	runner   func(progress *components.Progress)
+}
+
+type done int
+
+func NewGroupWithCount(processCnt int) *Group {
+	if processCnt <= 0 {
+		return nil
+	}
+
+	var progressList []*components.Progress
+	for i := 0; i < processCnt; i++ {
+		progressList = append(progressList, components.NewProgress())
+	}
+
+	return NewGroup(progressList...)
 }
 
 // NewGroup progressList the size must > 1
 func NewGroup(progressList ...*components.Progress) *Group {
 	if len(progressList) <= 0 {
-		panic("progressList the size must > 1")
+		return nil
 	}
 
-	m := make(map[int]*components.Progress)
+	m := make(map[int]*progressUpdater)
 	var ids []int
 	for _, progress := range progressList {
-		m[progress.Id] = progress
+		m[progress.Id] = &progressUpdater{
+			progress: progress,
+		}
 		ids = append(ids, progress.Id)
 	}
 
@@ -32,8 +55,30 @@ func NewGroup(progressList ...*components.Progress) *Group {
 	group := &Group{m: m, ids: ids}
 	startUp := components.NewStartUp(group)
 	group.startUp = startUp
+	group.done = len(m)
 
 	return group
+}
+
+func (g *Group) AppendRunner(f func(progress *components.Progress) func(progress *components.Progress)) {
+	for _, updater := range g.m {
+		updater.runner = f(updater.progress)
+	}
+}
+
+func (g *Group) Display() error {
+	for _, updater := range g.m {
+		temp := updater
+		go func() {
+			temp.runner(temp.progress)
+			g.startUp.Send(done(1))
+		}()
+	}
+	return g.startUp.Start()
+}
+
+func (g *Group) Kill() {
+	g.startUp.Kill()
 }
 
 func (g *Group) Init() tea.Cmd {
@@ -42,9 +87,14 @@ func (g *Group) Init() tea.Cmd {
 
 func (g *Group) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case done:
+		g.done -= 1
+		if g.done == 0 {
+			return g, tea.Quit
+		}
 	case components.ProgressMsg:
-		if process, ok := g.m[msg.Id]; ok {
-			_, cmd := process.Update(msg)
+		if updater, ok := g.m[msg.Id]; ok {
+			_, cmd := updater.progress.Update(msg)
 			return g, cmd
 		}
 	}
@@ -56,8 +106,8 @@ func (g *Group) View() string {
 	sb := strx.NewFluent()
 
 	for _, id := range g.ids {
-		if process, ok := g.m[id]; ok {
-			sb.Write(process.View()).NewLine()
+		if updater, ok := g.m[id]; ok {
+			sb.Write(updater.progress.View()).NewLine()
 		}
 	}
 
@@ -65,15 +115,7 @@ func (g *Group) View() string {
 }
 
 func (g *Group) SetProgram(program *tea.Program) {
-	for _, progress := range g.m {
-		progress.SetProgram(program)
+	for _, updater := range g.m {
+		updater.progress.SetProgram(program)
 	}
-}
-
-func (g *Group) Display() error {
-	return g.startUp.Start()
-}
-
-func (g *Group) Kill() {
-	g.startUp.Kill()
 }
