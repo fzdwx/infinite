@@ -198,6 +198,10 @@ func DefaultPercentAgeFunc(total, current int64, percent float64) string {
 	return fmt.Sprintf(" %3.0f%%", percent*100)
 }
 
+func DefaultCostView(cost time.Duration, total, current, prevAmount int64) string {
+	return strx.Space + cost.Round(time.Millisecond).String()
+}
+
 func NewProgress() *Progress {
 	p := &Progress{
 		Id:              nextID(),
@@ -213,9 +217,7 @@ func NewProgress() *Progress {
 		ShowPercentage:  true,
 		ShowCost:        true,
 		prevAmount:      0,
-		CostView: func(cost time.Duration, total, current, prevAmount int64) string {
-			return strx.Space + cost.Round(time.Millisecond).String()
-		},
+		CostView:        DefaultCostView,
 	}
 
 	return p
@@ -403,7 +405,7 @@ func (pro *Progress) shouldOutputDoneView() bool {
 }
 
 func (pro *Progress) Println(args ...interface{}) {
-	pro.program.Println(args)
+	pro.program.Println(args...)
 }
 
 func max(a, b int) int {
