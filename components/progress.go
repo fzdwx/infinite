@@ -38,7 +38,7 @@ func (pro *Progress) WithTitleView(f func() string) *Progress {
 }
 
 // WithCostView append cost view.
-func (pro *Progress) WithCostView(f func(cost time.Duration) string) *Progress {
+func (pro *Progress) WithCostView(f func(cost time.Duration, total, current, prevAmount int64) string) *Progress {
 	pro.CostView = f
 	return pro
 }
@@ -155,7 +155,8 @@ type Progress struct {
 	// Current amount
 	Current int64
 	// Current / Total
-	percent float64
+	percent    float64
+	prevAmount int64
 
 	// Total width of the progress bar, including percentage, if set.
 	Width int
@@ -173,7 +174,7 @@ type Progress struct {
 	PercentAgeStyle *style.Style
 
 	ShowCost bool
-	CostView func(cost time.Duration) string
+	CostView func(cost time.Duration, total, current, prevAmount int64) string
 	start    time.Time
 	end      time.Time
 
@@ -211,7 +212,8 @@ func NewProgress() *Progress {
 		EmptyColor:      "#606060",
 		ShowPercentage:  true,
 		ShowCost:        true,
-		CostView: func(cost time.Duration) string {
+		prevAmount:      0,
+		CostView: func(cost time.Duration, total, current, prevAmount int64) string {
 			return strx.Space + cost.Round(time.Millisecond).String()
 		},
 	}
@@ -350,6 +352,7 @@ func (pro *Progress) setRamp(colorA, colorB string, scaled bool) {
 
 func (pro *Progress) refresh(msg ProgressMsg) {
 	pro.Current += msg.Amount
+	pro.prevAmount = msg.Amount
 
 	if pro.Current < 0 {
 		pro.Current = 0
@@ -378,7 +381,7 @@ func (pro *Progress) viewPercentage(percent float64) string {
 func (pro *Progress) viewCost(end time.Time) string {
 	if pro.ShowCost && pro.CostView != nil {
 		cost := end.Sub(pro.start)
-		return pro.CostView(cost)
+		return pro.CostView(cost, pro.Total, pro.Current, pro.prevAmount)
 	}
 	return strx.Empty
 }
