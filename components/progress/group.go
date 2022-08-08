@@ -55,24 +55,28 @@ func NewGroup(progressList ...*components.Progress) *Group {
 	group := &Group{m: m, ids: ids}
 	startUp := components.NewStartUp(group)
 	group.startUp = startUp
-	group.done = len(m)
 
 	return group
 }
 
 func (g *Group) AppendRunner(f func(progress *components.Progress) func()) *Group {
-	for _, updater := range g.m {
-		updater.runner = f(updater.progress)
+	for _, id := range g.ids {
+		if updater, ok := g.m[id]; ok {
+			runner := f(updater.progress)
+			if runner != nil {
+				updater.runner = runner
+				g.done += 1
+			}
+		}
 	}
-
 	return g
 }
 
 func (g *Group) Display() error {
-	for _, updater := range g.m {
-		temp := updater
+	for k := range g.m {
+		updater := g.m[k]
 		go func() {
-			temp.runner()
+			updater.runner()
 			g.startUp.Send(done(1))
 		}()
 	}
