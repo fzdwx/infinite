@@ -402,6 +402,10 @@ func (pro *Progress) shouldOutputDoneView() bool {
 	return pro.done && pro.DoneView != nil
 }
 
+func (pro *Progress) Println(args ...interface{}) {
+	pro.program.Println(args)
+}
+
 func max(a, b int) int {
 	if a > b {
 		return a
