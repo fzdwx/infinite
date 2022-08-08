@@ -45,6 +45,11 @@ func (b *FluentStringBuilder) WriteFunc(f WriteFunc) *FluentStringBuilder {
 	return b.Write(f())
 }
 
-func (b FluentStringBuilder) String() string {
+// Len returns the number of accumulated bytes; b.Len() == len(b.String()).
+func (b *FluentStringBuilder) Len() int {
+	return b.sb.Len()
+}
+
+func (b *FluentStringBuilder) String() string {
 	return b.sb.String()
 }

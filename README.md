@@ -3,7 +3,7 @@
 <span>:art: <code>infinite</code> 的目标是成为一个易于使用、定制能力强的 tui 组件库</span>
 </div>
 <br>
-<br>
+<img src="https://user-images.githubusercontent.com/65269574/183274216-d2a7af91-0581-4d13-b8c2-00b9aad5ef3a.gif">
 
 ## TOC
 
@@ -142,49 +142,49 @@ func sleep() {
 package main
 
 import (
-  "fmt"
-  "github.com/fzdwx/infinite/components"
-  "github.com/fzdwx/infinite/components/progress"
-  "time"
+	"fmt"
+	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/components/progress"
+	"time"
 )
 
 func main() {
-  cnt := 10
+	cnt := 10
 
-  group := progress.NewGroupWithCount(10).AppendRunner(func(progress *components.Progress) func() {
-    total := cnt
-    cnt += 1
+	group := progress.NewGroupWithCount(10).AppendRunner(func(progress *components.Progress) func() {
+		total := cnt
+		cnt += 1
 
-    progress.WithTotal(int64(total)).
-      WithDefaultGradient().
-            WithPercentAgeFunc(func(total int64, current int64, percent float64) string {
-              return fmt.Sprintf(" %d/%d", current, total)
-            })
+		progress.WithTotal(int64(total)).
+			WithDefaultGradient().
+			WithPercentAgeFunc(func(total int64, current int64, percent float64) string {
+				return fmt.Sprintf(" %d/%d", current, total)
+			})
 
-    return func() {
+		return func() {
 
-      for i := 0; i < total+1; i++ {
-        progress.IncrOne()
-        sleep()
-      }
+			for i := 0; i < total+1; i++ {
+				progress.IncrOne()
+				sleep()
+			}
 
-      for i := 0; i < total; i++ {
-        progress.DecrOne()
-        sleep()
-      }
+			for i := 0; i < total; i++ {
+				progress.DecrOne()
+				sleep()
+			}
 
-      for i := 0; i < total+1; i++ {
-        progress.IncrOne()
-        sleep()
-      }
-    }
-  })
+			for i := 0; i < total+1; i++ {
+				progress.IncrOne()
+				sleep()
+			}
+		}
+	})
 
-  group.Display()
+	group.Display()
 }
 
 func sleep() {
-  time.Sleep(time.Millisecond * 100)
+	time.Sleep(time.Millisecond * 100)
 }
 
 ```

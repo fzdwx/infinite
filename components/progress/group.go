@@ -7,12 +7,20 @@ import (
 	"sort"
 )
 
+// WithDoneView when Group is done, will callback this func,
+// will overwrite the progress doneView in the Group.
+func (g *Group) WithDoneView(f func() string) *Group {
+	g.doneView = f
+	return g
+}
+
 // Group the progress group
 type Group struct {
-	m       map[int]*progressUpdater
-	ids     []int
-	startUp *components.StartUp
-	done    int
+	m        map[int]*progressUpdater
+	ids      []int
+	startUp  *components.StartUp
+	done     int
+	doneView func() string
 }
 
 type progressUpdater struct {
@@ -60,26 +68,24 @@ func NewGroup(progressList ...*components.Progress) *Group {
 }
 
 func (g *Group) AppendRunner(f func(progress *components.Progress) func()) *Group {
-	for _, id := range g.ids {
-		if updater, ok := g.m[id]; ok {
-			runner := f(updater.progress)
-			if runner != nil {
-				updater.runner = runner
-				g.done += 1
-			}
+	g.foreach(func(updater *progressUpdater) {
+		runner := f(updater.progress)
+		if runner != nil {
+			updater.runner = runner
+			g.done++
 		}
-	}
+	})
 	return g
 }
 
 func (g *Group) Display() error {
-	for k := range g.m {
-		updater := g.m[k]
+	g.foreach(func(updater *progressUpdater) {
 		go func() {
 			updater.runner()
 			g.startUp.Send(done(1))
+			updater.progress.Done()
 		}()
-	}
+	})
 	return g.startUp.Start()
 }
 
@@ -88,14 +94,17 @@ func (g *Group) Kill() {
 }
 
 func (g *Group) Init() tea.Cmd {
+	g.foreach(func(updater *progressUpdater) {
+		updater.progress.Init()
+	})
 	return nil
 }
 
 func (g *Group) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case done:
-		g.done -= 1
-		if g.done == 0 {
+		g.done--
+		if g.isDone() {
 			return g, tea.Quit
 		}
 	case components.ProgressMsg:
@@ -103,19 +112,25 @@ func (g *Group) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			_, cmd := updater.progress.Update(msg)
 			return g, cmd
 		}
+	case tea.WindowSizeMsg:
+		g.foreach(func(updater *progressUpdater) {
+			updater.progress.Update(msg)
+		})
 	}
 
 	return g, nil
 }
 
 func (g *Group) View() string {
+	if g.shouldOutputDoneView() {
+		return g.doneView() + strx.NewLine
+	}
+
 	sb := strx.NewFluent()
 
-	for _, id := range g.ids {
-		if updater, ok := g.m[id]; ok {
-			sb.Write(updater.progress.View()).NewLine()
-		}
-	}
+	g.foreach(func(updater *progressUpdater) {
+		sb.Write(updater.progress.View()).NewLine()
+	})
 
 	return sb.String()
 }
@@ -124,4 +139,20 @@ func (g *Group) SetProgram(program *tea.Program) {
 	for _, updater := range g.m {
 		updater.progress.SetProgram(program)
 	}
+}
+
+func (g *Group) foreach(f func(updater *progressUpdater)) {
+	for _, id := range g.ids {
+		if updater, ok := g.m[id]; ok {
+			f(updater)
+		}
+	}
+}
+
+func (g *Group) shouldOutputDoneView() bool {
+	return g.isDone() && g.doneView != nil
+}
+
+func (g *Group) isDone() bool {
+	return g.done == 0
 }
