@@ -8,28 +8,26 @@
 ## TOC
 
 <!-- TOC -->
-
-* [Install](#install)
-* [Components](#components)
+  * [Install](#install)
+  * [Components](#components)
+    * [Autocomplete](#autocomplete)
     * [Selection](#selection)
     * [Input](#input)
     * [Spinner](#spinner)
     * [Progress](#progress)
-* [How to use](#how-to-use)
+  * [How to use](#how-to-use)
     * [Progress](#progress)
+    * [Progress group](#progress-group)
     * [Multi select](#multi-select)
     * [Single select](#single-select)
     * [Spinner](#spinner)
     * [Input text](#input-text)
     * [Confirm](#confirm)
-* [Build with](#build-with)
-* [License](#license)
-
+  * [Build with](#build-with)
+  * [License](#license)
 <!-- TOC -->
 
 ## Install
-
-required: `go 1.19`
 
 ```bash
 go get github.com/fzdwx/infinite
