@@ -3,7 +3,7 @@
 <span>:art: <code>infinite</code> 的目标是成为一个易于使用、定制能力强的 tui 组件库</span>
 </div>
 <br>
-<img src="https://user-images.githubusercontent.com/65269574/183640897-20fc90a8-018d-44e5-9571-399b9837d6a9.gif">
+<img src="https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif">
 
 ## TOC
 
@@ -41,7 +41,7 @@ go get github.com/fzdwx/infinite
 
 这个一个自动补全的组件
 
-![demo](https://user-images.githubusercontent.com/65269574/183640897-20fc90a8-018d-44e5-9571-399b9837d6a9.gif)
+![demo](https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif)
 
 
 ### Selection
