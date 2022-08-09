@@ -21,7 +21,7 @@ func main() {
 		"golang",
 	}
 
-	c := components.NewAutocomplete().WithSuggester(func(input string) ([]string, bool) {
+	c := components.NewAutocomplete(func(input string) ([]string, bool) {
 		matches := fuzzy.Find(input, suggesterOptions)
 		if len(matches) == 0 {
 			return nil, false

@@ -24,13 +24,19 @@ func (a *Autocomplete) WithInput(input *Input) *Autocomplete {
 	return a
 }
 
-func (a *Autocomplete) WithSuggester(suggester Suggester) *Autocomplete {
-	a.Suggester = suggester
+func (a *Autocomplete) WithKeyMap(keyMap AutocompleteKeyMap) *Autocomplete {
+	a.KeyMap = keyMap
 	return a
 }
 
-func NewAutocomplete() *Autocomplete {
+func (a *Autocomplete) WithSelectionCreator(f func(suggester []string, a *Autocomplete) *Selection) *Autocomplete {
+	a.SelectionCreator = f
+	return a
+}
+
+func NewAutocomplete(suggester Suggester) *Autocomplete {
 	return &Autocomplete{
+		Suggester:          suggester,
 		Input:              NewInput(),
 		KeyMap:             DefaultAutocompleteKeyMap(),
 		ShowSelection:      true,
@@ -46,7 +52,7 @@ func DefaultAutocompleteKeyMap() AutocompleteKeyMap {
 		Up:             key.NewBinding(key.WithKeys("up")),
 		Down:           key.NewBinding(key.WithKeys("down")),
 		Complete:       key.NewBinding(key.WithKeys("tab")),
-		GotoEnd:        key.NewBinding(key.WithKeys("alt+[F")),
+		GotoEnd:        key.NewBinding(key.WithKeys("alt+[F", "end")),
 	}
 }
 
