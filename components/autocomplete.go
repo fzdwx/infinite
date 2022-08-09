@@ -123,13 +123,10 @@ func (a *Autocomplete) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (a *Autocomplete) View() string {
-	write := strx.NewFluent().
-		Write(a.Input.View())
-	a.suggesterView(write)
-	return write.
-		//WriteFunc(a.suggesterView).
+	return strx.NewFluent().
+		Write(a.Input.View()).
+		WriteFunc(a.suggesterView).
 		NewLine().
-		//Write(a.getCursorWord()).
 		String()
 }
 

@@ -18,17 +18,17 @@ type Style struct {
 }
 
 func (s *Style) Bold() *Style {
-	s.inner = s.inner.Bold(!s.inner.GetBold())
+	s.inner = s.inner.Bold(true)
 	return s
 }
 
 func (s *Style) Italic() *Style {
-	s.inner = s.inner.Italic(!s.inner.GetItalic())
+	s.inner = s.inner.Italic(true)
 	return s
 }
 
 func (s *Style) Inline() *Style {
-	s.inner.Inline(!s.inner.GetInline())
+	s.inner.Inline(true)
 	return s
 }
 

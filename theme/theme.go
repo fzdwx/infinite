@@ -26,4 +26,13 @@ var (
 		SpinnerShapeStyle:            style.New().Fg(color.RedPink),
 		PlaceholderStyle:             style.New().Fg(lipgloss.Color("240")),
 	}
+
+	// fix https://github.com/fzdwx/infinite/issues/5
+	_ = DefaultTheme.PromptStyle.Render("123")
+	_ = DefaultTheme.MultiSelectedHintSymbolStyle.Render("123")
+	_ = DefaultTheme.ChoiceTextStyle.Render("123")
+	_ = DefaultTheme.CursorSymbolStyle.Render("123")
+	_ = DefaultTheme.UnHintSymbolStyle.Render("123")
+	_ = DefaultTheme.SpinnerShapeStyle.Render("123")
+	_ = DefaultTheme.PlaceholderStyle.Render("123")
 )
