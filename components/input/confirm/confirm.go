@@ -27,7 +27,7 @@ func (c *Confirm) Display() error {
 }
 
 // Value returns whether the user has chosen to confirm or deny.
-func (c Confirm) Value() bool {
+func (c *Confirm) Value() bool {
 	return c.inner.Value
 }
 

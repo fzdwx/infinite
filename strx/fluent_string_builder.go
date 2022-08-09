@@ -10,7 +10,7 @@ type (
 		sb strings.Builder
 	}
 
-	WriteFunc func() string
+	WriteFunc func(fluent *FluentStringBuilder)
 )
 
 // NewFluent new fluent string builder
@@ -42,7 +42,8 @@ func (b *FluentStringBuilder) Write(s string) *FluentStringBuilder {
 
 // WriteFunc call f get string and write into FluentStringBuilder.
 func (b *FluentStringBuilder) WriteFunc(f WriteFunc) *FluentStringBuilder {
-	return b.Write(f())
+	f(b)
+	return b
 }
 
 // Len returns the number of accumulated bytes; b.Len() == len(b.String()).
@@ -52,4 +53,11 @@ func (b *FluentStringBuilder) Len() int {
 
 func (b *FluentStringBuilder) String() string {
 	return b.sb.String()
+}
+
+func (b *FluentStringBuilder) WriteStrings(str []string, seq string) *FluentStringBuilder {
+	if len(str) == 0 {
+		return b
+	}
+	return b.Write(strings.Join(str, seq))
 }

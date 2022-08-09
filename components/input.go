@@ -10,7 +10,7 @@ import (
 )
 
 type (
-	// Input the input component.
+	// Input the Input component.
 	Input struct {
 		Model   textinput.Model
 		program *tea.Program
@@ -32,7 +32,7 @@ type (
 
 		// default is disable
 		QuitKey key.Binding
-		// CharLimit is the maximum amount of characters this input element will
+		// CharLimit is the maximum amount of characters this Input element will
 		// accept. If 0 or less, there's no limit.
 		CharLimit int
 		/* option end */
@@ -62,13 +62,13 @@ func NewInput() *Input {
 }
 
 // Focus sets the Focus state on the model. When the model is in Focus it can
-// receive keyboard input and the cursor will be hidden.
+// receive keyboard Input and the cursor will be hidden.
 func (in *Input) Focus() {
 	in.program.Send(Focus)
 }
 
 // Blur removes the Focus state on the model.  When the model is blurred it can
-// not receive keyboard input and the cursor will be hidden.
+// not receive keyboard Input and the cursor will be hidden.
 func (in *Input) Blur() {
 	in.program.Send(Blur)
 }
@@ -78,7 +78,7 @@ func (in *Input) Quit() {
 	in.program.Send(Quit)
 }
 
-// Value returns the value of the text input.
+// Value returns the value of the text Input.
 func (in *Input) Value() string {
 	return in.Model.Value()
 }
@@ -104,17 +104,17 @@ func (in *Input) Focused() bool {
 	return in.Model.Focused()
 }
 
-// CursorStart moves the cursor to the start of the input field.
+// CursorStart moves the cursor to the start of the Input field.
 func (in *Input) CursorStart() {
 	in.Model.CursorStart()
 }
 
-// CursorEnd moves the cursor to the end of the input field.
+// CursorEnd moves the cursor to the end of the Input field.
 func (in *Input) CursorEnd() {
 	in.Model.CursorEnd()
 }
 
-// Reset sets the input to its default state with no input. Returns whether
+// Reset sets the Input to its default state with no Input. Returns whether
 // or not the cursor blink should reset.
 func (in *Input) Reset() bool {
 	return in.Model.Reset()

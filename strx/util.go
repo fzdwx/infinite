@@ -91,3 +91,11 @@ func ToInt(val string) int {
 	}
 	return i
 }
+
+func RepeatSpace(times ...int) string {
+	count := 1
+	if len(times) > 0 {
+		count = times[0]
+	}
+	return strings.Repeat(Space, count)
+}

@@ -2,7 +2,7 @@ package singleselect
 
 import (
 	"fmt"
-	"github.com/fzdwx/infinite/components/selection"
+	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
 	"github.com/rotisserie/eris"
 )
@@ -58,7 +58,7 @@ func (s *Select) mapMultiToSingle() {
 	ops = append(ops, WithPrompt("Please selection your option:"))
 
 	// replace key binding
-	ops = append(ops, WithKeyBinding(selection.DefaultSingleKeyMap))
+	ops = append(ops, WithKeyBinding(components.DefaultSingleKeyMap))
 
 	s.Apply(ops...)
 }

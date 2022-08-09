@@ -8,7 +8,6 @@ import (
 	"github.com/duke-git/lancet/v2/mathutil"
 	"github.com/duke-git/lancet/v2/slice"
 	"github.com/duke-git/lancet/v2/strutil"
-	"github.com/fzdwx/infinite/components/selection"
 	"github.com/fzdwx/infinite/strx"
 	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
@@ -20,6 +19,62 @@ import (
 type SelectionItem struct {
 	idx int
 	val string
+}
+
+type SelectionKeyMap struct {
+	Up      key.Binding
+	Down    key.Binding
+	Choice  key.Binding
+	Confirm key.Binding
+}
+
+func (k SelectionKeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{k.Up, k.Down, k.Choice, k.Confirm}
+}
+
+func (k SelectionKeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.Up, k.Down},        // first column
+		{k.Choice, k.Confirm}, // second column
+	}
+}
+
+var DefaultMultiKeyMap = SelectionKeyMap{
+	Up: key.NewBinding(
+		key.WithKeys("up"),
+		key.WithHelp("↑", "move up"),
+	),
+	Down: key.NewBinding(
+		key.WithKeys("down"),
+		key.WithHelp("↓", "move down"),
+	),
+	Choice: key.NewBinding(
+		key.WithKeys("tab"),
+		key.WithHelp("tab", "choice it"),
+	),
+	Confirm: key.NewBinding(
+		key.WithKeys("enter"),
+		key.WithHelp("enter", "confirm and quit"),
+	),
+}
+
+var DefaultSingleKeyMap = SelectionKeyMap{
+	Up: key.NewBinding(
+		key.WithKeys("up"),
+		key.WithHelp("↑", "move up"),
+	),
+	Down: key.NewBinding(
+		key.WithKeys("down"),
+		key.WithHelp("↓", "move down"),
+	),
+	Choice: key.NewBinding(
+		key.WithKeys("tab"),
+		key.WithHelp("tab", "choice it"),
+	),
+	Confirm: key.NewBinding(
+		key.WithKeys("ctrl+c", "tab"),
+		key.WithHelp("ctrl+c/tab", "quit"),
+	),
 }
 
 type Selection struct {
@@ -43,9 +98,10 @@ type Selection struct {
 	DisableOutPutResult bool
 
 	// key binding
-	Keymap selection.KeyMap
+	Keymap SelectionKeyMap
 	// key Help text
-	Help help.Model
+	Help     help.Model
+	ShowHelp bool
 
 	Prompt         string
 	CursorSymbol   string
@@ -61,7 +117,7 @@ type Selection struct {
 
 	// RowRender output options
 	// CursorSymbol,HintSymbol,choice
-	RowRender func(string, string, string) string
+	RowRender func(CursorSymbol string, HintSymbol string, choice string) string
 
 	EnableFilter bool
 	FilterInput  *Input
@@ -99,7 +155,7 @@ func NewSelection(choices []string) *Selection {
 		UnCursorSymbol:      " ",
 		CursorSymbolStyle:   theme.DefaultTheme.CursorSymbolStyle,
 		ChoiceTextStyle:     theme.DefaultTheme.ChoiceTextStyle,
-		Prompt:              "Please selection your options:",
+		Prompt:              "Please Selection your options:",
 		PromptStyle:         theme.DefaultTheme.PromptStyle,
 		HintSymbol:          "✓",
 		HintSymbolStyle:     theme.DefaultTheme.MultiSelectedHintSymbolStyle,
@@ -108,12 +164,13 @@ func NewSelection(choices []string) *Selection {
 		quited:              false,
 		DisableOutPutResult: false,
 		PageSize:            5,
-		Keymap:              selection.DefaultMultiKeyMap,
+		Keymap:              DefaultMultiKeyMap,
 		Help:                help.New(),
 		RowRender:           DefaultRowRender,
 		EnableFilter:        true,
 		FilterInput:         NewInput(),
 		FilterFunc:          DefaultFilterFunc,
+		ShowHelp:            true,
 	}
 
 	return c
@@ -206,8 +263,9 @@ func (s *Selection) View() string {
 		msg.NewLine().Write(s.RowRender(cursorSymbol, hintSymbol, val))
 	}
 
-	// The footer
-	msg.NewLine().Write(s.Help.View(s.Keymap))
+	if s.ShowHelp {
+		msg.NewLine().Write(s.Help.View(s.Keymap))
+	}
 
 	// Send the UI for rendering
 	return msg.String()
@@ -325,7 +383,7 @@ func (s *Selection) choice() {
 	}
 }
 
-// quit These keys should exit the program.
+// quit These keys should exit the Program.
 func (s *Selection) quit() (tea.Model, tea.Cmd) {
 	s.quited = true
 	return s, tea.Quit

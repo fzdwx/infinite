@@ -47,7 +47,7 @@ func (i *Text) Blur() {
 	i.inner.Blur()
 }
 
-// Quit Input
+// Quit input
 func (i *Text) Quit() {
 	i.inner.Quit()
 }

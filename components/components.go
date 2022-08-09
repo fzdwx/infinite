@@ -201,7 +201,7 @@ func newCursorMode(other textinput.CursorMode) CursorMode {
 	panic(fmt.Sprintf("unknow cursorMode :%s", other))
 }
 
-// EchoMode sets the input behavior of the text input field.
+// EchoMode sets the Input behavior of the text Input field.
 type EchoMode int
 
 const (
