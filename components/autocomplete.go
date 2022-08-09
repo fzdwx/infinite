@@ -29,10 +29,14 @@ func (a *Autocomplete) WithSuggester(suggester Suggester) *Autocomplete {
 	return a
 }
 
-func defaultAutocompleteInput() *Input {
-	input := NewInput()
-	input.QuitKey = key.NewBinding(key.WithKeys("ctrl+c"))
-	return input
+func NewAutocomplete() *Autocomplete {
+	return &Autocomplete{
+		Input:              NewInput(),
+		KeyMap:             DefaultAutocompleteKeyMap(),
+		ShowSelection:      true,
+		ShouldNewSelection: true,
+		SelectionCreator:   DefaultSelectionCreator,
+	}
 }
 
 func DefaultAutocompleteKeyMap() AutocompleteKeyMap {
@@ -46,26 +50,32 @@ func DefaultAutocompleteKeyMap() AutocompleteKeyMap {
 	}
 }
 
+func DefaultSelectionCreator(suggester []string, a *Autocomplete) *Selection {
+	selection := NewSelection(suggester)
+	selection.EnableFilter = false
+	selection.Prompt = strx.Empty
+	selection.Init()
+	selection.ShowHelp = false
+	selection.Keymap = DefaultSingleKeyMap
+	selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
+		return strx.RepeatSpace(a.Padding+a.Input.Cursor()) + choice
+	}
+
+	return selection
+}
+
 type Autocomplete struct {
 	/* custom */
-	Input     *Input
-	Suggester Suggester
-	KeyMap    AutocompleteKeyMap
+	Input            *Input
+	Suggester        Suggester
+	KeyMap           AutocompleteKeyMap
+	SelectionCreator func(options []string, a *Autocomplete) *Selection
 
 	Padding            int
 	Program            *tea.Program
 	Selection          *Selection
 	ShowSelection      bool
 	ShouldNewSelection bool
-}
-
-func NewAutocomplete() *Autocomplete {
-	return &Autocomplete{
-		Input:              defaultAutocompleteInput(),
-		KeyMap:             DefaultAutocompleteKeyMap(),
-		ShowSelection:      true,
-		ShouldNewSelection: true,
-	}
 }
 
 // Value get user Input
@@ -137,7 +147,7 @@ func (a *Autocomplete) suggesterView(fluent *strx.FluentStringBuilder) {
 			return
 		}
 
-		a.Selection = a.newSelection(suggester)
+		a.Selection = a.SelectionCreator(suggester, a)
 	}
 
 	if a.Selection != nil {
@@ -177,9 +187,10 @@ func (a *Autocomplete) complete() {
 
 	// replace val
 	newVal := strings.Replace(a.Value(), cursorVal, newCursorVal, 1)
+	newCursor := a.Input.Cursor() + (len(wordChoice) - len(cursorWord))
 
 	a.Input.Model.SetValue(newVal)
-	a.Input.Model.SetCursor(a.Input.Cursor() + (len(wordChoice) - len(cursorWord)))
+	a.Input.Model.SetCursor(newCursor)
 
 	a.ShouldNewSelection = true
 	a.Selection = nil
@@ -209,18 +220,4 @@ func (a *Autocomplete) shouldComplete(msg tea.KeyMsg) bool {
 
 func (a *Autocomplete) cursorVal() string {
 	return a.Value()[:a.Input.Cursor()]
-}
-
-func (a *Autocomplete) newSelection(suggester []string) *Selection {
-	selection := NewSelection(suggester)
-	selection.EnableFilter = false
-	selection.Prompt = strx.Empty
-	selection.Init()
-	selection.ShowHelp = false
-	selection.Keymap = DefaultSingleKeyMap
-	selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
-		return strx.RepeatSpace(a.Padding+a.Input.Cursor()) + choice
-	}
-
-	return selection
 }
