@@ -3,8 +3,10 @@
 amd64_linux := "GOOS=linux GOARCH=amd64"
 amd64_win := "GOOS=windows GOARCH=amd64"
 
+go := "/mnt/c/Users/98065/go/go1.18/bin/go.exe"
+
 run lib:
-    go run {{lib}}/main.go
+    {{go}} run {{lib}}/main.go
 
 # Update dependices
 update:

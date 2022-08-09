@@ -2,7 +2,6 @@ package singleselect
 
 import (
 	"github.com/fzdwx/infinite/components"
-	"github.com/fzdwx/infinite/components/selection"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
 	"github.com/fzdwx/infinite/style"
 )
@@ -50,7 +49,7 @@ func WithPageSize(pageSize int) Option {
 }
 
 // WithKeyBinding replace key map.
-func WithKeyBinding(keymap selection.KeyMap) Option {
+func WithKeyBinding(keymap components.SelectionKeyMap) Option {
 	return func(s *Select) {
 		s.inner.Apply(multiselect.WithKeyBinding(keymap))
 	}

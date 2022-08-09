@@ -18,6 +18,7 @@ func main() {
 		"Java",
 		"rust",
 		"jvav",
+		"golang",
 	}
 
 	c := components.NewAutocomplete().WithSuggester(func(input string) ([]string, bool) {

@@ -127,7 +127,7 @@ func (a *Autocomplete) View() string {
 		Write(a.Input.View()).
 		WriteFunc(a.suggesterView).
 		NewLine().
-		Write(a.getCursorWord()).
+		//Write(a.getCursorWord()).
 		String()
 }
 
