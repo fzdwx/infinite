@@ -3,7 +3,7 @@ package progress
 import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/fzdwx/infinite/components"
-	"github.com/fzdwx/infinite/strx"
+	"github.com/fzdwx/infinite/pkg/strx"
 	"sort"
 )
 

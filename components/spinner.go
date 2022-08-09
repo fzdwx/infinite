@@ -3,7 +3,7 @@ package components
 import (
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/fzdwx/infinite/strx"
+	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
 )

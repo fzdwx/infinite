@@ -4,7 +4,7 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/duke-git/lancet/v2/strutil"
-	"github.com/fzdwx/infinite/strx"
+	"github.com/fzdwx/infinite/pkg/strx"
 	"strings"
 )
 
@@ -123,9 +123,11 @@ func (a *Autocomplete) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (a *Autocomplete) View() string {
-	return strx.NewFluent().
-		Write(a.Input.View()).
-		WriteFunc(a.suggesterView).
+	write := strx.NewFluent().
+		Write(a.Input.View())
+	a.suggesterView(write)
+	return write.
+		//WriteFunc(a.suggesterView).
 		NewLine().
 		//Write(a.getCursorWord()).
 		String()
@@ -146,7 +148,6 @@ func (a *Autocomplete) suggesterView(fluent *strx.FluentStringBuilder) {
 		if !ok || len(suggester) == 0 {
 			return
 		}
-
 		a.Selection = a.SelectionCreator(suggester, a)
 	}
 

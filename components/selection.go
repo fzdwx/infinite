@@ -8,7 +8,7 @@ import (
 	"github.com/duke-git/lancet/v2/mathutil"
 	"github.com/duke-git/lancet/v2/slice"
 	"github.com/duke-git/lancet/v2/strutil"
-	"github.com/fzdwx/infinite/strx"
+	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
 	"github.com/mattn/go-runewidth"
