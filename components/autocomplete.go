@@ -13,6 +13,7 @@ import (
 type Suggester func(valCtx AutocompleteValCtx) ([]string, bool)
 
 // Completer result (newValue,newCursor)
+// DefaultCompleter
 type Completer func(valCtx AutocompleteValCtx, choiceWord string) (newVal string, newCursor int)
 
 type AutocompleteKeyMap struct {
@@ -49,11 +50,19 @@ func (a *Autocomplete) WithInput(input *Input) *Autocomplete {
 	return a
 }
 
+// WithCompleter DefaultCompleter
+func (a *Autocomplete) WithCompleter(completer Completer) *Autocomplete {
+	a.Completer = completer
+	return a
+}
+
+// WithKeyMap DefaultAutocompleteKeyMap
 func (a *Autocomplete) WithKeyMap(keyMap AutocompleteKeyMap) *Autocomplete {
 	a.KeyMap = keyMap
 	return a
 }
 
+// WithSelectionCreator DefaultSelectionCreator
 func (a *Autocomplete) WithSelectionCreator(f func(suggester []string, a *Autocomplete) *Selection) *Autocomplete {
 	a.SelectionCreator = f
 	return a
