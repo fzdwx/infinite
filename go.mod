@@ -1,6 +1,6 @@
 module github.com/fzdwx/infinite
 
-go 1.19
+go 1.18
 
 require (
 	github.com/charmbracelet/bubbles v0.13.0
