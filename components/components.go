@@ -56,6 +56,13 @@ func (s *StartUp) Kill() {
 	}
 }
 
+func (s *StartUp) Quit() {
+	if s.started {
+		s.started = false
+		s.P.Quit()
+	}
+}
+
 // Send message to component
 func (s *StartUp) Send(msg tea.Msg) {
 	if s.started {

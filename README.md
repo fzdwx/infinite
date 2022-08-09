@@ -29,6 +29,8 @@
 
 ## Install
 
+required: `go 1.19`
+
 ```bash
 go get github.com/fzdwx/infinite
 ```
