@@ -8,7 +8,9 @@ import (
 	"strings"
 )
 
-type Suggester func(input string) ([]string, bool)
+// Suggester
+//  cursorVal : inputText->[:cursor], current word
+type Suggester func(cursorVal, currentWord string) ([]string, bool)
 
 type AutocompleteKeyMap struct {
 	Quit           key.Binding
@@ -146,8 +148,8 @@ func (a *Autocomplete) suggesterView(fluent *strx.FluentStringBuilder) {
 	}
 
 	if a.ShouldNewSelection {
-		word := a.getCursorWord()
-		suggester, ok := a.Suggester(word)
+		a.cursorVal()
+		suggester, ok := a.Suggester(a.getCurrentWordAndCursorVal())
 		if !ok || len(suggester) == 0 {
 			return
 		}
@@ -159,15 +161,17 @@ func (a *Autocomplete) suggesterView(fluent *strx.FluentStringBuilder) {
 	}
 }
 
-// getCursorWord Get the word at the cursor
-func (a *Autocomplete) getCursorWord() string {
-	ex := strutil.SplitEx(a.cursorVal(), strx.Space, false)
+// getCurrentWordAndCursorVal Get the word at the cursor and value[:cursor]
+func (a *Autocomplete) getCurrentWordAndCursorVal() (string, string) {
+	cursorVal := a.cursorVal()
+
+	ex := strutil.SplitEx(cursorVal, strx.Space, false)
 	length := len(ex)
 	if length == 0 {
-		return strx.Empty
+		return strx.Empty, cursorVal
 	}
 
-	return ex[length-1]
+	return ex[length-1], cursorVal
 }
 
 func (a *Autocomplete) complete() {
@@ -179,8 +183,7 @@ func (a *Autocomplete) complete() {
 	a.Selection.choice()
 	wordChoice := a.Selection.Choices[a.Selection.Value()[0]].val
 
-	cursorWord := a.getCursorWord()
-	cursorVal := a.cursorVal()
+	cursorWord, cursorVal := a.getCurrentWordAndCursorVal()
 
 	cursorValSplit := strutil.SplitEx(cursorVal, strx.Space, false)
 	cursorValSplitLen := len(cursorValSplit)
