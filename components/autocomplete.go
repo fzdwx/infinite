@@ -41,7 +41,7 @@ func NewAutocomplete() *Autocomplete {
 
 func DefaultAutocompleteKeyMap() AutocompleteKeyMap {
 	return AutocompleteKeyMap{
-		Quit:           key.NewBinding(key.WithKeys("ctrl-c")),
+		Quit:           key.NewBinding(key.WithKeys("ctrl+c")),
 		CloseSelection: key.NewBinding(key.WithKeys("esc")),
 		Up:             key.NewBinding(key.WithKeys("up")),
 		Down:           key.NewBinding(key.WithKeys("down")),

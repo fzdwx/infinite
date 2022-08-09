@@ -14,6 +14,10 @@ func main() {
 		"world",
 		"zzzz",
 		"hello 2",
+		"java",
+		"Java",
+		"rust",
+		"jvav",
 	}
 
 	c := components.NewAutocomplete().WithSuggester(func(input string) ([]string, bool) {
