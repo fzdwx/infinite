@@ -10,7 +10,10 @@ import (
 
 // Suggester
 //  cursorVal : inputText->[:cursor], current word
-type Suggester func(cursorVal, currentWord string) ([]string, bool)
+type Suggester func(valCtx AutocompleteValCtx) ([]string, bool)
+
+// Completer result (newValue,newCursor)
+type Completer func(valCtx AutocompleteValCtx, choiceWord string) (newVal string, newCursor int)
 
 type AutocompleteKeyMap struct {
 	Quit           key.Binding
@@ -19,6 +22,26 @@ type AutocompleteKeyMap struct {
 	Down           key.Binding
 	Complete       key.Binding
 	GotoEnd        key.Binding
+}
+
+type AutocompleteValCtx struct {
+	Cursor       int
+	Value        string
+	autoComplete *Autocomplete
+}
+
+func (a AutocompleteValCtx) CursorVal() string {
+	return a.Value[:a.Cursor]
+}
+
+func (a AutocompleteValCtx) CursorWord() string {
+	ex := strutil.SplitEx(a.CursorVal(), strx.Space, false)
+	length := len(ex)
+	if length == 0 {
+		return strx.Empty
+	}
+
+	return ex[length-1]
 }
 
 func (a *Autocomplete) WithInput(input *Input) *Autocomplete {
@@ -39,6 +62,7 @@ func (a *Autocomplete) WithSelectionCreator(f func(suggester []string, a *Autoco
 func NewAutocomplete(suggester Suggester) *Autocomplete {
 	return &Autocomplete{
 		Suggester:          suggester,
+		Completer:          DefaultCompleter(),
 		Input:              NewInput(),
 		KeyMap:             DefaultAutocompleteKeyMap(),
 		ShowSelection:      true,
@@ -72,10 +96,30 @@ func DefaultSelectionCreator(suggester []string, a *Autocomplete) *Selection {
 	return selection
 }
 
+func DefaultCompleter() Completer {
+	return func(valCtx AutocompleteValCtx, choiceWord string) (newVal string, newCursor int) {
+		cursorVal := valCtx.CursorVal()
+		cursorWord := valCtx.CursorWord()
+
+		cursorValSplit := strutil.SplitEx(cursorVal, strx.Space, false)
+		cursorValSplitLen := len(cursorValSplit)
+
+		// replace word
+		cursorValSplit[cursorValSplitLen-1] = choiceWord
+		newCursorVal := strx.NewFluent().WriteStrings(cursorValSplit, strx.Space).String()
+
+		// replace val
+		newVal = strings.Replace(valCtx.Value, cursorVal, newCursorVal, 1)
+		newCursor = valCtx.Cursor + (len(choiceWord) - len(cursorWord))
+		return
+	}
+}
+
 type Autocomplete struct {
 	/* custom */
 	Input            *Input
 	Suggester        Suggester
+	Completer        Completer
 	KeyMap           AutocompleteKeyMap
 	SelectionCreator func(options []string, a *Autocomplete) *Selection
 
@@ -148,8 +192,7 @@ func (a *Autocomplete) suggesterView(fluent *strx.FluentStringBuilder) {
 	}
 
 	if a.ShouldNewSelection {
-		a.cursorVal()
-		suggester, ok := a.Suggester(a.getCurrentWordAndCursorVal())
+		suggester, ok := a.Suggester(a.getValCtx())
 		if !ok || len(suggester) == 0 {
 			return
 		}
@@ -161,19 +204,6 @@ func (a *Autocomplete) suggesterView(fluent *strx.FluentStringBuilder) {
 	}
 }
 
-// getCurrentWordAndCursorVal Get the word at the cursor and value[:cursor]
-func (a *Autocomplete) getCurrentWordAndCursorVal() (string, string) {
-	cursorVal := a.cursorVal()
-
-	ex := strutil.SplitEx(cursorVal, strx.Space, false)
-	length := len(ex)
-	if length == 0 {
-		return strx.Empty, cursorVal
-	}
-
-	return ex[length-1], cursorVal
-}
-
 func (a *Autocomplete) complete() {
 	if a.Selection == nil {
 		return
@@ -181,20 +211,9 @@ func (a *Autocomplete) complete() {
 
 	// get complete word
 	a.Selection.choice()
-	wordChoice := a.Selection.Choices[a.Selection.Value()[0]].val
+	choiceWord := a.Selection.Choices[a.Selection.Value()[0]].val
 
-	cursorWord, cursorVal := a.getCurrentWordAndCursorVal()
-
-	cursorValSplit := strutil.SplitEx(cursorVal, strx.Space, false)
-	cursorValSplitLen := len(cursorValSplit)
-
-	// replace word
-	cursorValSplit[cursorValSplitLen-1] = wordChoice
-	newCursorVal := strx.NewFluent().WriteStrings(cursorValSplit, strx.Space).String()
-
-	// replace val
-	newVal := strings.Replace(a.Value(), cursorVal, newCursorVal, 1)
-	newCursor := a.Input.Cursor() + (len(wordChoice) - len(cursorWord))
+	newVal, newCursor := a.Completer(a.getValCtx(), choiceWord)
 
 	a.Input.Model.SetValue(newVal)
 	a.Input.Model.SetCursor(newCursor)
@@ -225,6 +244,10 @@ func (a *Autocomplete) shouldComplete(msg tea.KeyMsg) bool {
 	return a.Selection != nil && key.Matches(msg, a.KeyMap.Complete)
 }
 
-func (a *Autocomplete) cursorVal() string {
-	return a.Value()[:a.Input.Cursor()]
+func (a *Autocomplete) getValCtx() AutocompleteValCtx {
+	return AutocompleteValCtx{
+		Cursor:       a.Input.Cursor(),
+		Value:        a.Value(),
+		autoComplete: a,
+	}
 }
