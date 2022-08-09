@@ -39,6 +39,12 @@ go get github.com/fzdwx/infinite
 
 这里是`infinite`提供的一些组件,你可以把它们变成你的形状.
 
+### Autocomplete
+
+这个一个自动补全的组件
+
+![img.png](img.png)
+
 ### Selection
 
 选择器,可更改的选项:
