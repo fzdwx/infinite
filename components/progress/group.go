@@ -82,8 +82,8 @@ func (g *Group) Display() error {
 	g.foreach(func(updater *progressUpdater) {
 		go func() {
 			updater.runner()
-			g.startUp.Send(done(1))
 			updater.progress.Done()
+			g.startUp.Send(done(1))
 		}()
 	})
 	return g.startUp.Start()
