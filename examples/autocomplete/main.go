@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/duke-git/lancet/v2/slice"
 	"github.com/fzdwx/infinite/components"
 	"github.com/sahilm/fuzzy"
@@ -10,9 +11,11 @@ import (
 func main() {
 
 	suggesterOptions := []string{
-		"package", "main", "func", "[]", "{}", "string", "int",
+		"package", "main", "func", "[]", "{}", "string", "int", "好", "我很好", "好啊",
 	}
 
+	input := components.NewInput()
+	//input.Model.SetValue("你好啊啊啊")
 	c := components.NewAutocomplete(func(valCtx components.AutocompleteValCtx) ([]string, bool) {
 		matches := fuzzy.Find(valCtx.CursorWord(), suggesterOptions)
 		if len(matches) == 0 {
@@ -26,7 +29,10 @@ func main() {
 		})
 
 		return suggester, true
-	})
+	}).WithInput(input)
 
-	components.NewStartUp(c).Start()
+	err := components.NewStartUp(c).Start()
+	if err != nil {
+		fmt.Println(err)
+	}
 }

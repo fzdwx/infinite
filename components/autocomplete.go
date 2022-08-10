@@ -32,7 +32,15 @@ type AutocompleteValCtx struct {
 
 // CursorVal a.Value[:a.Cursor]
 func (a AutocompleteValCtx) CursorVal() string {
-	return a.Value[:a.Cursor]
+	if len(a.Value) == 0 {
+		return strx.Empty
+	}
+
+	// fix https://github.com/fzdwx/infinite/issues/9
+	values := strings.Split(a.Value, strx.Empty)
+	cursorVal := strings.Join(values[:a.Cursor], strx.Empty)
+
+	return cursorVal
 }
 
 // CursorWord current word
