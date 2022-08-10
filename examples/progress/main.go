@@ -18,6 +18,12 @@ func main() {
 	startUp := components.NewStartUp(progress)
 
 	go func() {
+		for i := 0; i < 100; i++ {
+			sleep()
+			startUp.P.Println("hello world")
+		}
+	}()
+	go func() {
 		sleep()
 
 		for i := 0; i < total+1; i++ {
