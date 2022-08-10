@@ -34,7 +34,13 @@ todo
 
 ## Build with
 
-[dependencies](https://github.com/fzdwx/infinite/network/dependencies)
+- https://github.com/charmbracelet/bubbletea
+- https://github.com/charmbracelet/bubbles
+- https://github.com/charmbracelet/lipgloss
+- https://github.com/muesli/termenv
+- https://github.com/sahilm/fuzzy
+...
+[full](https://github.com/fzdwx/infinite/network/dependencies)
 
 ## License
 
