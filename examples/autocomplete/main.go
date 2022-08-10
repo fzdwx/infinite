@@ -10,15 +10,7 @@ import (
 func main() {
 
 	suggesterOptions := []string{
-		"hello",
-		"world",
-		"zzzz",
-		"hello 2",
-		"java",
-		"Java",
-		"rust",
-		"jvav",
-		"golang",
+		"package", "main", "func", "[]", "{}", "string", "int",
 	}
 
 	c := components.NewAutocomplete(func(valCtx components.AutocompleteValCtx) ([]string, bool) {

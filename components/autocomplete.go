@@ -8,8 +8,7 @@ import (
 	"strings"
 )
 
-// Suggester
-//  cursorVal : inputText->[:cursor], current word
+// Suggester get suggest options
 type Suggester func(valCtx AutocompleteValCtx) ([]string, bool)
 
 // Completer result (newValue,newCursor)
@@ -31,10 +30,12 @@ type AutocompleteValCtx struct {
 	autoComplete *Autocomplete
 }
 
+// CursorVal a.Value[:a.Cursor]
 func (a AutocompleteValCtx) CursorVal() string {
 	return a.Value[:a.Cursor]
 }
 
+// CursorWord current word
 func (a AutocompleteValCtx) CursorWord() string {
 	ex := strutil.SplitEx(a.CursorVal(), strx.Space, false)
 	length := len(ex)

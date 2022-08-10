@@ -2,22 +2,23 @@
 <h1>infinite</h1>
 <span>:art: <code>infinite</code> 的目标是成为一个易于使用、定制能力强的 tui 组件库</span>
 <br>
-<span>Maybe you should take a look at the <a href="https://github.com/fzdwx/infinite/releases">release</a> page, which records some changelogs</span>
+<span>建议看看<a href="https://github.com/fzdwx/infinite/releases">release</a>页面，里面有记录了一些changelog</span>
 </div>
 <br>
 <img src="https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif">
 
-
 ## TOC
+
 <!-- TOC -->
-  * [Install](#install)
-  * [Components](#components)
+
+* [Install](#install)
+* [Components](#components)
     * [Autocomplete](#autocomplete)
     * [Selection](#selection)
     * [Input](#input)
     * [Spinner](#spinner)
     * [Progress](#progress)
-  * [How to use](#how-to-use)
+* [How to use](#how-to-use)
     * [Progress](#progress)
     * [Progress group](#progress-group)
     * [Multi select](#multi-select)
@@ -25,8 +26,9 @@
     * [Spinner](#spinner)
     * [Input text](#input-text)
     * [Confirm](#confirm)
-  * [Build with](#build-with)
-  * [License](#license)
+* [Build with](#build-with)
+* [License](#license)
+
 <!-- TOC -->
 
 ## Install
@@ -41,10 +43,8 @@ go get github.com/fzdwx/infinite
 
 ### Autocomplete
 
-这个一个自动补全的组件
-
-![demo](https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif)
-
+这个一个自动补全的组件,它是基于`input`以及`selection`实现的,
+通过自定义`Suggester`和`Completer`你能轻松实现一个属于你的有自动补全功能的文本输入框
 
 ### Selection
 

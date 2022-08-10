@@ -4,15 +4,13 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+// New style
 func New() *Style {
-	return newStyle()
-}
-
-func newStyle() *Style {
 	style := lipgloss.NewStyle()
 	return &Style{inner: style}
 }
 
+// Style wrapper lipgloss.Style
 type Style struct {
 	inner lipgloss.Style
 }
