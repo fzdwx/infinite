@@ -1,12 +1,14 @@
 <div align="center">
 <h1>infinite</h1>
 <span>:art: <code>infinite</code> 的目标是成为一个易于使用、定制能力强的 tui 组件库</span>
+<br>
+<span>Maybe you should take a look at the <a href="https://github.com/fzdwx/infinite/releases">release</a> page, which records some changelogs</span>
 </div>
 <br>
 <img src="https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif">
 
-## TOC
 
+## TOC
 <!-- TOC -->
   * [Install](#install)
   * [Components](#components)
