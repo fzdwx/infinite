@@ -15,6 +15,36 @@ type Style struct {
 	inner lipgloss.Style
 }
 
+// Center set the horizontal position to the center
+func (s *Style) Center() *Style {
+	s.inner = s.inner.Align(lipgloss.Center)
+	return s
+}
+
+// Left set the horizontal position to the left
+func (s *Style) Left() *Style {
+	s.inner = s.inner.Align(lipgloss.Left)
+	return s
+}
+
+// Right set the horizontal position to the right
+func (s *Style) Right() *Style {
+	s.inner = s.inner.Align(lipgloss.Right)
+	return s
+}
+
+// Top set vertical position to top
+func (s *Style) Top() *Style {
+	s.inner = s.inner.Align(lipgloss.Center)
+	return s
+}
+
+// Bottom set vertical position to bottom
+func (s *Style) Bottom() *Style {
+	s.inner = s.inner.Align(lipgloss.Bottom)
+	return s
+}
+
 // Bold sets a bold formatting rule.
 func (s *Style) Bold() *Style {
 	s.inner = s.inner.Bold(true)
