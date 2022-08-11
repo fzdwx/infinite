@@ -3,6 +3,7 @@ package components
 import (
 	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/style"
 )
@@ -27,6 +28,10 @@ type PrintHelper struct {
 // NewPrintHelper constructor
 func NewPrintHelper(program *tea.Program) *PrintHelper {
 	return &PrintHelper{program: program}
+}
+
+func (p PrintHelper) Center(str string) {
+	p.Print(style.New().Inner().Align(lipgloss.Center).Render(str))
 }
 
 func (p PrintHelper) Success(format string, a ...any) {

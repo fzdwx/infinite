@@ -25,6 +25,10 @@ var (
 	Subtle    = NewAdaptive("#D9DCCF", "#383838")
 )
 
+func NoColor() lipgloss.NoColor {
+	return lipgloss.NoColor{}
+}
+
 func New(i int) lipgloss.Color {
 	return lipgloss.Color(strconv.Itoa(i))
 }

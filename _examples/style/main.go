@@ -21,4 +21,6 @@ func main() {
 	fmt.Println(style.New().Fg(color.Special).Render("Special"))
 	fmt.Println(style.New().Fg(color.Highlight).Render("Highlight"))
 	fmt.Println(style.New().Fg(color.Subtle).Render("Subtle"))
+
+	fmt.Println(style.New().BorderStyle(style.DoubleBorder()).Render("hello world"))
 }
