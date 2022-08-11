@@ -1,6 +1,7 @@
 package spinner
 
 import (
+	"errors"
 	"fmt"
 	"github.com/fzdwx/infinite/components"
 )
@@ -10,6 +11,10 @@ type Spinner struct {
 	startUp *components.StartUp
 	runner  func(spinner *Spinner)
 }
+
+var (
+	spinnerRunnerIsRequired = errors.New("runner is required")
+)
 
 // New Spinner
 func New(ops ...Option) *Spinner {
@@ -36,12 +41,15 @@ func (s *Spinner) Apply(ops ...Option) *Spinner {
 
 // Display Spinner
 func (s *Spinner) Display() error {
-	if s.runner != nil {
-		go func() {
-			s.runner(s)
-			s.Finish()
-		}()
+	if s.runner == nil {
+		return spinnerRunnerIsRequired
 	}
+
+	go func() {
+		s.runner(s)
+		s.Finish()
+	}()
+
 	return s.startUp.Start()
 }
 
