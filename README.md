@@ -34,6 +34,9 @@ go get github.com/fzdwx/infinite
 
 ![demo](https://user-images.githubusercontent.com/65269574/183296585-b0a56827-d9d9-4258-ad32-266ada01b1ed.gif)
 
+<details>
+<summary>code</summary>
+
 ```go
 package main
 
@@ -78,10 +81,16 @@ func sleep() {
 	time.Sleep(time.Millisecond * 100)
 }
 ```
+</details>
 
+---
 ### Multiple select
 
 ![demo](https://user-images.githubusercontent.com/65269574/183274216-d2a7af91-0581-4d13-b8c2-00b9aad5ef3a.gif)
+
+<details>
+<summary>code</summary>
+
 ```go
 package main
 
@@ -111,10 +120,15 @@ func main() {
 	).Display("select your items!")
 }
 ```
+</details>
 
+---
 ### Spinner
 
 ![demo](https://user-images.githubusercontent.com/65269574/183074665-42d7d902-a56c-420c-a740-3aacc7dc922c.gif)
+
+<details>
+<summary>code</summary>
 
 ```go
 package main
@@ -141,9 +155,15 @@ func main() {
 	time.Sleep(time.Millisecond * 100 * 15)
 }
 ```
+</details>
+
+---
 ### Input text
 
 ![demo](https://user-images.githubusercontent.com/65269574/183075959-031a068d-6f88-40a0-8b5e-f3d5bba481af.gif)
+
+<details>
+<summary>code</summary>
 
 ```go
 package main
@@ -168,10 +188,15 @@ func main() {
 	fmt.Printf("you input: %s\n", i.Value())
 }
 ```
+</details>
 
+---
 ### Confirm
 
 ![demo](https://user-images.githubusercontent.com/65269574/183076452-5fa73013-42de-47df-97b4-7be743d074c1.gif)
+
+<details>
+<summary>code</summary>
 
 ```go
 package main
@@ -198,6 +223,9 @@ func main() {
 	}
 }
 ```
+</details>
+
+[full examples](https://github.com/fzdwx/infinite/tree/main/_examples)
 
 ## Build with
 
