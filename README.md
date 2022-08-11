@@ -81,9 +81,11 @@ func sleep() {
 	time.Sleep(time.Millisecond * 100)
 }
 ```
+
 </details>
 
 ---
+
 ### Multiple select
 
 ![demo](https://user-images.githubusercontent.com/65269574/183274216-d2a7af91-0581-4d13-b8c2-00b9aad5ef3a.gif)
@@ -116,13 +118,15 @@ func main() {
 		"Buy car",
 		"Buy subway",
 	},
-	multiselect.WithFilterInput(input),
+		multiselect.WithFilterInput(input),
 	).Display("select your items!")
 }
 ```
+
 </details>
 
 ---
+
 ### Spinner
 
 ![demo](https://user-images.githubusercontent.com/65269574/183074665-42d7d902-a56c-420c-a740-3aacc7dc922c.gif)
@@ -143,21 +147,26 @@ import (
 func main() {
 	_ = inf.NewSpinner(
 		spinner.WithShape(components.Dot),
-		spinner.WithFunc(func(spinner *spinner.Spinner) {
-			for i := 0; i < 10; i++ {
-				time.Sleep(time.Millisecond * 100)
-				spinner.Refreshf("hello world %d", i)
-			}
-			spinner.Finish("finish")
-			spinner.Refresh("is finish?")
-		}),
-	).Display()
+		//spinner.WithDisableOutputResult(),
+	).Display(func(spinner *spinner.Spinner) {
+		for i := 0; i < 10; i++ {
+			time.Sleep(time.Millisecond * 100)
+			spinner.Refreshf("hello world %d", i)
+		}
+
+		spinner.Finish("finish")
+
+		spinner.Refresh("is finish?")
+	})
+
 	time.Sleep(time.Millisecond * 100 * 15)
 }
 ```
+
 </details>
 
 ---
+
 ### Input text
 
 ![demo](https://user-images.githubusercontent.com/65269574/183075959-031a068d-6f88-40a0-8b5e-f3d5bba481af.gif)
@@ -188,9 +197,11 @@ func main() {
 	fmt.Printf("you input: %s\n", i.Value())
 }
 ```
+
 </details>
 
 ---
+
 ### Confirm
 
 ![demo](https://user-images.githubusercontent.com/65269574/183076452-5fa73013-42de-47df-97b4-7be743d074c1.gif)
@@ -223,6 +234,7 @@ func main() {
 	}
 }
 ```
+
 </details>
 
 [full examples](https://github.com/fzdwx/infinite/tree/main/_examples)

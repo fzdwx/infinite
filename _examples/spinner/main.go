@@ -11,17 +11,16 @@ func main() {
 	_ = inf.NewSpinner(
 		spinner.WithShape(components.Dot),
 		//spinner.WithDisableOutputResult(),
-		spinner.WithFunc(func(spinner *spinner.Spinner) {
-			for i := 0; i < 10; i++ {
-				time.Sleep(time.Millisecond * 100)
-				spinner.Refreshf("hello world %d", i)
-			}
+	).Display(func(spinner *spinner.Spinner) {
+		for i := 0; i < 10; i++ {
+			time.Sleep(time.Millisecond * 100)
+			spinner.Refreshf("hello world %d", i)
+		}
 
-			spinner.Finish("finish")
+		spinner.Finish("finish")
 
-			spinner.Refresh("is finish?")
-		}),
-	).Display()
+		spinner.Refresh("is finish?")
+	})
 
 	time.Sleep(time.Millisecond * 100 * 15)
 }
