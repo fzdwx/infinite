@@ -16,6 +16,7 @@ func (g *Group) WithDoneView(f func() string) *Group {
 
 // Group the progress group
 type Group struct {
+	*components.PrintHelper
 	m        map[int]*progressUpdater
 	ids      []int
 	startUp  *components.StartUp
@@ -139,6 +140,7 @@ func (g *Group) SetProgram(program *tea.Program) {
 	for _, updater := range g.m {
 		updater.progress.SetProgram(program)
 	}
+	g.PrintHelper = components.NewPrintHelper(program)
 }
 
 func (g *Group) foreach(f func(updater *progressUpdater)) {

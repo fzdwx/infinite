@@ -149,7 +149,8 @@ type ProgressMsg struct {
 
 type Progress struct {
 	program *tea.Program
-	Id      int
+	*PrintHelper
+	Id int
 	// the progress total
 	Total int64
 	// Current amount
@@ -398,6 +399,7 @@ func (pro *Progress) viewTitle() string {
 
 func (pro *Progress) SetProgram(program *tea.Program) {
 	pro.program = program
+	pro.PrintHelper = NewPrintHelper(program)
 }
 
 func (pro *Progress) shouldOutputDoneView() bool {
