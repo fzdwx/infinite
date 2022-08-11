@@ -14,12 +14,6 @@ func WithPrompt(prompt string) Option {
 	}
 }
 
-func WithFunc(f func(spinner *Spinner)) Option {
-	return func(s *Spinner) {
-		s.runner = f
-	}
-}
-
 // WithShape default is Line
 func WithShape(shape components.Shape) Option {
 	return func(s *Spinner) {

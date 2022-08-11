@@ -7,9 +7,9 @@ import (
 )
 
 type Spinner struct {
+	*components.PrintHelper
 	inner   *components.Spinner
 	startUp *components.StartUp
-	runner  func(spinner *Spinner)
 }
 
 var (
@@ -23,6 +23,8 @@ func New(ops ...Option) *Spinner {
 		inner:   inner,
 		startUp: components.NewStartUp(inner),
 	}
+
+	s.PrintHelper = inner.PrintHelper
 
 	s.Apply(ops...)
 
@@ -40,13 +42,13 @@ func (s *Spinner) Apply(ops ...Option) *Spinner {
 }
 
 // Display Spinner
-func (s *Spinner) Display() error {
-	if s.runner == nil {
+func (s *Spinner) Display(runner func(spinner *Spinner)) error {
+	if runner == nil {
 		return spinnerRunnerIsRequired
 	}
 
 	go func() {
-		s.runner(s)
+		runner(s)
 		s.Finish()
 	}()
 
