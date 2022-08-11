@@ -141,8 +141,9 @@ type Autocomplete struct {
 	KeyMap           AutocompleteKeyMap
 	SelectionCreator func(options []string, a *Autocomplete) *Selection
 
-	Padding            int
-	Program            *tea.Program
+	Padding int
+	Program *tea.Program
+	*PrintHelper
 	Selection          *Selection
 	ShowSelection      bool
 	ShouldNewSelection bool
@@ -202,6 +203,7 @@ func (a *Autocomplete) View() string {
 
 func (a *Autocomplete) SetProgram(program *tea.Program) {
 	a.Program = program
+	a.PrintHelper = NewPrintHelper(program)
 }
 
 func (a *Autocomplete) suggesterView(fluent *strx.FluentStringBuilder) {

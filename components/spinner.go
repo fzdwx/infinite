@@ -81,6 +81,7 @@ var (
 type (
 	Spinner struct {
 		program *tea.Program
+		*PrintHelper
 
 		Model spinner.Model
 
@@ -171,6 +172,7 @@ func (s *Spinner) View() string {
 
 func (s *Spinner) SetProgram(program *tea.Program) {
 	s.program = program
+	s.PrintHelper = NewPrintHelper(program)
 }
 
 func (s *Spinner) refreshSpinner(msg tea.Msg) (tea.Model, tea.Cmd) {
