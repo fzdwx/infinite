@@ -318,7 +318,6 @@ func main() {
 
 	fmt.Printf("you input: %s\n", i.Value())
 }
-
 ```
 
 </details>

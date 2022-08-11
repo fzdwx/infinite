@@ -28,9 +28,176 @@
 go get github.com/fzdwx/infinite
 ```
 
-## Get Started
+## Showcase
 
-todo
+### Progress group
+
+![demo](https://user-images.githubusercontent.com/65269574/183296585-b0a56827-d9d9-4258-ad32-266ada01b1ed.gif)
+
+```go
+package main
+
+import (
+	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/components/progress"
+	"time"
+)
+
+func main() {
+	cnt := 10
+
+	group := progress.NewGroupWithCount(10).
+		AppendRunner(func(progress *components.Progress) func() {
+			total := cnt
+			cnt += 1
+			progress.WithTotal(int64(total)).
+				WithDefaultGradient()
+
+			return func() {
+
+				for i := 0; i < total+1; i++ {
+					progress.IncrOne()
+					sleep()
+				}
+
+				for i := 0; i < total; i++ {
+					progress.DecrOne()
+					sleep()
+				}
+
+				for i := 0; i < total+1; i++ {
+					progress.IncrOne()
+					sleep()
+				}
+			}
+		})
+	group.Display()
+}
+
+func sleep() {
+	time.Sleep(time.Millisecond * 100)
+}
+```
+
+### Multiple select
+
+![demo](https://user-images.githubusercontent.com/65269574/183274216-d2a7af91-0581-4d13-b8c2-00b9aad5ef3a.gif)
+```go
+package main
+
+import (
+	inf "github.com/fzdwx/infinite"
+	"github.com/fzdwx/infinite/color"
+	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/components/selection/multiselect"
+	"github.com/fzdwx/infinite/style"
+)
+
+func main() {
+	input := components.NewInput()
+	input.Prompt = "Filtering: "
+	input.PromptStyle = style.New().Bold().Italic().Fg(color.LightBlue)
+
+	_, _ = inf.NewMultiSelect([]string{
+		"Buy carrots",
+		"Buy celery",
+		"Buy kohlrabi",
+		"Buy computer",
+		"Buy something",
+		"Buy car",
+		"Buy subway",
+	},
+	multiselect.WithFilterInput(input),
+	).Display("select your items!")
+}
+```
+
+### Spinner
+
+![demo](https://user-images.githubusercontent.com/65269574/183074665-42d7d902-a56c-420c-a740-3aacc7dc922c.gif)
+
+```go
+package main
+
+import (
+	inf "github.com/fzdwx/infinite"
+	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/components/spinner"
+	"time"
+)
+
+func main() {
+	_ = inf.NewSpinner(
+		spinner.WithShape(components.Dot),
+		spinner.WithFunc(func(spinner *spinner.Spinner) {
+			for i := 0; i < 10; i++ {
+				time.Sleep(time.Millisecond * 100)
+				spinner.Refreshf("hello world %d", i)
+			}
+			spinner.Finish("finish")
+			spinner.Refresh("is finish?")
+		}),
+	).Display()
+	time.Sleep(time.Millisecond * 100 * 15)
+}
+```
+### Input text
+
+![demo](https://user-images.githubusercontent.com/65269574/183075959-031a068d-6f88-40a0-8b5e-f3d5bba481af.gif)
+
+```go
+package main
+
+import (
+	"fmt"
+	inf "github.com/fzdwx/infinite"
+	"github.com/fzdwx/infinite/components/input/text"
+	"github.com/fzdwx/infinite/theme"
+)
+
+func main() {
+
+	i := inf.NewText(
+		text.WithPrompt("what's your name? "),
+		text.WithPromptStyle(theme.DefaultTheme.PromptStyle),
+		text.WithPlaceholder(" fzdwx (maybe)"),
+	)
+
+	_ = i.Display()
+
+	fmt.Printf("you input: %s\n", i.Value())
+}
+```
+
+### Confirm
+
+![demo](https://user-images.githubusercontent.com/65269574/183076452-5fa73013-42de-47df-97b4-7be743d074c1.gif)
+
+```go
+package main
+
+import (
+	"fmt"
+	inf "github.com/fzdwx/infinite"
+	"github.com/fzdwx/infinite/components/input/confirm"
+)
+
+func main() {
+
+	c := inf.NewConfirm(
+		confirm.WithDefaultYes(),
+		confirm.WithDisplayHelp(),
+	)
+
+	c.Display()
+
+	if c.Value() {
+		fmt.Println("yes, you are.")
+	} else {
+		fmt.Println("no,you are not.")
+	}
+}
+```
 
 ## Build with
 
@@ -41,7 +208,7 @@ todo
 - https://github.com/sahilm/fuzzy
 - ...
 
-[full](https://github.com/fzdwx/infinite/network/dependencies)
+[full dependencies](https://github.com/fzdwx/infinite/network/dependencies)
 
 ## License
 
