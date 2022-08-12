@@ -28,8 +28,16 @@ func nextID() int {
 }
 
 const (
-	defaultWidth = 45
+	defaultWidth         = 45
+	defaultTicKCostDelay = time.Millisecond * 100
 )
+
+// WithTickCostDelay defaultTicKCostDelay
+// the interval time between each refresh cost time
+func (pro *Progress) WithTickCostDelay(delay time.Duration) *Progress {
+	pro.TickCostDelay = delay
+	return pro
+}
 
 // WithTitleView append title view.
 func (pro *Progress) WithTitleView(f func() string) *Progress {
@@ -147,6 +155,8 @@ type ProgressMsg struct {
 	Amount int64
 }
 
+type tickCost int
+
 type Progress struct {
 	program *tea.Program
 	*PrintHelper
@@ -174,10 +184,11 @@ type Progress struct {
 	PercentAgeFunc  func(total, current int64, percent float64) string
 	PercentAgeStyle *style.Style
 
-	ShowCost bool
-	CostView func(cost time.Duration, total, current, prevAmount int64) string
-	start    time.Time
-	end      time.Time
+	ShowCost      bool
+	CostView      func(cost time.Duration, total, current, prevAmount int64) string
+	start         time.Time
+	end           time.Time
+	TickCostDelay time.Duration
 
 	done     bool
 	DoneView func() string
@@ -219,6 +230,7 @@ func NewProgress() *Progress {
 		ShowCost:        true,
 		prevAmount:      0,
 		CostView:        DefaultCostView,
+		TickCostDelay:   defaultTicKCostDelay,
 	}
 
 	return p
@@ -264,22 +276,30 @@ func (pro *Progress) Cost() time.Duration {
 }
 
 func (pro *Progress) Init() tea.Cmd {
+	var cmd tea.Cmd
+
 	if pro.ShowCost {
 		pro.start = time.Now()
+		cmd = tick
 	}
-	return nil
+
+	return cmd
 }
 
 func (pro *Progress) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmd tea.Cmd
+
 	switch msg := msg.(type) {
 	case ProgressMsg:
 		if msg.Id == pro.Id {
 			pro.refresh(msg)
 		}
+	case tickCost:
+		cmd = pro.tick()
 	case tea.WindowSizeMsg:
 		// todo
 	}
-	return pro, nil
+	return pro, cmd
 }
 
 func (pro *Progress) View() string {
@@ -290,10 +310,10 @@ func (pro *Progress) View() string {
 	return pro.ViewAs(pro.percent, pro.end)
 }
 
-func (pro *Progress) ViewAs(percent float64, refreshTime time.Time) string {
+func (pro *Progress) ViewAs(percent float64, now time.Time) string {
 	fluent := strx.NewFluent()
 	percentage := pro.viewPercentage(percent)
-	costView := pro.viewCost(refreshTime)
+	costView := pro.viewCost(now)
 	title := pro.viewTitle()
 	otherLen := ansi.PrintableRuneWidth(title + percentage + costView)
 
@@ -410,6 +430,16 @@ func (pro *Progress) Println(args ...interface{}) {
 	pro.program.Println(args...)
 }
 
+func (pro *Progress) tick() tea.Cmd {
+	if pro.ShowCost {
+		pro.end = time.Now()
+		return tea.Tick(pro.TickCostDelay, func(t time.Time) tea.Msg {
+			return tickCost(1)
+		})
+	}
+	return nil
+}
+
 func max(a, b int) int {
 	if a > b {
 		return a
@@ -422,4 +452,8 @@ func min(a, b int) int {
 		return a
 	}
 	return b
+}
+
+func tick() tea.Msg {
+	return tickCost(1)
 }

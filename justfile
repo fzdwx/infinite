@@ -18,7 +18,7 @@ rec:
     asciinema rec demo.cast
 
 cast row="15":
-    asciicast2gif  demo.cast demo.gif
+    asciicast2gif -h {{row}} demo.cast demo.gif
 #    rm -rf demo.cast
 
 test file="":
