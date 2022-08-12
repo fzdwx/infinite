@@ -1,27 +1,27 @@
 <div align="center">
 <h1>infinite</h1>
-<span>🌊 用于开发交互式 CLI(tui,terminal) 程序的组件库.</span>
+<span>🌊 A component library for developing interactive CLI(tui,terminal) programs.</span>
 <br>
 </div>
 <br>
 <img src="https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif" alt="demo">
 
-中文 | [English](https://github.com/fzdwx/infinite/blob/main/docs/en/README.md)
+[中文](https://github.com/fzdwx/infinite/blob/main/docs/en/README.md) | English
 
 ## Features
 
-- 提供一系列开箱即用的组件
+- Provides a set of out-of-the-box components
     - autocomplete
-    - progress bar / progress-bar group
+    - progress-bar group
     - multi/single select
     - spinner
     - confirm
     - input
-- 支持 window/linux (我现在只有这两种操作系统)
-- 可定制,你可以替换组件中的某些选项或方法为你自己的实现
-- 可组合,你可以将一个或多个基础组件联合在一起使用
-    - `autocomplete` 由`input` 和 `selection` 组成
-    - `selection` 通过嵌入`input` 来实现过滤功能.
+- Support window/linux (I only have these two operating systems)
+- Customizable (You can replace the implementation of some methods in the component)
+- Combinable (You can combine multiple components to use)
+    - `autocomplete` is composed of `input` and `select`
+    - `select` implements the filter function by embedding the `input`
     - ...
 
 ## Install
@@ -83,11 +83,9 @@ func sleep() {
 	time.Sleep(time.Millisecond * 100)
 }
 ```
-
 </details>
 
 ---
-
 ### Multiple select
 
 ![demo](https://user-images.githubusercontent.com/65269574/183274216-d2a7af91-0581-4d13-b8c2-00b9aad5ef3a.gif)
@@ -120,15 +118,13 @@ func main() {
 		"Buy car",
 		"Buy subway",
 	},
-		multiselect.WithFilterInput(input),
+	multiselect.WithFilterInput(input),
 	).Display("select your items!")
 }
 ```
-
 </details>
 
 ---
-
 ### Spinner
 
 ![demo](https://user-images.githubusercontent.com/65269574/183074665-42d7d902-a56c-420c-a740-3aacc7dc922c.gif)
@@ -161,11 +157,9 @@ func main() {
 	time.Sleep(time.Millisecond * 100 * 15)
 }
 ```
-
 </details>
 
 ---
-
 ### Input text
 
 ![demo](https://user-images.githubusercontent.com/65269574/183075959-031a068d-6f88-40a0-8b5e-f3d5bba481af.gif)
@@ -196,11 +190,9 @@ func main() {
 	fmt.Printf("you input: %s\n", i.Value())
 }
 ```
-
 </details>
 
 ---
-
 ### Confirm
 
 ![demo](https://user-images.githubusercontent.com/65269574/183076452-5fa73013-42de-47df-97b4-7be743d074c1.gif)
@@ -233,10 +225,9 @@ func main() {
 	}
 }
 ```
-
 </details>
 
-[所有实例](https://github.com/fzdwx/infinite/tree/main/_examples)
+[full examples](https://github.com/fzdwx/infinite/tree/main/_examples)
 
 ## Build with
 
@@ -247,7 +238,7 @@ func main() {
 - https://github.com/sahilm/fuzzy
 - ...
 
-[所有依赖](https://github.com/fzdwx/infinite/network/dependencies)
+[full dependencies](https://github.com/fzdwx/infinite/network/dependencies)
 
 ## License
 
