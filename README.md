@@ -239,7 +239,7 @@ func main() {
 
 </details>
 
-[所有实例](https://github.com/fzdwx/infinite/tree/main/_examples)
+[所有示例](https://github.com/fzdwx/infinite/tree/main/_examples)
 
 ## Build with
 
