@@ -5,7 +5,6 @@
 <img src="https://goreportcard.com/badge/github.com/fzdwx/infinite" alt="go report card">
 <a href="https://github.com/fzdwx/infinite/releases"><img src="https://img.shields.io/github/v/release/fzdwx/infinite.svg?style=flat-square" alt="release"></a>
 </div>
-<br>
 <img src="https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif" alt="demo">
 
 中文 | [English](https://github.com/fzdwx/infinite/blob/main/docs/en/README.md)
