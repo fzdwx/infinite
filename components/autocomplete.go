@@ -77,6 +77,13 @@ func (a *Autocomplete) WithSelectionCreator(f func(suggester []string, a *Autoco
 	return a
 }
 
+// WithSuggestionViewRender Two implementations are provided by default: NewLineSuggestionRender or TabSuggestionRender,
+// of course you can also choose to implement your own `render`
+func (a *Autocomplete) WithSuggestionViewRender(f func(suggestionItems []string, a *Autocomplete) string) *Autocomplete {
+	a.SuggestionViewRender = f
+	return a
+}
+
 func NewAutocomplete(suggester Suggester) *Autocomplete {
 	return &Autocomplete{
 		Suggester:          suggester,
@@ -86,6 +93,8 @@ func NewAutocomplete(suggester Suggester) *Autocomplete {
 		ShowSelection:      true,
 		ShouldNewSelection: true,
 		SelectionCreator:   DefaultSelectionCreator,
+		//SuggestionViewRender: NewLineSuggestionRender,
+		SuggestionViewRender: TabSuggestionRender,
 	}
 }
 
@@ -108,7 +117,7 @@ func DefaultSelectionCreator(suggester []string, a *Autocomplete) *Selection {
 	selection.ShowHelp = false
 	selection.Keymap = DefaultSingleKeyMap
 	selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
-		return strx.RepeatSpace(a.Padding+a.Input.Cursor()) + choice
+		return choice
 	}
 
 	return selection
@@ -133,13 +142,34 @@ func DefaultCompleter() Completer {
 	}
 }
 
+func NewLineSuggestionRender(suggestionItems []string, a *Autocomplete) string {
+	return strx.NewFluent().WithSlice(suggestionItems, func(idx int, item string) string {
+		if len(item) == 0 {
+			return strx.Empty
+		}
+
+		return strx.NewFluent().Space(a.Padding + a.Input.Cursor()).Write(item).NewLine().String()
+	}).String()
+}
+
+func TabSuggestionRender(suggestionItems []string, a *Autocomplete) string {
+	return strx.NewFluent().WithSlice(suggestionItems, func(idx int, item string) string {
+		if len(item) == 0 {
+			return strx.Empty
+		}
+
+		return strx.NewFluent().Write(item).Space(4).String()
+	}).String()
+}
+
 type Autocomplete struct {
 	/* custom */
-	Input            *Input
-	Suggester        Suggester
-	Completer        Completer
-	KeyMap           AutocompleteKeyMap
-	SelectionCreator func(options []string, a *Autocomplete) *Selection
+	Input                *Input
+	Suggester            Suggester
+	Completer            Completer
+	KeyMap               AutocompleteKeyMap
+	SelectionCreator     func(options []string, a *Autocomplete) *Selection
+	SuggestionViewRender func(suggestionItems []string, a *Autocomplete) string
 
 	Padding int
 	Program *tea.Program
@@ -220,7 +250,7 @@ func (a *Autocomplete) suggesterView(fluent *strx.FluentStringBuilder) {
 	}
 
 	if a.Selection != nil {
-		fluent.Write(a.Selection.View())
+		fluent.NewLine().Write(a.SuggestionViewRender(strings.Split(a.Selection.View(), strx.NewLine), a))
 	}
 }
 

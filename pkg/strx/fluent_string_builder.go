@@ -46,6 +46,19 @@ func (b *FluentStringBuilder) WriteFunc(f WriteFunc) *FluentStringBuilder {
 	return b
 }
 
+// WithSlice traverse slice and call mapper
+func (b *FluentStringBuilder) WithSlice(slice []string, mapper func(idx int, item string) string) *FluentStringBuilder {
+	if len(slice) == 0 {
+		return nil
+	}
+
+	for i, s := range slice {
+		b.Write(mapper(i, s))
+	}
+
+	return b
+}
+
 // Len returns the number of accumulated bytes; b.Len() == len(b.String()).
 func (b *FluentStringBuilder) Len() int {
 	return b.sb.Len()

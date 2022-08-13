@@ -2,6 +2,7 @@
 <h1>infinite</h1>
 <span>🌊 用于开发交互式 CLI(tui,terminal) 程序的组件库.</span>
 <br>
+<img src="https://goreportcard.com/badge/github.com/fzdwx/infinite" alt="go report card">
 </div>
 <br>
 <img src="https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif" alt="demo">
