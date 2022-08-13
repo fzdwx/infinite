@@ -38,12 +38,19 @@ go get github.com/fzdwx/infinite
 
 ## Showcase
 
+### Combined demo
+一个 `progress` 和 `spinner` 组合使用的demo
+
+![demo](https://user-images.githubusercontent.com/65269574/184496950-dbc246e7-5199-4e85-8167-1292b6eeb574.gif)
+
+[代码](https://github.com/fzdwx/infinite/blob/main/_examples/combine_progress_spinner/main.go)
+
 ### Progress group
 
 ![demo](https://user-images.githubusercontent.com/65269574/183296585-b0a56827-d9d9-4258-ad32-266ada01b1ed.gif)
 
 <details>
-<summary>code</summary>
+<summary>代码</summary>
 
 ```go
 package main
@@ -99,7 +106,7 @@ func sleep() {
 ![demo](https://user-images.githubusercontent.com/65269574/183274216-d2a7af91-0581-4d13-b8c2-00b9aad5ef3a.gif)
 
 <details>
-<summary>code</summary>
+<summary>代码</summary>
 
 ```go
 package main
@@ -140,7 +147,7 @@ func main() {
 ![demo](https://user-images.githubusercontent.com/65269574/183074665-42d7d902-a56c-420c-a740-3aacc7dc922c.gif)
 
 <details>
-<summary>code</summary>
+<summary>代码</summary>
 
 ```go
 package main
@@ -180,7 +187,7 @@ func main() {
 ![demo](https://user-images.githubusercontent.com/65269574/183075959-031a068d-6f88-40a0-8b5e-f3d5bba481af.gif)
 
 <details>
-<summary>code</summary>
+<summary>代码</summary>
 
 ```go
 package main
@@ -215,7 +222,7 @@ func main() {
 ![demo](https://user-images.githubusercontent.com/65269574/183076452-5fa73013-42de-47df-97b4-7be743d074c1.gif)
 
 <details>
-<summary>code</summary>
+<summary>代码</summary>
 
 ```go
 package main
