@@ -6,7 +6,6 @@ import (
 	"github.com/fzdwx/infinite/emoji"
 	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
-	"github.com/fzdwx/infinite/theme"
 	"time"
 )
 
@@ -97,19 +96,6 @@ type (
 
 	RefreshPromptMsg string
 )
-
-// NewSpinner constructor
-func NewSpinner() *Spinner {
-	c := &Spinner{
-		Model:               spinner.New(),
-		Shape:               Line,
-		ShapeStyle:          theme.DefaultTheme.SpinnerShapeStyle,
-		Prompt:              "Loading...",
-		DisableOutPutResult: false,
-		Status:              Normal,
-	}
-	return c
-}
 
 // RefreshPrompt refresh prompt.
 func (s *Spinner) RefreshPrompt(str string) {

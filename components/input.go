@@ -4,7 +4,6 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/style"
 	"time"
 )
@@ -38,28 +37,6 @@ type (
 		/* option end */
 	}
 )
-
-// NewInput constructor
-func NewInput() *Input {
-	c := &Input{
-		Model:            textinput.New(),
-		Status:           Focus,
-		Prompt:           "> ",
-		Placeholder:      "",
-		BlinkSpeed:       DefaultBlinkSpeed,
-		EchoMode:         EchoNormal,
-		EchoCharacter:    '*',
-		CharLimit:        0,
-		QuitKey:          key.NewBinding(),
-		PlaceholderStyle: style.New().Fg(color.Gray),
-		PromptStyle:      style.New(),
-		TextStyle:        style.New(),
-		BackgroundStyle:  style.New(),
-		CursorStyle:      style.New(),
-	}
-
-	return c
-}
 
 // Focus sets the Focus state on the model. When the model is in Focus it can
 // receive keyboard Input and the cursor will be hidden.

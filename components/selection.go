@@ -10,7 +10,6 @@ import (
 	"github.com/duke-git/lancet/v2/strutil"
 	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
-	"github.com/fzdwx/infinite/theme"
 	"github.com/mattn/go-runewidth"
 	"github.com/sahilm/fuzzy"
 	"sort"
@@ -139,41 +138,6 @@ func DefaultFilterFunc(input string, items []SelectionItem) []SelectionItem {
 	return slice.Map[fuzzy.Match, SelectionItem](ranks, func(index int, item fuzzy.Match) SelectionItem {
 		return items[item.Index]
 	})
-}
-
-// NewSelection constructor
-func NewSelection(choices []string) *Selection {
-
-	items := slice.Map[string, SelectionItem](choices, func(idx int, item string) SelectionItem {
-		return SelectionItem{idx, item}
-	})
-
-	c := &Selection{
-		Choices:             items,
-		Selected:            make(map[int]struct{}),
-		CursorSymbol:        ">",
-		UnCursorSymbol:      " ",
-		CursorSymbolStyle:   theme.DefaultTheme.CursorSymbolStyle,
-		ChoiceTextStyle:     theme.DefaultTheme.ChoiceTextStyle,
-		Prompt:              "Please Selection your options:",
-		PromptStyle:         theme.DefaultTheme.PromptStyle,
-		HintSymbol:          "✓",
-		HintSymbolStyle:     theme.DefaultTheme.MultiSelectedHintSymbolStyle,
-		UnHintSymbol:        "✗",
-		UnHintSymbolStyle:   theme.DefaultTheme.UnHintSymbolStyle,
-		quited:              false,
-		DisableOutPutResult: false,
-		PageSize:            5,
-		Keymap:              DefaultMultiKeyMap,
-		Help:                help.New(),
-		RowRender:           DefaultRowRender,
-		EnableFilter:        true,
-		FilterInput:         NewInput(),
-		FilterFunc:          DefaultFilterFunc,
-		ShowHelp:            true,
-	}
-
-	return c
 }
 
 func (s *Selection) Init() tea.Cmd {

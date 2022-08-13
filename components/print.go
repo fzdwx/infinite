@@ -25,11 +25,6 @@ type PrintHelper struct {
 	program *tea.Program
 }
 
-// NewPrintHelper constructor
-func NewPrintHelper(program *tea.Program) *PrintHelper {
-	return &PrintHelper{program: program}
-}
-
 func (p PrintHelper) Center(str string) {
 	p.Print(style.New().Inner().Align(lipgloss.Center).Render(str))
 }
