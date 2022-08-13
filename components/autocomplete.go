@@ -86,15 +86,15 @@ func (a *Autocomplete) WithSuggestionViewRender(f func(suggestionItems []string,
 
 func NewAutocomplete(suggester Suggester) *Autocomplete {
 	return &Autocomplete{
-		Suggester:          suggester,
-		Completer:          DefaultCompleter(),
-		Input:              NewInput(),
-		KeyMap:             DefaultAutocompleteKeyMap(),
-		ShowSelection:      true,
-		ShouldNewSelection: true,
-		SelectionCreator:   DefaultSelectionCreator,
-		//SuggestionViewRender: NewLineSuggestionRender,
-		SuggestionViewRender: TabSuggestionRender,
+		Suggester:            suggester,
+		Completer:            DefaultCompleter(),
+		Input:                NewInput(),
+		KeyMap:               DefaultAutocompleteKeyMap(),
+		ShowSelection:        true,
+		ShouldNewSelection:   true,
+		SelectionCreator:     DefaultSelectionCreator,
+		SuggestionViewRender: NewLineSuggestionRender,
+		//SuggestionViewRender: TabSuggestionRender,
 	}
 }
 
