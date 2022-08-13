@@ -29,7 +29,7 @@ func main() {
 		})
 
 		return suggester, true
-	}).WithInput(input)
+	}).WithInput(input).WithSuggestionViewRender(components.TabSuggestionRender)
 
 	err := components.NewStartUp(c).Start()
 	if err != nil {

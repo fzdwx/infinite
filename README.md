@@ -25,6 +25,11 @@
     - `selection` 通过嵌入`input` 来实现过滤功能.
     - ...
 
+## Best Practices
+
+1. 通过消息来更新状态,也就是通过`program.Send(msg)`来发送消息,`Update`监听并进行状态更新,最后通过`View`来反馈结果.
+2. ...
+
 ## Install
 
 ```bash
