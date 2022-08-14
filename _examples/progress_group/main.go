@@ -29,6 +29,10 @@ func main() {
 
 			return func() {
 
+				if progress.Id == 3 {
+					progress.Done()
+				}
+
 				for i := 0; i < total+1; i++ {
 					progress.IncrOne()
 					sleep()

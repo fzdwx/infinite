@@ -19,6 +19,7 @@ var (
 	FullBlue = NewHex("#0000FF")
 	DarkGray = NewHex("#3C3C3C")
 	Gray     = NewHex("#808080")
+	White    = NewHex("#ffffff")
 
 	Special   = NewAdaptive("#43BF6D", "#73F59F")
 	Highlight = NewAdaptive("#874BFD", "#7D56F4")

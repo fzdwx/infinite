@@ -4,6 +4,7 @@ import (
 	"github.com/fzdwx/infinite/components/input/confirm"
 	"github.com/fzdwx/infinite/components/input/text"
 	"github.com/fzdwx/infinite/components/progress"
+	cs "github.com/fzdwx/infinite/components/selection/confirm"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
 	"github.com/fzdwx/infinite/components/selection/singleselect"
 	"github.com/fzdwx/infinite/components/spinner"
@@ -32,6 +33,11 @@ func NewText(ops ...text.Option) *text.Text {
 // NewConfirm new confirm
 func NewConfirm(ops ...confirm.Option) *confirm.Confirm {
 	return confirm.New(ops...)
+}
+
+// NewConfirmWithSelection new confirm with Selection
+func NewConfirmWithSelection(ops ...cs.Option) *cs.Confirm {
+	return cs.WithSelection(ops...)
 }
 
 // NewProgressGroup new progress group with count.

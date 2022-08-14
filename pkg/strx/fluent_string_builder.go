@@ -1,6 +1,9 @@
 package strx
 
-import "strings"
+import (
+	"github.com/fzdwx/infinite/style"
+	"strings"
+)
 
 type (
 
@@ -40,6 +43,12 @@ func (b *FluentStringBuilder) Write(s string) *FluentStringBuilder {
 	return b
 }
 
+// Brackets wrap ( s )
+func (b *FluentStringBuilder) Brackets(s string) *FluentStringBuilder {
+	b.Write("(").Write(s).Write(")")
+	return b
+}
+
 // WriteFunc call f get string and write into FluentStringBuilder.
 func (b *FluentStringBuilder) WriteFunc(f WriteFunc) *FluentStringBuilder {
 	f(b)
@@ -73,4 +82,18 @@ func (b *FluentStringBuilder) WriteStrings(str []string, seq string) *FluentStri
 		return b
 	}
 	return b.Write(strings.Join(str, seq))
+}
+
+func (b *FluentStringBuilder) Style(style *style.Style, val string) *FluentStringBuilder {
+	b.Write(style.Render(val))
+	return b
+}
+
+func (b *FluentStringBuilder) Bool(value bool) *FluentStringBuilder {
+	if value {
+		b.Write("true")
+	} else {
+		b.Write("false")
+	}
+	return b
 }
