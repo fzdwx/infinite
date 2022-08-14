@@ -1,4 +1,4 @@
-package inf
+package infinite
 
 import (
 	"github.com/fzdwx/infinite/components/input/confirm"
