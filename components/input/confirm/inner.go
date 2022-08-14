@@ -39,7 +39,7 @@ func newInner() *inner {
 		Value:       false,
 		Notice:      " ( y/N ) ",
 		NoticeStyle: style.New(),
-		Symbol:      "?",
+		Symbol:      "? ",
 		SymbolStyle: style.New().Fg(color.Special),
 	}
 

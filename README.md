@@ -39,6 +39,7 @@ go get github.com/fzdwx/infinite
 ## Showcase
 
 ### Combined demo
+
 一个 `progress` 和 `spinner` 组合使用的demo
 
 ![demo](https://user-images.githubusercontent.com/65269574/184496950-dbc246e7-5199-4e85-8167-1292b6eeb574.gif)
@@ -217,7 +218,7 @@ func main() {
 
 ---
 
-### Confirm
+### Confirm with Input
 
 ![demo](https://user-images.githubusercontent.com/65269574/183076452-5fa73013-42de-47df-97b4-7be743d074c1.gif)
 
@@ -247,6 +248,35 @@ func main() {
 	} else {
 		fmt.Println("no,you are not.")
 	}
+}
+```
+
+</details>
+
+---
+
+### Confirm With Selection
+
+![Image](https://user-images.githubusercontent.com/65269574/184532991-ef3f5290-ae32-4294-906e-c097c3cf8ca1.gif)
+
+<details>
+<summary>代码</summary>
+
+```go
+package main
+
+import (
+	"fmt"
+	inf "github.com/fzdwx/infinite"
+)
+
+func main() {
+
+	val, _ := inf.NewConfirmWithSelection(
+		//confirm.WithDisOutResult(),
+	).Display()
+
+	fmt.Println(val)
 }
 ```
 

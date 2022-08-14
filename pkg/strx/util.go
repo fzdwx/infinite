@@ -99,3 +99,18 @@ func RepeatSpace(times ...int) string {
 	}
 	return strings.Repeat(Space, count)
 }
+
+func RemoveEmpty(str []string) []string {
+	if len(str) == 0 {
+		return []string{}
+	}
+
+	var result []string
+	for _, s := range str {
+		if len(s) > 0 {
+			result = append(result, s)
+		}
+	}
+
+	return result
+}

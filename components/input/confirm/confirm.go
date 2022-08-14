@@ -22,8 +22,9 @@ func New(ops ...Option) *Confirm {
 }
 
 // Display Confirm component.
-func (c *Confirm) Display() error {
-	return c.startUp.Start()
+func (c *Confirm) Display() (bool, error) {
+	err := c.startUp.Start()
+	return c.Value(), err
 }
 
 // Value returns whether the user has chosen to confirm or deny.
