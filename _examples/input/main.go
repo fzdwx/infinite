@@ -13,6 +13,7 @@ func main() {
 		text.WithPrompt("what's your name? "),
 		text.WithPromptStyle(theme.DefaultTheme.PromptStyle),
 		text.WithPlaceholder(" fzdwx (maybe)"),
+		text.WithEchoPassword('1'),
 	)
 	//go func() {
 	//	i.Display()

@@ -1,6 +1,6 @@
 <div align="center">
 <h1>infinite</h1>
-<span>🌊 用于开发交互式 CLI(tui,terminal) 程序的组件库.</span>
+<span>🧬 用于开发交互式 CLI(tui,terminal) 程序的组件库.</span>
 <br>
 <a href="https://goreportcard.com/report/github.com/fzdwx/infinite"><img src="https://goreportcard.com/badge/github.com/fzdwx/infinite" alt="go report card"></a>
 <a href="https://github.com/fzdwx/infinite/releases"><img src="https://img.shields.io/github/v/release/fzdwx/infinite.svg?style=flat-square" alt="release"></a>

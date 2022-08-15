@@ -1,6 +1,6 @@
 <div align="center">
 <h1>infinite</h1>
-<span>🌊 A component library for developing interactive CLI(tui,terminal) programs.</span>
+<span>🧬 A component library for developing interactive CLI(tui,terminal) programs.</span>
 <br>
 <a href="https://goreportcard.com/report/github.com/fzdwx/infinite"><img src="https://goreportcard.com/badge/github.com/fzdwx/infinite" alt="go report card"></a>
 <a href="https://github.com/fzdwx/infinite/releases"><img src="https://img.shields.io/github/v/release/fzdwx/infinite.svg?style=flat-square" alt="release"></a>

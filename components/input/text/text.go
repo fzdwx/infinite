@@ -14,7 +14,10 @@ func New(ops ...Option) *Text {
 	inner := components.NewInput()
 	i := &Text{inner: inner, startUp: components.NewStartUp(inner)}
 
-	i.inner.QuitKey = key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "quit input text"))
+	i.inner.QuitKey = key.NewBinding(
+		key.WithKeys("enter"),
+		key.WithHelp("enter", "quit input text"),
+	)
 
 	i.Apply(ops...)
 

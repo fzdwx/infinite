@@ -37,17 +37,24 @@ func WithBlinkSpeed(blinkSpeed time.Duration) Option {
 	}
 }
 
-// WithEchoMode sets the input behavior of the text input field.
-func WithEchoMode(echoMode components.EchoMode) Option {
+// WithEchoNone set echoMode use components.EchoNone.
+// displays nothing as characters are entered
+func WithEchoNone() Option {
 	return func(i *Text) {
-		i.inner.EchoMode = echoMode
+		i.inner.EchoMode = components.EchoNone
 	}
 }
 
-// WithEchoCharacter setthe echo char shape
-func WithEchoCharacter(echoCharacter rune) Option {
+// WithEchoPassword set echoMode use components.EchoPassword.
+// if maskedSymbol is not empty, then set EchoCharacter use maskedSymbol[0]
+func WithEchoPassword(maskedSymbol ...rune) Option {
 	return func(i *Text) {
-		i.inner.EchoCharacter = echoCharacter
+		i.inner.EchoMode = components.EchoPassword
+
+		if len(maskedSymbol) < 0 {
+			return
+		}
+		i.inner.EchoCharacter = maskedSymbol[0]
 	}
 }
 
