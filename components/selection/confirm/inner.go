@@ -8,14 +8,17 @@ import (
 	"strings"
 )
 
+type switchIt int
+
 type inner struct {
 	selection       *components.Selection
 	focusInterval   string
 	unFocusInterval string
 	keyMap          KeyMap
 	Value           bool
+	DefaultVal      bool
 	choice          bool
-	outPutResult    bool
+	outputResult    bool
 }
 
 func newInner(selection *components.Selection) *inner {
@@ -23,7 +26,15 @@ func newInner(selection *components.Selection) *inner {
 }
 
 func (i *inner) Init() tea.Cmd {
-	return i.selection.Init()
+	cmd := i.selection.Init()
+
+	if i.DefaultVal {
+		cmd = tea.Batch(cmd, func() tea.Msg {
+			return switchIt(1)
+		})
+	}
+
+	return cmd
 }
 
 func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -37,6 +48,8 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			i.choice = true
 			return i, tea.Quit
 		}
+	case switchIt:
+		i.switchIt()
 	}
 
 	return i, nil
@@ -49,7 +62,7 @@ func (i *inner) View() string {
 		Write(i.interval()).
 		Write(rows[1]).Space().Write("/").Space().Write(rows[2])
 
-	if i.outPutResult {
+	if i.outputResult {
 		row.NewLine()
 	}
 
@@ -61,6 +74,7 @@ func (i *inner) SetProgram(program *tea.Program) {
 
 func (i *inner) switchIt() {
 	var msg tea.Msg
+
 	if i.Value {
 		msg = tea.KeyMsg{
 			Type: tea.KeyUp,

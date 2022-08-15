@@ -20,6 +20,7 @@ type Confirm struct {
 	FocusInterval   string
 	UnFocusInterval string
 	OutputResult    bool
+	DefaultVal      bool
 	SymbolStyle     *style.Style
 	PromptStyle     *style.Style
 	ChoiceStyle     *style.Style
@@ -46,6 +47,7 @@ func WithSelection(ops ...Option) *Confirm {
 		FocusInterval:   FocusInterval,
 		UnFocusInterval: UnFocusInterval,
 		OutputResult:    true,
+		DefaultVal:      false,
 		ops:             ops,
 	}
 	return c
@@ -72,7 +74,7 @@ func (c *Confirm) init() {
 	c.inner.selection.EnableFilter = false
 	c.inner.selection.ShowHelp = false
 	c.inner.selection.ChoiceTextStyle = c.ChoiceStyle
-	c.inner.outPutResult = c.OutputResult
+	c.inner.outputResult = c.OutputResult
 	c.inner.selection.Prompt = strx.NewFluent().
 		Style(c.SymbolStyle, c.Symbol).
 		Style(c.PromptStyle, c.Prompt).
@@ -81,6 +83,9 @@ func (c *Confirm) init() {
 	c.inner.selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
 		return choice
 	}
+
+	// default true
+	c.inner.DefaultVal = c.DefaultVal
 
 	c.inner.keyMap = c.KeyMap
 }

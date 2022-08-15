@@ -35,6 +35,13 @@ func DefaultKeyBinding() KeyMap {
 
 type Option func(c *Confirm)
 
+// WithDefaultYes  set Confirm default val is `true`
+func WithDefaultYes() Option {
+	return func(c *Confirm) {
+		c.DefaultVal = true
+	}
+}
+
 func WithDisableOutputResult() Option {
 	return func(c *Confirm) {
 		c.OutputResult = false
