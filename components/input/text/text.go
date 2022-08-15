@@ -38,7 +38,7 @@ func (i *Text) Apply(ops ...Option) *Text {
 func (i *Text) Display() (string, error) {
 	err := i.startUp.Start()
 
-	if err != nil {
+	if err == nil {
 		return i.Value(), nil
 	}
 
