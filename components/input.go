@@ -206,12 +206,8 @@ func (in *Input) SetProgram(program *tea.Program) {
 	in.program = program
 }
 
-func (in *Input) checkRequired() bool {
-	return in.Required && len(in.Model.Value()) == 0
-}
-
 func (in *Input) quit() (tea.Model, tea.Cmd) {
-	if in.checkRequired() {
+	if in.shouldShowRequiredMsg() {
 		in.showRequiredMsg = true
 		return in, tea.Tick(in.RequiredMsgKeepAliveTime, cleanRequiredMsg)
 	}
@@ -219,4 +215,8 @@ func (in *Input) quit() (tea.Model, tea.Cmd) {
 	// do quit
 	in.Model.Blur()
 	return in, tea.Quit
+}
+
+func (in *Input) shouldShowRequiredMsg() bool {
+	return in.Required && len(in.Model.Value()) == 0
 }
