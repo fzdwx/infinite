@@ -16,6 +16,31 @@ func WithQuitKey(quitKey key.Binding) Option {
 	}
 }
 
+// WithRequired must input some words.
+func WithRequired() Option {
+	return func(i *Text) {
+		i.inner.Required = true
+	}
+}
+
+// WithRequiredMsg if there is no input, the `msg` will be prompted
+//
+// components.InputDefaultRequiredMsg
+func WithRequiredMsg(msg string) Option {
+	return func(i *Text) {
+		i.inner.RequiredMsg = msg
+	}
+}
+
+// WithRequiredMsgKeepAliveTime set `requiredMsg` keep alive time.
+//
+// components.InputDefaultRequiredMsgKeepTime
+func WithRequiredMsgKeepAliveTime(keepaliveTime time.Duration) Option {
+	return func(i *Text) {
+		i.inner.RequiredMsgKeepAliveTime = keepaliveTime
+	}
+}
+
 // WithPrompt set the prompt
 func WithPrompt(prompt string) Option {
 	return func(i *Text) {

@@ -48,20 +48,23 @@ func NewAutocomplete(suggester Suggester) *Autocomplete {
 // NewInput constructor
 func NewInput() *Input {
 	c := &Input{
-		Model:            textinput.New(),
-		Status:           InputDefaultStatus,
-		Prompt:           InputDefaultPrompt,
-		DefaultValue:     InputDefaultValue,
-		BlinkSpeed:       InputDefaultBlinkSpeed,
-		EchoMode:         InputDefaultEchoMode,
-		EchoCharacter:    InputDefaultEchoCharacter,
-		CharLimit:        InputDefaultCharLimit,
-		QuitKey:          InputDefaultQuitKey,
-		PlaceholderStyle: InputDefaultPlaceholderStyle,
-		PromptStyle:      InputDefaultPromptStyle,
-		TextStyle:        InputDefaultTextStyle,
-		BackgroundStyle:  InputDefaultBackgroundStyle,
-		CursorStyle:      InputDefaultCursorStyle,
+		Model:                    textinput.New(),
+		Required:                 InputDefaultRequired,
+		RequiredMsg:              InputDefaultRequiredMsg,
+		RequiredMsgKeepAliveTime: InputDefaultRequiredMsgKeepTime,
+		Status:                   InputDefaultStatus,
+		Prompt:                   InputDefaultPrompt,
+		DefaultValue:             InputDefaultValue,
+		BlinkSpeed:               InputDefaultBlinkSpeed,
+		EchoMode:                 InputDefaultEchoMode,
+		EchoCharacter:            InputDefaultEchoCharacter,
+		CharLimit:                InputDefaultCharLimit,
+		QuitKey:                  InputDefaultQuitKey,
+		PlaceholderStyle:         InputDefaultPlaceholderStyle,
+		PromptStyle:              InputDefaultPromptStyle,
+		TextStyle:                InputDefaultTextStyle,
+		BackgroundStyle:          InputDefaultBackgroundStyle,
+		CursorStyle:              InputDefaultCursorStyle,
 	}
 	return c
 }

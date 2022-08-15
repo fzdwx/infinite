@@ -11,38 +11,50 @@ import (
 )
 
 var (
-	InputDefaultStatus           = Focus
-	InputDefaultPrompt           = "> "
-	InputDefaultValue            = strx.Empty
-	InputDefaultBlinkSpeed       = time.Millisecond * 530
-	InputDefaultEchoMode         = EchoNormal
-	InputDefaultEchoCharacter    = '*'
-	InputDefaultCharLimit        = 0
-	InputDefaultQuitKey          = key.NewBinding()
-	InputDefaultPlaceholderStyle = style.New().Fg(color.Gray)
-	InputDefaultPromptStyle      = style.New()
-	InputDefaultTextStyle        = style.New()
-	InputDefaultBackgroundStyle  = style.New()
-	InputDefaultCursorStyle      = style.New()
+	InputDefaultRequired            = false
+	InputDefaultRequiredMsg         = style.New().Fg(color.Red).Render("please input text!")
+	InputDefaultRequiredMsgKeepTime = time.Second * 3
+	InputDefaultStatus              = Focus
+	InputDefaultPrompt              = "> "
+	InputDefaultValue               = strx.Empty
+	InputDefaultBlinkSpeed          = time.Millisecond * 530
+	InputDefaultEchoMode            = EchoNormal
+	InputDefaultEchoCharacter       = '*'
+	InputDefaultCharLimit           = 0
+	InputDefaultQuitKey             = key.NewBinding()
+	InputDefaultPlaceholderStyle    = style.New().Fg(color.Gray)
+	InputDefaultPromptStyle         = style.New()
+	InputDefaultTextStyle           = style.New()
+	InputDefaultBackgroundStyle     = style.New()
+	InputDefaultCursorStyle         = style.New()
+	cleanRequiredMsg                = func(t time.Time) tea.Msg {
+		return cleanRequired(1)
+	}
 )
+
+type cleanRequired byte
 
 type (
 	// Input the Input component.
 	Input struct {
-		Model   textinput.Model
-		program *tea.Program
+		Model           textinput.Model
+		program         *tea.Program
+		showRequiredMsg bool
 
-		Status           Status
-		Prompt           string
-		DefaultValue     string
-		BlinkSpeed       time.Duration
-		EchoMode         EchoMode
-		EchoCharacter    rune
-		PromptStyle      *style.Style
-		TextStyle        *style.Style
-		BackgroundStyle  *style.Style
-		PlaceholderStyle *style.Style
-		CursorStyle      *style.Style
+		Required                 bool
+		RequiredMsg              string
+		RequiredMsgKeepAliveTime time.Duration
+		Status                   Status
+		Prompt                   string
+		DefaultValue             string
+		BlinkSpeed               time.Duration
+		EchoMode                 EchoMode
+		EchoCharacter            rune
+		PromptStyle              *style.Style
+		TextStyle                *style.Style
+		BackgroundStyle          *style.Style
+		PlaceholderStyle         *style.Style
+		CursorStyle              *style.Style
 		// default is disable
 		QuitKey key.Binding
 		// CharLimit is the maximum amount of characters this Input element will
@@ -153,6 +165,7 @@ func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
+
 		switch {
 		case key.Matches(msg, in.QuitKey):
 			// todo Verification function can be added
@@ -168,6 +181,8 @@ func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case Quit:
 			return in.quit()
 		}
+	case cleanRequired:
+		in.showRequiredMsg = false
 	}
 
 	model, modelCmd := in.Model.Update(msg)
@@ -178,14 +193,30 @@ func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (in *Input) View() string {
-	return in.Model.View()
+	builder := strx.NewFluent().Write(in.Model.View())
+
+	if in.showRequiredMsg {
+		builder.NewLine().Write(in.RequiredMsg)
+	}
+
+	return builder.String()
 }
 
 func (in *Input) SetProgram(program *tea.Program) {
 	in.program = program
 }
 
+func (in *Input) checkRequired() bool {
+	return in.Required && len(in.Model.Value()) == 0
+}
+
 func (in *Input) quit() (tea.Model, tea.Cmd) {
+	if in.checkRequired() {
+		in.showRequiredMsg = true
+		return in, tea.Tick(in.RequiredMsgKeepAliveTime, cleanRequiredMsg)
+	}
+
+	// do quit
 	in.Model.Blur()
 	return in, tea.Quit
 }
