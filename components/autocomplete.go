@@ -119,7 +119,7 @@ func DefaultCompleter() Completer {
 
 		// replace word
 		cursorValSplit[cursorValSplitLen-1] = choiceWord
-		newCursorVal := strx.NewFluent().WriteStrings(cursorValSplit, strx.Space).String()
+		newCursorVal := strx.NewFluent().Join(cursorValSplit, strx.Space).String()
 
 		// replace val
 		newVal = strings.Replace(valCtx.Value, cursorVal, newCursorVal, 1)

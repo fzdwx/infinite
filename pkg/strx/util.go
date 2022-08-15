@@ -100,6 +100,16 @@ func RepeatSpace(times ...int) string {
 	return strings.Repeat(Space, count)
 }
 
+// WrapSpace " " + s + " "
+func WrapSpace(s string) string {
+	return Wrap(Space, Space, s)
+}
+
+// Wrap  left + s + right
+func Wrap(left, right, s string) string {
+	return left + s + right
+}
+
 func RemoveEmpty(str []string) []string {
 	if len(str) == 0 {
 		return []string{}

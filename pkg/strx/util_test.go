@@ -1,8 +1,13 @@
 package strx
 
 import (
+	"fmt"
 	"testing"
 )
+
+func TestFluentStringBuilder(t *testing.T) {
+	fmt.Println(NewFluent().Space(4).Write("hello").String())
+}
 
 func TestFormatBytes(t *testing.T) {
 	type args struct {

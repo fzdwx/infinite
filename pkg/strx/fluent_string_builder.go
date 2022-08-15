@@ -30,11 +30,7 @@ func (b *FluentStringBuilder) NewLine() *FluentStringBuilder {
 
 // Space append Space
 func (b *FluentStringBuilder) Space(times ...int) *FluentStringBuilder {
-	count := 1
-	if len(times) > 0 {
-		count = times[0]
-	}
-	return b.Write(strings.Repeat(Space, count))
+	return b.Write(RepeatSpace(times...))
 }
 
 // Write append string
@@ -46,6 +42,12 @@ func (b *FluentStringBuilder) Write(s string) *FluentStringBuilder {
 // Brackets wrap ( s )
 func (b *FluentStringBuilder) Brackets(s string) *FluentStringBuilder {
 	b.Write("(").Write(s).Write(")")
+	return b
+}
+
+// WrapSpace " " + s + " "
+func (b *FluentStringBuilder) WrapSpace(s string) *FluentStringBuilder {
+	b.Write(WrapSpace(s))
 	return b
 }
 
@@ -68,16 +70,7 @@ func (b *FluentStringBuilder) WithSlice(slice []string, mapper func(idx int, ite
 	return b
 }
 
-// Len returns the number of accumulated bytes; b.Len() == len(b.String()).
-func (b *FluentStringBuilder) Len() int {
-	return b.sb.Len()
-}
-
-func (b *FluentStringBuilder) String() string {
-	return b.sb.String()
-}
-
-func (b *FluentStringBuilder) WriteStrings(str []string, seq string) *FluentStringBuilder {
+func (b *FluentStringBuilder) Join(str []string, seq string) *FluentStringBuilder {
 	if len(str) == 0 {
 		return b
 	}
@@ -96,4 +89,13 @@ func (b *FluentStringBuilder) Bool(value bool) *FluentStringBuilder {
 		b.Write("false")
 	}
 	return b
+}
+
+// Len returns the number of accumulated bytes; b.Len() == len(b.String()).
+func (b *FluentStringBuilder) Len() int {
+	return b.sb.Len()
+}
+
+func (b *FluentStringBuilder) String() string {
+	return b.sb.String()
 }
