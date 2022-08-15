@@ -23,10 +23,10 @@ func WithPrompt(prompt string) Option {
 	}
 }
 
-// WithPlaceholder set the placeholder
-func WithPlaceholder(placeholder string) Option {
+// WithDefaultValue set the default value
+func WithDefaultValue(s string) Option {
 	return func(i *Text) {
-		i.inner.Placeholder = placeholder
+		i.inner.DefaultValue = s
 	}
 }
 
@@ -86,7 +86,7 @@ func WithPlaceholderStyle(style *style.Style) Option {
 	}
 }
 
-// WithCursorStyle setthe cursor style
+// WithCursorStyle set the cursor style
 func WithCursorStyle(style *style.Style) Option {
 	return func(i *Text) {
 		i.inner.CursorStyle = style

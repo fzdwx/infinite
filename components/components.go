@@ -2,15 +2,12 @@ package components
 
 import (
 	"github.com/charmbracelet/bubbles/help"
-	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/duke-git/lancet/v2/slice"
-	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
-	"time"
 )
 
 type (
@@ -52,21 +49,20 @@ func NewAutocomplete(suggester Suggester) *Autocomplete {
 func NewInput() *Input {
 	c := &Input{
 		Model:            textinput.New(),
-		Status:           Focus,
-		Prompt:           "> ",
-		Placeholder:      "",
-		BlinkSpeed:       DefaultBlinkSpeed,
-		EchoMode:         EchoNormal,
-		EchoCharacter:    '*',
-		CharLimit:        0,
-		QuitKey:          key.NewBinding(),
-		PlaceholderStyle: style.New().Fg(color.Gray),
-		PromptStyle:      style.New(),
-		TextStyle:        style.New(),
-		BackgroundStyle:  style.New(),
-		CursorStyle:      style.New(),
+		Status:           InputDefaultStatus,
+		Prompt:           InputDefaultPrompt,
+		DefaultValue:     InputDefaultValue,
+		BlinkSpeed:       InputDefaultBlinkSpeed,
+		EchoMode:         InputDefaultEchoMode,
+		EchoCharacter:    InputDefaultEchoCharacter,
+		CharLimit:        InputDefaultCharLimit,
+		QuitKey:          InputDefaultQuitKey,
+		PlaceholderStyle: InputDefaultPlaceholderStyle,
+		PromptStyle:      InputDefaultPromptStyle,
+		TextStyle:        InputDefaultTextStyle,
+		BackgroundStyle:  InputDefaultBackgroundStyle,
+		CursorStyle:      InputDefaultCursorStyle,
 	}
-
 	return c
 }
 
@@ -145,7 +141,3 @@ func NewSpinner() *Spinner {
 	}
 	return c
 }
-
-const (
-	DefaultBlinkSpeed = time.Millisecond * 530
-)

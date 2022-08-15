@@ -3,6 +3,7 @@ package text
 import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/pkg/strx"
 )
 
 type Text struct {
@@ -34,8 +35,14 @@ func (i *Text) Apply(ops ...Option) *Text {
 	return i
 }
 
-func (i *Text) Display() error {
-	return i.startUp.Start()
+func (i *Text) Display() (string, error) {
+	err := i.startUp.Start()
+
+	if err != nil {
+		return i.Value(), nil
+	}
+
+	return strx.Empty, err
 }
 
 // Focus sets the Focus state on the model. When the model is in Focus it can

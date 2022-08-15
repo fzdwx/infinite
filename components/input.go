@@ -4,8 +4,26 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/fzdwx/infinite/color"
+	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
 	"time"
+)
+
+var (
+	InputDefaultStatus           = Focus
+	InputDefaultPrompt           = "> "
+	InputDefaultValue            = strx.Empty
+	InputDefaultBlinkSpeed       = time.Millisecond * 530
+	InputDefaultEchoMode         = EchoNormal
+	InputDefaultEchoCharacter    = '*'
+	InputDefaultCharLimit        = 0
+	InputDefaultQuitKey          = key.NewBinding()
+	InputDefaultPlaceholderStyle = style.New().Fg(color.Gray)
+	InputDefaultPromptStyle      = style.New()
+	InputDefaultTextStyle        = style.New()
+	InputDefaultBackgroundStyle  = style.New()
+	InputDefaultCursorStyle      = style.New()
 )
 
 type (
@@ -14,27 +32,22 @@ type (
 		Model   textinput.Model
 		program *tea.Program
 
-		/* option start */
-		Status Status
-
-		Prompt        string
-		Placeholder   string
-		BlinkSpeed    time.Duration
-		EchoMode      EchoMode
-		EchoCharacter rune
-
+		Status           Status
+		Prompt           string
+		DefaultValue     string
+		BlinkSpeed       time.Duration
+		EchoMode         EchoMode
+		EchoCharacter    rune
 		PromptStyle      *style.Style
 		TextStyle        *style.Style
 		BackgroundStyle  *style.Style
 		PlaceholderStyle *style.Style
 		CursorStyle      *style.Style
-
 		// default is disable
 		QuitKey key.Binding
 		// CharLimit is the maximum amount of characters this Input element will
 		// accept. If 0 or less, there's no limit.
 		CharLimit int
-		/* option end */
 	}
 )
 
@@ -57,7 +70,13 @@ func (in *Input) Quit() {
 
 // Value returns the value of the text Input.
 func (in *Input) Value() string {
-	return in.Model.Value()
+	value := in.Model.Value()
+
+	if len(value) == 0 {
+		value = in.DefaultValue
+	}
+
+	return value
 }
 
 // Cursor returns the cursor position.
@@ -113,7 +132,7 @@ func (in *Input) SetCursorMode(model CursorMode) {
 func (in *Input) Init() tea.Cmd {
 
 	in.Model.Prompt = in.Prompt
-	in.Model.Placeholder = in.Placeholder
+	in.Model.Placeholder = in.DefaultValue
 	in.Model.BlinkSpeed = in.BlinkSpeed
 	in.Model.EchoMode = textinput.EchoMode(in.EchoMode)
 	in.Model.EchoCharacter = in.EchoCharacter
