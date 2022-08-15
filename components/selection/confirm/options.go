@@ -35,9 +35,9 @@ func DefaultKeyBinding() KeyMap {
 
 type Option func(c *Confirm)
 
-func WithDisOutResult() Option {
+func WithDisableOutputResult() Option {
 	return func(c *Confirm) {
-		c.OutPutResult = false
+		c.OutputResult = false
 	}
 }
 

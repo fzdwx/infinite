@@ -19,7 +19,7 @@ type Confirm struct {
 	Prompt          string
 	FocusInterval   string
 	UnFocusInterval string
-	OutPutResult    bool
+	OutputResult    bool
 	SymbolStyle     *style.Style
 	PromptStyle     *style.Style
 	ChoiceStyle     *style.Style
@@ -45,7 +45,7 @@ func WithSelection(ops ...Option) *Confirm {
 		ChoiceStyle:     ChoiceStyle,
 		FocusInterval:   FocusInterval,
 		UnFocusInterval: UnFocusInterval,
-		OutPutResult:    true,
+		OutputResult:    true,
 		ops:             ops,
 	}
 	return c
@@ -72,7 +72,7 @@ func (c *Confirm) init() {
 	c.inner.selection.EnableFilter = false
 	c.inner.selection.ShowHelp = false
 	c.inner.selection.ChoiceTextStyle = c.ChoiceStyle
-	c.inner.outPutResult = c.OutPutResult
+	c.inner.outPutResult = c.OutputResult
 	c.inner.selection.Prompt = strx.NewFluent().
 		Style(c.SymbolStyle, c.Symbol).
 		Style(c.PromptStyle, c.Prompt).
