@@ -8,6 +8,7 @@ export default defineUserConfig({
     port: 7777,
     base: "/infinite/",
     theme: hopeTheme({
+        footer: "<a href=\"https://github.com/fzdwx\">fzdwx</a>",
         repo: 'fzdwx/infinite',
         // 全屏
         fullscreen: true,
