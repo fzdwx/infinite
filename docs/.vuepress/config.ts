@@ -13,7 +13,7 @@ export default defineUserConfig({
         '/en/': {
             lang: 'en-US',
             title: 'infinite',
-            description: 'A component library for developing interactive CLI (tui, terminal) programs.',
+            description: '🧬 A component library for developing interactive CLI (tui, terminal) programs.',
         },
     }
 })
