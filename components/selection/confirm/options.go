@@ -2,6 +2,7 @@ package confirm
 
 import (
 	"github.com/charmbracelet/bubbles/key"
+	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
@@ -21,7 +22,7 @@ var (
 	UnFocusSymbolStyle   = theme.DefaultTheme.UnFocusSymbolStyle
 	FocusIntervalStyle   = theme.DefaultTheme.FocusIntervalStyle
 	UnFocusIntervalStyle = theme.DefaultTheme.UnFocusIntervalStyle
-	PromptStyle          = style.New().Bold()
+	PromptStyle          = style.New().Bold().Fg(color.White)
 	ChoiceStyle          = theme.DefaultTheme.ChoiceTextStyle.Underline()
 )
 

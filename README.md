@@ -5,25 +5,25 @@
 <a href="https://goreportcard.com/report/github.com/fzdwx/infinite"><img src="https://goreportcard.com/badge/github.com/fzdwx/infinite" alt="go report card"></a>
 <a href="https://github.com/fzdwx/infinite/releases"><img src="https://img.shields.io/github/v/release/fzdwx/infinite.svg?style=flat-square" alt="release"></a>
 </div>
-<img src="https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif" alt="demo">
+<img src="https://user-images.githubusercontent.com/65269574/184916069-076a0f6a-70bd-49e1-b7d7-0d2e7fc5c6bb.gif" alt="demo">
 
 中文 | [English](https://fzdwx.github.io/infinite/en/)
 
 ## 特性
 
 - 提供一系列开箱即用的组件
-  - autocomplete
-  - progress bar / progress-bar group
-  - multi/single select
-  - spinner
-  - confirm
-  - input
+    - autocomplete
+    - progress bar / progress-bar group
+    - multi/single select
+    - spinner
+    - confirm
+    - input
 - 支持 window/linux (我现在只有这两种操作系统)
 - 可定制,你可以替换组件中的某些选项或方法为你自己的实现
 - 可组合,你可以将一个或多个基础组件联合在一起使用
-  - `autocomplete` 由`input` 和 `selection` 组成
-  - `selection` 通过嵌入`input` 来实现过滤功能.
-  - ...
+    - `autocomplete` 由`input` 和 `selection` 组成
+    - `selection` 通过嵌入`input` 来实现过滤功能.
+    - ...
 
 ## 最佳实践
 
@@ -146,7 +146,52 @@ func sleep() {
 
 </details>
 
+### Autocomplete
 
+![demo](https://user-images.githubusercontent.com/65269574/184916654-999cd99d-94bf-4bd8-8d2c-87d547ec20d7.gif)
+<details>
+<summary>代码</summary>
+
+```go
+package main
+
+import (
+	"github.com/duke-git/lancet/v2/slice"
+	"github.com/fzdwx/infinite/components"
+	"github.com/sahilm/fuzzy"
+	"path/filepath"
+	"sort"
+)
+
+func main() {
+	var f components.Suggester = func(valCtx components.AutocompleteValCtx) ([]string, bool) {
+		cursorWord := valCtx.CursorWord()
+		files, err := filepath.Glob(cursorWord + "*")
+		if err != nil {
+			return nil, false
+		}
+
+		matches := fuzzy.Find(cursorWord, files)
+		if len(matches) == 0 {
+			return nil, false
+		}
+
+		sort.Stable(matches)
+
+		suggester := slice.Map[fuzzy.Match, string](matches, func(index int, item fuzzy.Match) string {
+			return files[item.Index]
+		})
+		return suggester, true
+	}
+
+	c := components.NewAutocomplete(f)
+
+	components.NewStartUp(c).Start()
+}
+
+```
+
+</details>
 
 ### Progress group
 
@@ -202,8 +247,6 @@ func sleep() {
 
 </details>
 
-
-
 ### Multiple select
 
 ![demo](https://user-images.githubusercontent.com/65269574/183274216-d2a7af91-0581-4d13-b8c2-00b9aad5ef3a.gif)
@@ -243,8 +286,6 @@ func main() {
 
 </details>
 
-
-
 ### Spinner
 
 ![demo](https://user-images.githubusercontent.com/65269574/183074665-42d7d902-a56c-420c-a740-3aacc7dc922c.gif)
@@ -283,8 +324,6 @@ func main() {
 
 </details>
 
-
-
 ### Input text
 
 ![demo](https://user-images.githubusercontent.com/65269574/183075959-031a068d-6f88-40a0-8b5e-f3d5bba481af.gif)
@@ -317,8 +356,6 @@ func main() {
 ```
 
 </details>
-
-
 
 ### Confirm with Input
 
@@ -354,8 +391,6 @@ func main() {
 ```
 
 </details>
-
-
 
 ### Confirm With Selection
 
