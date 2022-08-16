@@ -1,0 +1,1 @@
+import{_ as t}from"./plugin-vue_export-helper.21dcd24c.js";import{o as a,c as r,a as e,e as n}from"./app.21eeb38c.js";const o={},c=e("h1",{id:"input",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#input","aria-hidden":"true"},"#"),n(" input")],-1),i=[c];function s(_,d){return a(),r("div",null,i)}var l=t(o,[["render",s],["__file","input.html.vue"]]);export{l as default};
