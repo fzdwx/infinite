@@ -4,6 +4,7 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/duke-git/lancet/v2/slice"
+	"github.com/fzdwx/infinite/theme"
 )
 
 type (
@@ -102,28 +103,37 @@ func NewSelection(choices []string) *Selection {
 	})
 
 	c := &Selection{
-		Choices:             items,
-		Selected:            make(map[int]struct{}),
-		CursorSymbol:        SelectionDefaultCursorSymbol,
-		UnCursorSymbol:      SelectionDefaultUnCursorSymbol,
-		CursorSymbolStyle:   SelectionDefaultCursorSymbolStyle,
-		ChoiceTextStyle:     SelectionDefaultChoiceTextStyle,
-		Prompt:              SelectionDefaultPrompt,
-		PromptStyle:         SelectionDefaultPromptStyle,
-		HintSymbol:          SelectionDefaultHintSymbol,
-		HintSymbolStyle:     SelectionDefaultHintSymbolStyle,
-		UnHintSymbol:        SelectionDefaultUnHintSymbol,
-		UnHintSymbolStyle:   SelectionDefaultUnHintSymbolStyle,
-		confirmed:           SelectionDefaultConfirmed,
-		DisableOutPutResult: SelectionDefaultDisableOutPutResult,
-		PageSize:            SelectionDefaultPageSize,
-		Keymap:              DefaultMultiKeyMap(),
-		Help:                SelectionDefaultHelp,
-		RowRender:           SelectionDefaultRowRender,
-		EnableFilter:        SelectionDefaultEnableFilter,
-		FilterInput:         SelectionDefaultFilterInput,
-		FilterFunc:          SelectionDefaultFilterFunc,
-		ShowHelp:            SelectionDefaultShowHelp,
+		Choices:              items,
+		Selected:             make(map[int]struct{}),
+		CursorSymbol:         SelectionDefaultCursorSymbol,
+		UnCursorSymbol:       SelectionDefaultUnCursorSymbol,
+		CursorSymbolStyle:    SelectionDefaultCursorSymbolStyle,
+		ChoiceTextStyle:      SelectionDefaultChoiceTextStyle,
+		Prompt:               SelectionDefaultPrompt,
+		PromptStyle:          SelectionDefaultPromptStyle,
+		HintSymbol:           SelectionDefaultHintSymbol,
+		HintSymbolStyle:      SelectionDefaultHintSymbolStyle,
+		UnHintSymbol:         SelectionDefaultUnHintSymbol,
+		UnHintSymbolStyle:    SelectionDefaultUnHintSymbolStyle,
+		DisableOutPutResult:  SelectionDefaultDisableOutPutResult,
+		PageSize:             SelectionDefaultPageSize,
+		Keymap:               DefaultMultiKeyMap(),
+		Help:                 SelectionDefaultHelp,
+		RowRender:            SelectionDefaultRowRender,
+		EnableFilter:         SelectionDefaultEnableFilter,
+		FilterInput:          SelectionDefaultFilterInput,
+		FilterFunc:           SelectionDefaultFilterFunc,
+		ShowHelp:             SelectionDefaultShowHelp,
+		FocusSymbol:          theme.DefaultTheme.FocusSymbol,
+		UnFocusSymbol:        theme.DefaultTheme.UnFocusSymbol,
+		FocusInterval:        theme.DefaultTheme.FocusInterval,
+		UnFocusInterval:      theme.DefaultTheme.UnFocusInterval,
+		FocusSymbolStyle:     theme.DefaultTheme.FocusSymbolStyle,
+		UnFocusSymbolStyle:   theme.DefaultTheme.UnFocusSymbolStyle,
+		FocusIntervalStyle:   theme.DefaultTheme.FocusIntervalStyle,
+		UnFocusIntervalStyle: theme.DefaultTheme.UnFocusIntervalStyle,
+		ValueStyle:           theme.DefaultTheme.ChoiceTextStyle.Underline(),
+		status:               Normal,
 	}
 
 	return c

@@ -96,3 +96,66 @@ func WithPrompt(prompt ...string) Option {
 		s.inner.Apply(multiselect.WithPrompt(prompt...))
 	}
 }
+
+// WithFocusSymbol default is theme.DefaultTheme#FocusSymbol:
+func WithFocusSymbol(ss string) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithFocusSymbol(ss))
+	}
+}
+
+// WithUnFocusSymbol default is theme.DefaultTheme#UnFocusSymbol:
+func WithUnFocusSymbol(ss string) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithUnFocusSymbol(ss))
+	}
+}
+
+// WithFocusInterval default is theme.DefaultTheme#FocusInterval:
+func WithFocusInterval(ss string) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithFocusInterval(ss))
+	}
+}
+
+// WithUnFocusInterval default is theme.DefaultTheme#UnFocusInterval:
+func WithUnFocusInterval(ss string) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithUnFocusInterval(ss))
+	}
+}
+
+// WithFocusSymbolStyle default is theme.DefaultTheme#FocusSymbolStyle:
+func WithFocusSymbolStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithFocusSymbolStyle(stl))
+	}
+}
+
+// WithUnFocusSymbolStyle default is theme.DefaultTheme#UnFocusSymbolStyle:
+func WithUnFocusSymbolStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithUnFocusSymbolStyle(stl))
+	}
+}
+
+// WithFocusIntervalStyle default is theme.DefaultTheme#FocusIntervalStyle:
+func WithFocusIntervalStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithFocusIntervalStyle(stl))
+	}
+}
+
+// WithUnFocusIntervalStyle default is theme.DefaultTheme#UnFocusIntervalStyle:
+func WithUnFocusIntervalStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithUnFocusIntervalStyle(stl))
+	}
+}
+
+// WithValueStyle default is theme.DefaultTheme#ChoiceTextStyle.Underline()
+func WithValueStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithValueStyle(stl))
+	}
+}

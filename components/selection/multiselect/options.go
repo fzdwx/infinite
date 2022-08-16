@@ -125,3 +125,66 @@ func WithDisableOutputResult() Option {
 		s.inner.DisableOutPutResult = true
 	}
 }
+
+// WithFocusSymbol default is theme.DefaultTheme#FocusSymbol:
+func WithFocusSymbol(ss string) Option {
+	return func(s *Select) {
+		s.inner.FocusSymbol = ss
+	}
+}
+
+// WithUnFocusSymbol default is theme.DefaultTheme#UnFocusSymbol:
+func WithUnFocusSymbol(ss string) Option {
+	return func(s *Select) {
+		s.inner.UnFocusSymbol = ss
+	}
+}
+
+// WithFocusInterval default is theme.DefaultTheme#FocusInterval:
+func WithFocusInterval(ss string) Option {
+	return func(s *Select) {
+		s.inner.FocusInterval = ss
+	}
+}
+
+// WithUnFocusInterval default is theme.DefaultTheme#UnFocusInterval:
+func WithUnFocusInterval(ss string) Option {
+	return func(s *Select) {
+		s.inner.UnFocusInterval = ss
+	}
+}
+
+// WithFocusSymbolStyle default is theme.DefaultTheme#FocusSymbolStyle:
+func WithFocusSymbolStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.FocusSymbolStyle = stl
+	}
+}
+
+// WithUnFocusSymbolStyle default is theme.DefaultTheme#UnFocusSymbolStyle:
+func WithUnFocusSymbolStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.UnFocusSymbolStyle = stl
+	}
+}
+
+// WithFocusIntervalStyle default is theme.DefaultTheme#FocusIntervalStyle:
+func WithFocusIntervalStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.FocusIntervalStyle = stl
+	}
+}
+
+// WithUnFocusIntervalStyle default is theme.DefaultTheme#UnFocusIntervalStyle:
+func WithUnFocusIntervalStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.UnFocusIntervalStyle = stl
+	}
+}
+
+// WithValueStyle default is theme.DefaultTheme#ChoiceTextStyle.Underline()
+func WithValueStyle(stl *style.Style) Option {
+	return func(s *Select) {
+		s.inner.ValueStyle = stl
+	}
+}

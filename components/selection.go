@@ -8,6 +8,7 @@ import (
 	"github.com/duke-git/lancet/v2/mathutil"
 	"github.com/duke-git/lancet/v2/slice"
 	"github.com/duke-git/lancet/v2/strutil"
+	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
@@ -22,12 +23,11 @@ var (
 	SelectionDefaultCursorSymbolStyle   = theme.DefaultTheme.CursorSymbolStyle
 	SelectionDefaultChoiceTextStyle     = theme.DefaultTheme.ChoiceTextStyle
 	SelectionDefaultPrompt              = "Please Selection your options:"
-	SelectionDefaultPromptStyle         = theme.DefaultTheme.PromptStyle
+	SelectionDefaultPromptStyle         = style.New().Bold().Fg(color.White)
 	SelectionDefaultHintSymbol          = "✓"
 	SelectionDefaultHintSymbolStyle     = theme.DefaultTheme.MultiSelectedHintSymbolStyle
 	SelectionDefaultUnHintSymbol        = "✗"
 	SelectionDefaultUnHintSymbolStyle   = theme.DefaultTheme.UnHintSymbolStyle
-	SelectionDefaultConfirmed           = false
 	SelectionDefaultDisableOutPutResult = false
 	SelectionDefaultPageSize            = 5
 	SelectionDefaultHelp                = help.New()
@@ -54,7 +54,7 @@ func DefaultMultiKeyMap() SelectionKeyMap {
 		),
 		Confirm: key.NewBinding(
 			key.WithKeys("enter"),
-			key.WithHelp("enter", "confirm selection"),
+			key.WithHelp("enter", "finish selection"),
 		),
 		Quit: InterruptKey,
 	}
@@ -76,7 +76,7 @@ func DefaultSingleKeyMap() SelectionKeyMap {
 		),
 		Confirm: key.NewBinding(
 			key.WithKeys("tab", "tab"),
-			key.WithHelp("tab", "confirm selection"),
+			key.WithHelp("tab", "finish selection"),
 		),
 		Quit: InterruptKey,
 	}
@@ -110,8 +110,6 @@ func (k SelectionKeyMap) FullHelp() [][]key.Binding {
 type Selection struct {
 	// result
 	Selected map[int]struct{}
-	// on SelectionKeyMap.Confirm msg handle
-	confirmed bool
 	// Current cursor index in currentChoices
 	cursor int
 	// the offset of screen
@@ -152,6 +150,18 @@ type Selection struct {
 	EnableFilter bool
 	FilterInput  *Input
 	FilterFunc   func(input string, items []SelectionItem) []SelectionItem
+
+	FocusSymbol          string
+	UnFocusSymbol        string
+	FocusInterval        string
+	UnFocusInterval      string
+	FocusSymbolStyle     *style.Style
+	UnFocusSymbolStyle   *style.Style
+	FocusIntervalStyle   *style.Style
+	UnFocusIntervalStyle *style.Style
+	ValueStyle           *style.Style
+
+	status Status
 }
 
 func DefaultRowRender(cursorSymbol string, hintSymbol string, choice string) string {
@@ -209,7 +219,7 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		if key.Matches(msg, s.Keymap.Confirm) {
-			return s.confirm()
+			return s.finish()
 		}
 
 		if key.Matches(msg, s.Keymap.Quit) {
@@ -232,14 +242,12 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (s *Selection) View() string {
-	if s.confirmed {
+	if IsFinish(s.status) {
 		return s.viewResult()
 	}
 
-	msg := strx.NewFluent()
+	msg := s.promptLine()
 
-	// The header
-	msg.Write(s.Prompt)
 	if s.shouldFilter() {
 		msg.NewLine().Write(s.FilterInput.View())
 	}
@@ -337,15 +345,31 @@ func (s *Selection) viewResult() string {
 		return ""
 	}
 
-	output := strx.NewFluent().Write(s.Prompt).Space()
+	output := s.promptLine()
 
 	for i := range s.Selected {
-		output.Write(s.Choices[i].val).Space()
+		output.Style(s.ValueStyle, s.Choices[i].val).Space()
 	}
 
 	output.NewLine()
 
 	return output.String()
+}
+
+func (s *Selection) promptLine() *strx.FluentStringBuilder {
+	builder := strx.NewFluent()
+
+	if IsFinish(s.status) {
+		builder.Style(s.UnFocusSymbolStyle, s.UnFocusSymbol).
+			Write(s.Prompt).
+			Style(s.UnFocusIntervalStyle, s.UnFocusInterval)
+	} else {
+		builder.Style(s.FocusSymbolStyle, s.FocusSymbol).
+			Write(s.Prompt).
+			Style(s.FocusIntervalStyle, s.FocusInterval)
+	}
+
+	return builder
 }
 
 // moveUp The "up" and "k" keys move the cursor up
@@ -386,13 +410,9 @@ func (s *Selection) choice() {
 	}
 }
 
-// confirm These keys should exit the Program.
-func (s *Selection) confirm() (tea.Model, tea.Cmd) {
-	s.confirmed = true
-	return s.finish()
-}
-
+// finish These keys should exit the Program.
 func (s *Selection) finish() (tea.Model, tea.Cmd) {
+	s.status = Finish
 	return s, tea.Quit
 }
 
