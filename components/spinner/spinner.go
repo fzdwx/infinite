@@ -55,10 +55,10 @@ func (s *Spinner) Display(runner func(spinner *Spinner)) error {
 	return s.startUp.Start()
 }
 
-// Finish quit Spinner
+// Finish Spinner
 func (s *Spinner) Finish(prompt ...string) {
 	s.refresh(prompt...)
-	s.inner.Quit()
+	s.inner.Finish()
 }
 
 // Refresh Spinner prompt

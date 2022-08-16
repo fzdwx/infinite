@@ -8,8 +8,10 @@ const (
 	Focus Status = iota
 	// Blur only use Input
 	Blur
-	// Quit component
+	// Quit user interrupt
 	Quit
+	// Finish indicates that a component has done its job
+	Finish
 	// Normal ignore it
 	Normal
 )

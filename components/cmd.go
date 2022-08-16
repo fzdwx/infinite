@@ -13,3 +13,7 @@ func BlurCmd() tea.Msg {
 func QuitCmd() tea.Msg {
 	return Quit
 }
+
+func FinishCmd() tea.Msg {
+	return Finish
+}

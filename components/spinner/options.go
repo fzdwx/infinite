@@ -1,6 +1,7 @@
 package spinner
 
 import (
+	"github.com/charmbracelet/bubbles/key"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/style"
 )
@@ -11,6 +12,13 @@ type Option func(s *Spinner)
 func WithPrompt(prompt string) Option {
 	return func(s *Spinner) {
 		s.inner.Prompt = prompt
+	}
+}
+
+// WithQuitKey replace `Quit` key, user interrupt, kill program.
+func WithQuitKey(key key.Binding) Option {
+	return func(s *Spinner) {
+		s.inner.Quit = key
 	}
 }
 

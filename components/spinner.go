@@ -1,6 +1,7 @@
 package components
 
 import (
+	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/fzdwx/infinite/pkg/strx"
@@ -15,6 +16,7 @@ var (
 	SpinnerDefaultPrompt              = "Loading..."
 	SpinnerDefaultDisableOutPutResult = false
 	SpinnerDefaultStatus              = Normal
+	SpinnerDefaultQuitKey             = InterruptKey
 )
 
 type (
@@ -22,7 +24,8 @@ type (
 		program *tea.Program
 		*PrintHelper
 		Model spinner.Model
-
+		// user interrupt, kill program.
+		Quit                key.Binding
 		Shape               Shape
 		ShapeStyle          *style.Style
 		Prompt              string
@@ -38,14 +41,14 @@ func (s *Spinner) RefreshPrompt(str string) {
 	s.program.Send(RefreshPromptMsg(str))
 }
 
-// Quit Spinner
-func (s *Spinner) Quit() {
-	s.program.Send(QuitCmd())
+// Finish spinner job is done
+func (s *Spinner) Finish() {
+	s.program.Send(FinishCmd())
 }
 
-// Quited get quit state.
-func (s *Spinner) Quited() bool {
-	return s.Status == Quit
+// Finished get quit state.
+func (s *Spinner) Finished() bool {
+	return s.Status == Finish
 }
 
 func (s *Spinner) Init() tea.Cmd {
@@ -60,15 +63,20 @@ func (s *Spinner) Init() tea.Cmd {
 
 func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch {
+		case key.Matches(msg, s.Quit):
+			OnUserInterrupt(s.program)
+		}
 	case Status:
 		switch msg {
-		case Quit:
-			return s.quit()
+		case Finish:
+			return s.doFinish()
 		}
 	case spinner.TickMsg:
 		return s.refreshSpinner(msg)
 	case RefreshPromptMsg:
-		if !s.Quited() {
+		if !s.Finished() {
 			s.Prompt = string(msg)
 		}
 		return s.refreshSpinner(msg)
@@ -79,8 +87,8 @@ func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return s, nil
 }
 
-func (s *Spinner) quit() (tea.Model, tea.Cmd) {
-	s.Status = Quit
+func (s *Spinner) doFinish() (tea.Model, tea.Cmd) {
+	s.Status = Finish
 	return s, tea.Quit
 }
 
@@ -108,5 +116,5 @@ func (s *Spinner) refreshSpinner(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (s *Spinner) shouldAppendNewLine() bool {
-	return s.Quited() && !s.DisableOutPutResult
+	return s.Finished() && !s.DisableOutPutResult
 }

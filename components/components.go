@@ -138,6 +138,7 @@ func NewSpinner() *Spinner {
 		Prompt:              SpinnerDefaultPrompt,
 		DisableOutPutResult: SpinnerDefaultDisableOutPutResult,
 		Status:              SpinnerDefaultStatus,
+		Quit:                SpinnerDefaultQuitKey,
 	}
 	return c
 }
