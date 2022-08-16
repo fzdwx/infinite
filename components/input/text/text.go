@@ -51,11 +51,6 @@ func (i *Text) Blur() {
 	i.inner.Blur()
 }
 
-// Quit input
-func (i *Text) Quit() {
-	i.inner.Quit()
-}
-
 // Value returns the value of the text input.
 func (i *Text) Value() string {
 	return i.inner.Value()

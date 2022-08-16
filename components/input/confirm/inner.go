@@ -13,9 +13,8 @@ import (
 // inner is confirm impl
 type inner struct {
 	input   *components.Input
-	program tea.Program
+	program *tea.Program
 
-	/* option start */
 	// the KeyMap of Confirm
 	KeyMap KeyMap
 	Help   help.Model
@@ -27,7 +26,6 @@ type inner struct {
 	NoticeStyle *style.Style
 	Symbol      string
 	SymbolStyle *style.Style
-	/* option end */
 }
 
 func newInner() *inner {
@@ -67,12 +65,12 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msgCast, i.KeyMap.Quit):
-			msg = components.Quit
+			components.OnUserInterrupt(i.program)
 		case key.Matches(msgCast, i.KeyMap.Yes):
-			msg = components.Quit
+			msg = components.Finish
 			i.Value = true
 		case key.Matches(msgCast, i.KeyMap.No):
-			msg = components.Quit
+			msg = components.Finish
 			i.Value = false
 		default:
 			// discard, maybe output some error msg to user?
@@ -97,5 +95,6 @@ func (i *inner) View() string {
 }
 
 func (i *inner) SetProgram(program *tea.Program) {
+	i.program = program
 	i.input.SetProgram(program)
 }

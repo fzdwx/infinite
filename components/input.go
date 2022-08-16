@@ -91,11 +91,6 @@ func (in *Input) Blur() {
 	in.program.Send(Blur)
 }
 
-// Quit Input
-func (in *Input) Quit() {
-	in.program.Send(Quit)
-}
-
 // Value returns the value of the text Input.
 func (in *Input) Value() string {
 	value := in.Model.Value()
@@ -187,7 +182,7 @@ func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// todo Verification function can be added
 			return in.confirm()
 		case key.Matches(msg, in.KeyMap.Quit):
-			return in.quit()
+			OnUserInterrupt(in.program)
 		}
 	case Status:
 		in.Status = msg
@@ -196,8 +191,8 @@ func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			cmds = append(cmds, in.Model.Focus())
 		case Blur:
 			in.Model.Blur()
-		case Quit:
-			return in.quit()
+		case Finish:
+			return in.finish()
 		}
 	case cleanRequired:
 		in.cleanRequiredMsg(msg)
@@ -232,10 +227,10 @@ func (in *Input) confirm() (tea.Model, tea.Cmd) {
 		return in, tea.Tick(in.RequiredMsgKeepAliveTime, cleanRequiredMsg(in.cleanId))
 	}
 
-	return in.quit()
+	return in.finish()
 }
 
-func (in *Input) quit() (tea.Model, tea.Cmd) {
+func (in *Input) finish() (tea.Model, tea.Cmd) {
 	in.Model.Blur()
 	return in, tea.Quit
 }

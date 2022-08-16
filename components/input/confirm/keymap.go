@@ -1,6 +1,9 @@
 package confirm
 
-import "github.com/charmbracelet/bubbles/key"
+import (
+	"github.com/charmbracelet/bubbles/key"
+	"github.com/fzdwx/infinite/components"
+)
 
 type KeyMap struct {
 	Quit key.Binding
@@ -20,10 +23,7 @@ func (k KeyMap) FullHelp() [][]key.Binding {
 
 var (
 	DefaultKeyMap = KeyMap{
-		Quit: key.NewBinding(
-			key.WithKeys("ctrl+c"),
-			key.WithHelp("^c", "quit confirm"),
-		),
+		Quit: components.InterruptKey,
 		Yes: key.NewBinding(
 			key.WithKeys("y"),
 			key.WithHelp("y", "yes"),
