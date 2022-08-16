@@ -65,6 +65,13 @@ func (c *Component) Init() tea.Cmd {
 }
 
 func (c *Component) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "ctrl+c":
+			return c, tea.Quit
+		}
+	}
 	_, c1 := c.spinner.Update(msg)
 	_, c2 := c.progress.Update(msg)
 
