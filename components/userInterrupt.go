@@ -13,6 +13,7 @@ var (
 	)
 
 	OnUserInterrupt = func(p *tea.Program) {
+		p.Kill()
 		os.Exit(0)
 	}
 )

@@ -51,7 +51,7 @@ func WithPageSize(pageSize int) Option {
 // WithKeyBinding replace key map.
 func WithKeyBinding(keymap components.SelectionKeyMap) Option {
 	return func(s *Select) {
-		s.inner.Apply(multiselect.WithKeyBinding(keymap))
+		s.inner.Apply(multiselect.WithKeyMap(keymap))
 	}
 }
 

@@ -56,10 +56,7 @@ var DefaultMultiKeyMap = SelectionKeyMap{
 		key.WithKeys("enter"),
 		key.WithHelp("enter", "confirm selection"),
 	),
-	Quit: key.NewBinding(
-		key.WithKeys("ctrl+c"),
-		key.WithHelp("^c", "quit selection"),
-	),
+	Quit: InterruptKey,
 }
 
 var DefaultSingleKeyMap = SelectionKeyMap{
@@ -79,10 +76,7 @@ var DefaultSingleKeyMap = SelectionKeyMap{
 		key.WithKeys("tab", "tab"),
 		key.WithHelp("tab", "confirm selection"),
 	),
-	Quit: key.NewBinding(
-		key.WithKeys("ctrl+c"),
-		key.WithHelp("^c", "quit selection"),
-	),
+	Quit: InterruptKey,
 }
 
 type SelectionItem struct {
@@ -95,7 +89,8 @@ type SelectionKeyMap struct {
 	Down    key.Binding
 	Choice  key.Binding
 	Confirm key.Binding
-	Quit    key.Binding
+	// kill program
+	Quit key.Binding
 }
 
 func (k SelectionKeyMap) ShortHelp() []key.Binding {
@@ -122,6 +117,7 @@ type Selection struct {
 	availableChoices int
 	// currently valid option
 	currentChoices []SelectionItem
+	program        *tea.Program
 
 	Choices []SelectionItem
 	// how many options to display at a time
@@ -214,7 +210,7 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		if key.Matches(msg, s.Keymap.Quit) {
-			return s.quit()
+			OnUserInterrupt(s.program)
 		}
 
 		if !shouldSkipFiler && s.shouldFilter() {
@@ -275,6 +271,7 @@ func (s *Selection) View() string {
 }
 
 func (s *Selection) SetProgram(program *tea.Program) {
+	s.program = program
 	if s.shouldFilter() {
 		s.FilterInput.SetProgram(program)
 	}
@@ -389,10 +386,10 @@ func (s *Selection) choice() {
 // confirm These keys should exit the Program.
 func (s *Selection) confirm() (tea.Model, tea.Cmd) {
 	s.confirmed = true
-	return s.quit()
+	return s.finish()
 }
 
-func (s *Selection) quit() (tea.Model, tea.Cmd) {
+func (s *Selection) finish() (tea.Model, tea.Cmd) {
 	return s, tea.Quit
 }
 

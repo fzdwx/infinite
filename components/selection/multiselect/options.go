@@ -47,8 +47,8 @@ func WithPageSize(pageSize int) Option {
 	}
 }
 
-// WithKeyBinding replace key map.
-func WithKeyBinding(keymap components.SelectionKeyMap) Option {
+// WithKeyMap replace key map.
+func WithKeyMap(keymap components.SelectionKeyMap) Option {
 	return func(s *Select) {
 		s.inner.Keymap = keymap
 	}
