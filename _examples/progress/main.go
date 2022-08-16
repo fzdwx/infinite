@@ -11,6 +11,9 @@ func main() {
 	progress := components.NewProgress().
 		WithTotal(int64(total)).
 		WithDefaultGradient().
+		WithTitleView(func(done bool) string {
+			return "loading..."
+		}).
 		WithPercentAgeFunc(func(total int64, current int64, percent float64) string {
 			return fmt.Sprintf(" %d/%d", current, total)
 		})

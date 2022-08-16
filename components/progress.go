@@ -40,7 +40,7 @@ func (pro *Progress) WithTickCostDelay(delay time.Duration) *Progress {
 }
 
 // WithTitleView append title view.
-func (pro *Progress) WithTitleView(f func() string) *Progress {
+func (pro *Progress) WithTitleView(f func(done bool) string) *Progress {
 	pro.TitleView = f
 	return pro
 }
@@ -193,7 +193,7 @@ type Progress struct {
 	done     bool
 	DoneView func() string
 
-	TitleView func() string
+	TitleView func(done bool) string
 
 	// Gradient settings
 	useRamp    bool
@@ -285,14 +285,14 @@ func (pro *Progress) View() string {
 		return pro.DoneView()
 	}
 
-	return pro.ViewAs(pro.percent, pro.end)
+	return pro.ViewAs(pro.percent, pro.end, pro.done)
 }
 
-func (pro *Progress) ViewAs(percent float64, now time.Time) string {
+func (pro *Progress) ViewAs(percent float64, now time.Time, done bool) string {
 	fluent := strx.NewFluent()
 	percentage := pro.viewPercentage(percent)
 	costView := pro.viewCost(now)
-	title := pro.viewTitle()
+	title := pro.viewTitle(done)
 	otherLen := ansi.PrintableRuneWidth(title + percentage + costView)
 
 	fluent.Write(title)
@@ -387,12 +387,12 @@ func (pro *Progress) viewCost(end time.Time) string {
 	return strx.Empty
 }
 
-func (pro *Progress) viewTitle() string {
+func (pro *Progress) viewTitle(done bool) string {
 	if pro.TitleView == nil {
 		return strx.Empty
 	}
 
-	return pro.TitleView()
+	return pro.TitleView(done)
 }
 
 func (pro *Progress) SetProgram(program *tea.Program) {
