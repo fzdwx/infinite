@@ -90,6 +90,14 @@ func (s *Style) Reverse() *Style {
 	return s
 }
 
+// Strikethrough sets a strikethrough rule. By default, strikes will not be
+// drawn on whitespace like margins and padding. To change this behavior set
+// renderStrikethroughOnSpaces.
+func (s *Style) Strikethrough() *Style {
+	s.inner = s.inner.Strikethrough(true)
+	return s
+}
+
 // Blink sets a rule for blinking foreground text.
 func (s *Style) Blink() *Style {
 	s.inner = s.inner.Blink(true)
