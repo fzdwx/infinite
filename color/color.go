@@ -10,7 +10,9 @@ var (
 	Red       = New(9)
 	LightBlue = New(12)
 	Blank     = New(30)
-	Cyan      = New(49)
+	Pink      = New(13)
+	Green     = New(10)
+	Cyan      = New(14)
 	Aqua      = New(86)
 	HotPink   = New(201)
 	Orange    = New(202)
@@ -20,7 +22,6 @@ var (
 	DarkGray = NewHex("#3C3C3C")
 	Gray     = NewHex("#808080")
 	White    = NewHex("#ffffff")
-	Green    = NewHex("#A8CC8C")
 
 	Special   = NewAdaptive("#43BF6D", "#73F59F")
 	Highlight = NewAdaptive("#874BFD", "#7D56F4")

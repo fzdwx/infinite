@@ -12,6 +12,8 @@ type switchIt int
 
 type inner struct {
 	selection       *components.Selection
+	focusPrompt     string
+	unFocusPrompt   string
 	focusInterval   string
 	unFocusInterval string
 	keyMap          KeyMap
@@ -19,6 +21,7 @@ type inner struct {
 	DefaultVal      bool
 	choice          bool
 	outputResult    bool
+	program         *tea.Program
 }
 
 func newInner(selection *components.Selection) *inner {
@@ -47,6 +50,8 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, i.keyMap.Choice):
 			i.choice = true
 			return i, tea.Quit
+		case key.Matches(msg, i.keyMap.Quit):
+			components.OnUserInterrupt(i.program)
 		}
 	case switchIt:
 		i.switchIt()
@@ -58,7 +63,7 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (i *inner) View() string {
 	rows := strx.RemoveEmpty(strings.Split(i.selection.View(), strx.NewLine))
 	row := strx.NewFluent().
-		Write(rows[0]).
+		Write(i.prompt()).
 		Write(i.interval()).
 		Write(rows[1]).Space().Write("/").Space().Write(rows[2])
 
@@ -70,6 +75,7 @@ func (i *inner) View() string {
 }
 
 func (i *inner) SetProgram(program *tea.Program) {
+	i.program = program
 }
 
 func (i *inner) switchIt() {
@@ -92,4 +98,11 @@ func (i *inner) interval() string {
 		return i.unFocusInterval
 	}
 	return i.focusInterval
+}
+
+func (i *inner) prompt() string {
+	if i.choice {
+		return i.unFocusPrompt
+	}
+	return i.focusPrompt
 }

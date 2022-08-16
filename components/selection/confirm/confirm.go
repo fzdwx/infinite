@@ -7,48 +7,60 @@ import (
 	"github.com/fzdwx/infinite/style"
 )
 
+type KeyMap struct {
+	Switch key.Binding
+	Choice key.Binding
+	Quit   key.Binding
+}
+
 // Confirm with components.Selection
 type Confirm struct {
 	startUp *components.StartUp
 	inner   *inner
 
-	KeyMap          KeyMap
-	Yes             string
-	No              string
-	Symbol          string
-	Prompt          string
+	KeyMap       KeyMap
+	Yes          string
+	No           string
+	OutputResult bool
+	DefaultVal   bool
+
+	FocusSymbol     string
+	UnFocusSymbol   string
 	FocusInterval   string
 	UnFocusInterval string
-	OutputResult    bool
-	DefaultVal      bool
-	SymbolStyle     *style.Style
-	PromptStyle     *style.Style
-	ChoiceStyle     *style.Style
+	Prompt          string
+
+	FocusSymbolStyle     *style.Style
+	UnFocusSymbolStyle   *style.Style
+	FocusIntervalStyle   *style.Style
+	UnFocusIntervalStyle *style.Style
+	PromptStyle          *style.Style
+	ChoiceStyle          *style.Style
 
 	ops []Option
-}
-
-type KeyMap struct {
-	Switch key.Binding
-	Choice key.Binding
 }
 
 // WithSelection new Confirm with components.Selection
 func WithSelection(ops ...Option) *Confirm {
 	c := &Confirm{
-		Yes:             Yes,
-		No:              No,
-		KeyMap:          DefaultKeyBinding(),
-		SymbolStyle:     SymbolStyle,
-		Symbol:          Symbol,
-		Prompt:          Prompt,
-		PromptStyle:     PromptStyle,
-		ChoiceStyle:     ChoiceStyle,
-		FocusInterval:   FocusInterval,
-		UnFocusInterval: UnFocusInterval,
-		OutputResult:    true,
-		DefaultVal:      false,
-		ops:             ops,
+		Yes:          Yes,
+		No:           No,
+		KeyMap:       DefaultKeyBinding(),
+		OutputResult: true,
+		DefaultVal:   false,
+		ops:          ops,
+
+		FocusSymbol:          FocusSymbol,
+		UnFocusSymbol:        UnFocusSymbol,
+		FocusInterval:        FocusInterval,
+		UnFocusInterval:      UnFocusInterval,
+		Prompt:               Prompt,
+		FocusSymbolStyle:     FocusSymbolStyle,
+		UnFocusSymbolStyle:   UnFocusSymbolStyle,
+		FocusIntervalStyle:   FocusIntervalStyle,
+		UnFocusIntervalStyle: UnFocusIntervalStyle,
+		PromptStyle:          PromptStyle,
+		ChoiceStyle:          ChoiceStyle,
 	}
 	return c
 }
@@ -71,21 +83,16 @@ func (c *Confirm) init() {
 	c.inner = newInner(components.NewSelection([]string{c.No, c.Yes}))
 	c.inner.focusInterval = c.FocusInterval
 	c.inner.unFocusInterval = c.UnFocusInterval
+	// default true
+	c.inner.DefaultVal = c.DefaultVal
+	c.inner.keyMap = c.KeyMap
+	c.inner.focusPrompt = strx.NewFluent().Style(c.FocusSymbolStyle, c.FocusSymbol).Style(c.PromptStyle, c.Prompt).String()
+	c.inner.unFocusPrompt = strx.NewFluent().Style(c.UnFocusSymbolStyle, c.UnFocusSymbol).Style(c.PromptStyle, c.Prompt).String()
 	c.inner.selection.EnableFilter = false
 	c.inner.selection.ShowHelp = false
 	c.inner.selection.ChoiceTextStyle = c.ChoiceStyle
 	c.inner.outputResult = c.OutputResult
-	c.inner.selection.Prompt = strx.NewFluent().
-		Style(c.SymbolStyle, c.Symbol).
-		Style(c.PromptStyle, c.Prompt).
-		String()
-
 	c.inner.selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
 		return choice
 	}
-
-	// default true
-	c.inner.DefaultVal = c.DefaultVal
-
-	c.inner.keyMap = c.KeyMap
 }

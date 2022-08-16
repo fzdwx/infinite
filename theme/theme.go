@@ -14,6 +14,16 @@ type Theme struct {
 	UnHintSymbolStyle            *style.Style
 	SpinnerShapeStyle            *style.Style
 	PlaceholderStyle             *style.Style
+
+	FocusSymbol     string
+	UnFocusSymbol   string
+	FocusInterval   string
+	UnFocusInterval string
+
+	FocusSymbolStyle     *style.Style
+	UnFocusSymbolStyle   *style.Style
+	FocusIntervalStyle   *style.Style
+	UnFocusIntervalStyle *style.Style
 }
 
 var (
@@ -25,6 +35,14 @@ var (
 		UnHintSymbolStyle:            style.New().Fg(color.Red),
 		SpinnerShapeStyle:            style.New().Fg(color.RedPink),
 		PlaceholderStyle:             style.New().Fg(lipgloss.Color("240")),
+		FocusSymbol:                  "? ",
+		UnFocusSymbol:                "√ ",
+		FocusInterval:                " » ",
+		UnFocusInterval:              " … ",
+		FocusSymbolStyle:             style.New().Fg(color.Cyan),
+		UnFocusSymbolStyle:           style.New().Fg(color.Green),
+		FocusIntervalStyle:           style.New().Fg(color.Gray),
+		UnFocusIntervalStyle:         style.New().Fg(color.White).Bold(),
 	}
 
 	// fix https://github.com/fzdwx/infinite/issues/5

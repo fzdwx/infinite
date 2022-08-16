@@ -44,8 +44,6 @@ https://fzdwx.github.io/infinite/
 
 ### Combined demo
 
-一个 `progress` 和 `spinner` 组合使用的demo
-
 ![demo](https://user-images.githubusercontent.com/65269574/184496950-dbc246e7-5199-4e85-8167-1292b6eeb574.gif)
 
 <details>
@@ -148,7 +146,7 @@ func sleep() {
 
 </details>
 
----
+
 
 ### Progress group
 
@@ -204,7 +202,7 @@ func sleep() {
 
 </details>
 
----
+
 
 ### Multiple select
 
@@ -245,7 +243,7 @@ func main() {
 
 </details>
 
----
+
 
 ### Spinner
 
@@ -285,7 +283,7 @@ func main() {
 
 </details>
 
----
+
 
 ### Input text
 
@@ -320,7 +318,7 @@ func main() {
 
 </details>
 
----
+
 
 ### Confirm with Input
 
@@ -357,7 +355,7 @@ func main() {
 
 </details>
 
----
+
 
 ### Confirm With Selection
 

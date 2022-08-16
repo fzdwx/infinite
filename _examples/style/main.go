@@ -23,4 +23,8 @@ func main() {
 	fmt.Println(style.New().Fg(color.Subtle).Render("Subtle"))
 	fmt.Println(style.New().BorderStyle(style.DoubleBorder()).Render("hello world"))
 	fmt.Println(style.New().Width(200).Center().Render("hello world"))
+
+	for i := 0; i < 255; i++ {
+		fmt.Println(style.New().Fg(color.New(i)).Render(fmt.Sprintf("%d hello world", i)))
+	}
 }
