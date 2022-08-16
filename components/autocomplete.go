@@ -99,6 +99,10 @@ func DefaultSelectionCreator(suggester []string, a *Autocomplete) *Selection {
 	selection := NewSelection(suggester)
 	selection.EnableFilter = false
 	selection.Prompt = strx.Empty
+	selection.FocusSymbol = strx.Empty
+	selection.UnFocusSymbol = strx.Empty
+	selection.FocusInterval = strx.Empty
+	selection.UnFocusInterval = strx.Empty
 	selection.Init()
 	selection.ShowHelp = false
 	selection.Keymap = DefaultSingleKeyMap()
@@ -172,6 +176,7 @@ func (a *Autocomplete) Value() string {
 
 func (a *Autocomplete) Init() tea.Cmd {
 	cmd := a.Input.Init()
+
 	a.Padding = len(a.Input.Prompt)
 	return cmd
 }

@@ -78,6 +78,10 @@ func (b *FluentStringBuilder) Join(str []string, seq string) *FluentStringBuilde
 }
 
 func (b *FluentStringBuilder) Style(style *style.Style, val string) *FluentStringBuilder {
+	if len(val) == 0 {
+		return b
+	}
+
 	b.Write(style.Render(val))
 	return b
 }
