@@ -3,95 +3,31 @@ package components
 import (
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/fzdwx/infinite/emoji"
 	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
-	"time"
+	"github.com/fzdwx/infinite/theme"
 )
 
-type (
-	// Shape the Spinner Shape
-	Shape struct {
-		Frames []string
-		FPS    time.Duration
-	}
-)
-
-// Some spinners to choose from. You could also make your own.
 var (
-	Line = Shape{
-		Frames: []string{"|", "/", "-", "\\"},
-		FPS:    time.Second / 10, //nolint:gomnd
-	}
-	Dot = Shape{
-		Frames: []string{"⣾ ", "⣽ ", "⣻ ", "⢿ ", "⡿ ", "⣟ ", "⣯ ", "⣷ "},
-		FPS:    time.Second / 10, //nolint:gomnd
-	}
-	MiniDot = Shape{
-		Frames: []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"},
-		FPS:    time.Second / 12, //nolint:gomnd
-	}
-	Jump = Shape{
-		Frames: []string{"⢄", "⢂", "⢁", "⡁", "⡈", "⡐", "⡠"},
-		FPS:    time.Second / 10, //nolint:gomnd
-	}
-	Pulse = Shape{
-		Frames: []string{"█", "▓", "▒", "░"},
-		FPS:    time.Second / 8, //nolint:gomnd
-	}
-	Points = Shape{
-		Frames: []string{"∙∙∙", "●∙∙", "∙●∙", "∙∙●"},
-		FPS:    time.Second / 7, //nolint:gomnd
-	}
-	Globe = Shape{
-		Frames: []string{"🌍", "🌎", "🌏"},
-		FPS:    time.Second / 4, //nolint:gomnd
-	}
-	Moon = Shape{
-		Frames: []string{"🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"},
-		FPS:    time.Second / 8, //nolint:gomnd
-	}
-	Monkey = Shape{
-		Frames: []string{"🙈", "🙉", "🙊"},
-		FPS:    time.Second / 3, //nolint:gomnd
-	}
-	Meter = Shape{
-		Frames: []string{
-			"▱▱▱",
-			"▰▱▱",
-			"▰▰▱",
-			"▰▰▰",
-			"▰▰▱",
-			"▰▱▱",
-			"▱▱▱",
-		},
-		FPS: time.Second / 7, //nolint:gomnd
-	}
-	Hamburger = Shape{
-		Frames: []string{"☱", "☲", "☴", "☲"},
-		FPS:    time.Second / 3, //nolint:gomnd
-	}
-	Running = Shape{
-		Frames: []string{emoji.Walking, emoji.Running},
-		FPS:    time.Second / 6, //nolint:gomnd
-	}
+	SpinnerDefaultModel               = spinner.New()
+	SpinnerDefaultShape               = Line
+	SpinnerDefaultShapeStyle          = theme.DefaultTheme.SpinnerShapeStyle
+	SpinnerDefaultPrompt              = "Loading..."
+	SpinnerDefaultDisableOutPutResult = false
+	SpinnerDefaultStatus              = Normal
 )
 
 type (
 	Spinner struct {
 		program *tea.Program
 		*PrintHelper
-
 		Model spinner.Model
 
-		/* options start */
 		Shape               Shape
 		ShapeStyle          *style.Style
 		Prompt              string
 		DisableOutPutResult bool
-		/* options end */
-
-		Status Status
+		Status              Status
 	}
 
 	RefreshPromptMsg string
@@ -127,8 +63,7 @@ func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case Status:
 		switch msg {
 		case Quit:
-			s.Status = Quit
-			return s, tea.Quit
+			return s.quit()
 		}
 	case spinner.TickMsg:
 		return s.refreshSpinner(msg)
@@ -142,6 +77,11 @@ func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	return s, nil
+}
+
+func (s *Spinner) quit() (tea.Model, tea.Cmd) {
+	s.Status = Quit
+	return s, tea.Quit
 }
 
 func (s *Spinner) View() string {

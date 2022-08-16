@@ -1,12 +1,10 @@
 package components
 
 import (
-	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/duke-git/lancet/v2/slice"
 	"github.com/fzdwx/infinite/style"
-	"github.com/fzdwx/infinite/theme"
 )
 
 type (
@@ -134,12 +132,12 @@ func NewSelection(choices []string) *Selection {
 // NewSpinner constructor
 func NewSpinner() *Spinner {
 	c := &Spinner{
-		Model:               spinner.New(),
-		Shape:               Line,
-		ShapeStyle:          theme.DefaultTheme.SpinnerShapeStyle,
-		Prompt:              "Loading...",
-		DisableOutPutResult: false,
-		Status:              Normal,
+		Model:               SpinnerDefaultModel,
+		Shape:               SpinnerDefaultShape,
+		ShapeStyle:          SpinnerDefaultShapeStyle,
+		Prompt:              SpinnerDefaultPrompt,
+		DisableOutPutResult: SpinnerDefaultDisableOutPutResult,
+		Status:              SpinnerDefaultStatus,
 	}
 	return c
 }
