@@ -44,7 +44,7 @@ https://fzdwx.github.io/infinite/
 
 ### Combined demo
 
-![demo](https://user-images.githubusercontent.com/65269574/184496950-dbc246e7-5199-4e85-8167-1292b6eeb574.gif)
+![demo](https://user-images.githubusercontent.com/65269574/184917224-5048b5c4-e063-4379-a00c-e28388e13c41.gif)
 
 <details>
 <summary>代码</summary>
@@ -195,7 +195,7 @@ func main() {
 
 ### Progress group
 
-![demo](https://user-images.githubusercontent.com/65269574/183296585-b0a56827-d9d9-4258-ad32-266ada01b1ed.gif)
+![demo](https://user-images.githubusercontent.com/65269574/184917598-9ab058a3-30cd-4a4e-ba72-45d138e6b5b5.gif)
 
 <details>
 <summary>代码</summary>
@@ -249,7 +249,7 @@ func sleep() {
 
 ### Multiple select
 
-![demo](https://user-images.githubusercontent.com/65269574/183274216-d2a7af91-0581-4d13-b8c2-00b9aad5ef3a.gif)
+![demo](https://user-images.githubusercontent.com/65269574/184917889-b24c8777-f142-4b56-bcf0-d1042ef846d2.gif)
 
 <details>
 <summary>代码</summary>
@@ -288,7 +288,7 @@ func main() {
 
 ### Spinner
 
-![demo](https://user-images.githubusercontent.com/65269574/183074665-42d7d902-a56c-420c-a740-3aacc7dc922c.gif)
+![demo](https://user-images.githubusercontent.com/65269574/184918112-419df5b7-f4f8-44ff-b421-c65841a4e5c7.gif)
 
 <details>
 <summary>代码</summary>
@@ -326,7 +326,7 @@ func main() {
 
 ### Input text
 
-![demo](https://user-images.githubusercontent.com/65269574/183075959-031a068d-6f88-40a0-8b5e-f3d5bba481af.gif)
+![demo](https://user-images.githubusercontent.com/65269574/184918464-96194014-0063-48bf-85f3-e0410bdaaba6.gif)
 
 <details>
 <summary>代码</summary>
@@ -359,7 +359,7 @@ func main() {
 
 ### Confirm with Input
 
-![demo](https://user-images.githubusercontent.com/65269574/183076452-5fa73013-42de-47df-97b4-7be743d074c1.gif)
+![demo](https://user-images.githubusercontent.com/65269574/184919493-46a36849-d034-4677-92d0-d4bca15f7ac5.gif)
 
 <details>
 <summary>代码</summary>
