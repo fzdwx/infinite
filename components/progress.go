@@ -33,7 +33,6 @@ var (
 	ProgressDefaultPrevAmount      int64 = 0
 	ProgressDefaultCostView              = DefaultCostView
 	ProgressDefaultTickCostDelay         = time.Millisecond * 100
-	ProgressDefaultQuit                  = InterruptKey
 )
 
 // Return the next ID we should use on the model.

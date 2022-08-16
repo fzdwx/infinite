@@ -31,7 +31,7 @@ type inner struct {
 func newInner() *inner {
 	i := &inner{
 		input:       components.NewInput(),
-		KeyMap:      DefaultKeyMap,
+		KeyMap:      DefaultKeyMap(),
 		Help:        help.New(),
 		DisplayHelp: false,
 		Value:       false,

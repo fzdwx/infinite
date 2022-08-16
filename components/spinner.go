@@ -16,7 +16,6 @@ var (
 	SpinnerDefaultPrompt              = "Loading..."
 	SpinnerDefaultDisableOutPutResult = false
 	SpinnerDefaultStatus              = Normal
-	SpinnerDefaultQuitKey             = InterruptKey
 )
 
 type (

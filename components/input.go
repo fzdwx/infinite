@@ -21,27 +21,27 @@ var (
 	InputDefaultEchoMode            = EchoNormal
 	InputDefaultEchoCharacter       = '*'
 	InputDefaultCharLimit           = 0
-	InputDefaultKeyMap              = InputKeyMap{
-		Confirm: key.NewBinding(
-			key.WithKeys("enter"),
-			key.WithHelp("enter", "confirm input value"),
-		),
-		Quit: key.NewBinding(
-			key.WithKeys("ctrl+c"),
-			key.WithHelp("^c", "quit input"),
-		),
-	}
-	InputDefaultPlaceholderStyle = style.New().Fg(color.Gray)
-	InputDefaultPromptStyle      = style.New()
-	InputDefaultTextStyle        = style.New()
-	InputDefaultBackgroundStyle  = style.New()
-	InputDefaultCursorStyle      = style.New()
-	cleanRequiredMsg             = func(i int) func(t time.Time) tea.Msg {
+	InputDefaultPlaceholderStyle    = style.New().Fg(color.Gray)
+	InputDefaultPromptStyle         = style.New()
+	InputDefaultTextStyle           = style.New()
+	InputDefaultBackgroundStyle     = style.New()
+	InputDefaultCursorStyle         = style.New()
+	cleanRequiredMsg                = func(i int) func(t time.Time) tea.Msg {
 		return func(t time.Time) tea.Msg {
 			return cleanRequired(i)
 		}
 	}
 )
+
+func InputDefaultKeyMap() InputKeyMap {
+	return InputKeyMap{
+		Confirm: key.NewBinding(
+			key.WithKeys("enter"),
+			key.WithHelp("enter", "confirm input value"),
+		),
+		Quit: InterruptKey,
+	}
+}
 
 type cleanRequired int
 

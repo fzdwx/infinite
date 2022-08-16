@@ -101,7 +101,7 @@ func DefaultSelectionCreator(suggester []string, a *Autocomplete) *Selection {
 	selection.Prompt = strx.Empty
 	selection.Init()
 	selection.ShowHelp = false
-	selection.Keymap = DefaultSingleKeyMap
+	selection.Keymap = DefaultSingleKeyMap()
 	selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
 		return choice
 	}
@@ -219,6 +219,7 @@ func (a *Autocomplete) View() string {
 
 func (a *Autocomplete) SetProgram(program *tea.Program) {
 	a.Program = program
+	a.Input.SetProgram(program)
 	a.PrintHelper = NewPrintHelper(program)
 }
 

@@ -21,8 +21,8 @@ func (k KeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{}
 }
 
-var (
-	DefaultKeyMap = KeyMap{
+func DefaultKeyMap() KeyMap {
+	return KeyMap{
 		Quit: components.InterruptKey,
 		Yes: key.NewBinding(
 			key.WithKeys("y"),
@@ -31,6 +31,5 @@ var (
 		No: key.NewBinding(
 			key.WithKeys("N"),
 			key.WithHelp("N", "no"),
-		),
-	}
-)
+		)}
+}

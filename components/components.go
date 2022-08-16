@@ -55,7 +55,7 @@ func NewInput() *Input {
 		EchoMode:                 InputDefaultEchoMode,
 		EchoCharacter:            InputDefaultEchoCharacter,
 		CharLimit:                InputDefaultCharLimit,
-		KeyMap:                   InputDefaultKeyMap,
+		KeyMap:                   InputDefaultKeyMap(),
 		PlaceholderStyle:         InputDefaultPlaceholderStyle,
 		PromptStyle:              InputDefaultPromptStyle,
 		TextStyle:                InputDefaultTextStyle,
@@ -88,7 +88,7 @@ func NewProgress() *Progress {
 		prevAmount:      ProgressDefaultPrevAmount,
 		CostView:        ProgressDefaultCostView,
 		TickCostDelay:   ProgressDefaultTickCostDelay,
-		Quit:            ProgressDefaultQuit,
+		Quit:            InterruptKey,
 	}
 
 	return p
@@ -117,7 +117,7 @@ func NewSelection(choices []string) *Selection {
 		confirmed:           SelectionDefaultConfirmed,
 		DisableOutPutResult: SelectionDefaultDisableOutPutResult,
 		PageSize:            SelectionDefaultPageSize,
-		Keymap:              SelectionDefaultKeymap,
+		Keymap:              DefaultMultiKeyMap(),
 		Help:                SelectionDefaultHelp,
 		RowRender:           SelectionDefaultRowRender,
 		EnableFilter:        SelectionDefaultEnableFilter,
@@ -138,7 +138,7 @@ func NewSpinner() *Spinner {
 		Prompt:              SpinnerDefaultPrompt,
 		DisableOutPutResult: SpinnerDefaultDisableOutPutResult,
 		Status:              SpinnerDefaultStatus,
-		Quit:                SpinnerDefaultQuitKey,
+		Quit:                InterruptKey,
 	}
 	return c
 }

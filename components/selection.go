@@ -30,7 +30,6 @@ var (
 	SelectionDefaultConfirmed           = false
 	SelectionDefaultDisableOutPutResult = false
 	SelectionDefaultPageSize            = 5
-	SelectionDefaultKeymap              = DefaultMultiKeyMap
 	SelectionDefaultHelp                = help.New()
 	SelectionDefaultRowRender           = DefaultRowRender
 	SelectionDefaultEnableFilter        = true
@@ -39,44 +38,48 @@ var (
 	SelectionDefaultShowHelp            = true
 )
 
-var DefaultMultiKeyMap = SelectionKeyMap{
-	Up: key.NewBinding(
-		key.WithKeys("up"),
-		key.WithHelp("↑", "move up"),
-	),
-	Down: key.NewBinding(
-		key.WithKeys("down"),
-		key.WithHelp("↓", "move down"),
-	),
-	Choice: key.NewBinding(
-		key.WithKeys("tab"),
-		key.WithHelp("tab", "choice it"),
-	),
-	Confirm: key.NewBinding(
-		key.WithKeys("enter"),
-		key.WithHelp("enter", "confirm selection"),
-	),
-	Quit: InterruptKey,
+func DefaultMultiKeyMap() SelectionKeyMap {
+	return SelectionKeyMap{
+		Up: key.NewBinding(
+			key.WithKeys("up"),
+			key.WithHelp("↑", "move up"),
+		),
+		Down: key.NewBinding(
+			key.WithKeys("down"),
+			key.WithHelp("↓", "move down"),
+		),
+		Choice: key.NewBinding(
+			key.WithKeys("tab"),
+			key.WithHelp("tab", "choice it"),
+		),
+		Confirm: key.NewBinding(
+			key.WithKeys("enter"),
+			key.WithHelp("enter", "confirm selection"),
+		),
+		Quit: InterruptKey,
+	}
 }
 
-var DefaultSingleKeyMap = SelectionKeyMap{
-	Up: key.NewBinding(
-		key.WithKeys("up"),
-		key.WithHelp("↑", "move up"),
-	),
-	Down: key.NewBinding(
-		key.WithKeys("down"),
-		key.WithHelp("↓", "move down"),
-	),
-	Choice: key.NewBinding(
-		key.WithKeys("tab"),
-		key.WithHelp("tab", "choice it"),
-	),
-	Confirm: key.NewBinding(
-		key.WithKeys("tab", "tab"),
-		key.WithHelp("tab", "confirm selection"),
-	),
-	Quit: InterruptKey,
+func DefaultSingleKeyMap() SelectionKeyMap {
+	return SelectionKeyMap{
+		Up: key.NewBinding(
+			key.WithKeys("up"),
+			key.WithHelp("↑", "move up"),
+		),
+		Down: key.NewBinding(
+			key.WithKeys("down"),
+			key.WithHelp("↓", "move down"),
+		),
+		Choice: key.NewBinding(
+			key.WithKeys("tab"),
+			key.WithHelp("tab", "choice it"),
+		),
+		Confirm: key.NewBinding(
+			key.WithKeys("tab", "tab"),
+			key.WithHelp("tab", "confirm selection"),
+		),
+		Quit: InterruptKey,
+	}
 }
 
 type SelectionItem struct {

@@ -58,7 +58,7 @@ func (s *Select) mapMultiToSingle() {
 	ops = append(ops, WithPrompt("Please selection your option:"))
 
 	// replace key binding
-	ops = append(ops, WithKeyBinding(components.DefaultSingleKeyMap))
+	ops = append(ops, WithKeyBinding(components.DefaultSingleKeyMap()))
 
 	s.Apply(ops...)
 }
