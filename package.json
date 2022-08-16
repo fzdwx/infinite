@@ -1,0 +1,19 @@
+{
+  "name": "infinite",
+  "version": "1.0.0",
+  "description": "infinite docs",
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//fzdwx/infinite.git"
+  },
+  "author": "fzdwx",
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^2.0.0-beta.49"
+  }
+}
