@@ -1,10 +1,34 @@
 import {defineUserConfig} from 'vuepress'
+import {hopeTheme} from "vuepress-theme-hope";
+import {zhSidebarConfig} from "./zhSidebar";
 
 export default defineUserConfig({
     title: 'infinite docs',
     description: 'infinite 项目的文档',
     port: 7777,
     base: "/infinite/",
+    theme: hopeTheme({
+        repo: 'fzdwx/infinite',
+        // 全屏
+        fullscreen: true,
+
+        // 插件
+        plugins: {
+            // mdEnhance: {
+            //     enableAll: true,
+            // },
+        },
+
+        locales: {
+            '/': {
+                sidebar: zhSidebarConfig
+            },
+            '/en/': {
+                sidebar: []
+            },
+
+        }
+    }),
     locales: {
         '/': {
             lang: 'zh-CN',
