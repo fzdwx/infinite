@@ -1,7 +1,6 @@
 package components
 
 import (
-	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -107,26 +106,26 @@ func NewSelection(choices []string) *Selection {
 	c := &Selection{
 		Choices:             items,
 		Selected:            make(map[int]struct{}),
-		CursorSymbol:        ">",
-		UnCursorSymbol:      " ",
-		CursorSymbolStyle:   theme.DefaultTheme.CursorSymbolStyle,
-		ChoiceTextStyle:     theme.DefaultTheme.ChoiceTextStyle,
-		Prompt:              "Please Selection your options:",
-		PromptStyle:         theme.DefaultTheme.PromptStyle,
-		HintSymbol:          "✓",
-		HintSymbolStyle:     theme.DefaultTheme.MultiSelectedHintSymbolStyle,
-		UnHintSymbol:        "✗",
-		UnHintSymbolStyle:   theme.DefaultTheme.UnHintSymbolStyle,
-		quited:              false,
-		DisableOutPutResult: false,
-		PageSize:            5,
-		Keymap:              DefaultMultiKeyMap,
-		Help:                help.New(),
-		RowRender:           DefaultRowRender,
-		EnableFilter:        true,
-		FilterInput:         NewInput(),
-		FilterFunc:          DefaultFilterFunc,
-		ShowHelp:            true,
+		CursorSymbol:        SelectionDefaultCursorSymbol,
+		UnCursorSymbol:      SelectionDefaultUnCursorSymbol,
+		CursorSymbolStyle:   SelectionDefaultCursorSymbolStyle,
+		ChoiceTextStyle:     SelectionDefaultChoiceTextStyle,
+		Prompt:              SelectionDefaultPrompt,
+		PromptStyle:         SelectionDefaultPromptStyle,
+		HintSymbol:          SelectionDefaultHintSymbol,
+		HintSymbolStyle:     SelectionDefaultHintSymbolStyle,
+		UnHintSymbol:        SelectionDefaultUnHintSymbol,
+		UnHintSymbolStyle:   SelectionDefaultUnHintSymbolStyle,
+		confirmed:           SelectionDefaultConfirmed,
+		DisableOutPutResult: SelectionDefaultDisableOutPutResult,
+		PageSize:            SelectionDefaultPageSize,
+		Keymap:              SelectionDefaultKeymap,
+		Help:                SelectionDefaultHelp,
+		RowRender:           SelectionDefaultRowRender,
+		EnableFilter:        SelectionDefaultEnableFilter,
+		FilterInput:         SelectionDefaultFilterInput,
+		FilterFunc:          SelectionDefaultFilterFunc,
+		ShowHelp:            SelectionDefaultShowHelp,
 	}
 
 	return c

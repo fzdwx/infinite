@@ -4,7 +4,6 @@ import (
 	"fmt"
 	inf "github.com/fzdwx/infinite"
 	"github.com/fzdwx/infinite/components/selection/singleselect"
-	"github.com/rotisserie/eris"
 )
 
 func main() {
@@ -21,10 +20,9 @@ func main() {
 		options,
 		singleselect.WithDisableFilter(),
 	).Display("Hello world")
-	if err != nil {
-		fmt.Println(eris.ToString(err, true))
-		return
+
+	if err == nil {
+		fmt.Printf("you selection %s\n", options[selected])
 	}
 
-	fmt.Printf("you selection %s\n", options[selected])
 }

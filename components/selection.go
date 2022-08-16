@@ -10,33 +10,34 @@ import (
 	"github.com/duke-git/lancet/v2/strutil"
 	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
+	"github.com/fzdwx/infinite/theme"
 	"github.com/mattn/go-runewidth"
 	"github.com/sahilm/fuzzy"
 	"sort"
 )
 
-type SelectionItem struct {
-	idx int
-	val string
-}
-
-type SelectionKeyMap struct {
-	Up      key.Binding
-	Down    key.Binding
-	Choice  key.Binding
-	Confirm key.Binding
-}
-
-func (k SelectionKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.Up, k.Down, k.Choice, k.Confirm}
-}
-
-func (k SelectionKeyMap) FullHelp() [][]key.Binding {
-	return [][]key.Binding{
-		{k.Up, k.Down},        // first column
-		{k.Choice, k.Confirm}, // second column
-	}
-}
+var (
+	SelectionDefaultCursorSymbol        = ">"
+	SelectionDefaultUnCursorSymbol      = " "
+	SelectionDefaultCursorSymbolStyle   = theme.DefaultTheme.CursorSymbolStyle
+	SelectionDefaultChoiceTextStyle     = theme.DefaultTheme.ChoiceTextStyle
+	SelectionDefaultPrompt              = "Please Selection your options:"
+	SelectionDefaultPromptStyle         = theme.DefaultTheme.PromptStyle
+	SelectionDefaultHintSymbol          = "✓"
+	SelectionDefaultHintSymbolStyle     = theme.DefaultTheme.MultiSelectedHintSymbolStyle
+	SelectionDefaultUnHintSymbol        = "✗"
+	SelectionDefaultUnHintSymbolStyle   = theme.DefaultTheme.UnHintSymbolStyle
+	SelectionDefaultConfirmed           = false
+	SelectionDefaultDisableOutPutResult = false
+	SelectionDefaultPageSize            = 5
+	SelectionDefaultKeymap              = DefaultMultiKeyMap
+	SelectionDefaultHelp                = help.New()
+	SelectionDefaultRowRender           = DefaultRowRender
+	SelectionDefaultEnableFilter        = true
+	SelectionDefaultFilterInput         = NewInput()
+	SelectionDefaultFilterFunc          = DefaultFilterFunc
+	SelectionDefaultShowHelp            = true
+)
 
 var DefaultMultiKeyMap = SelectionKeyMap{
 	Up: key.NewBinding(
@@ -53,7 +54,11 @@ var DefaultMultiKeyMap = SelectionKeyMap{
 	),
 	Confirm: key.NewBinding(
 		key.WithKeys("enter"),
-		key.WithHelp("enter", "confirm and quit"),
+		key.WithHelp("enter", "confirm selection"),
+	),
+	Quit: key.NewBinding(
+		key.WithKeys("ctrl+c"),
+		key.WithHelp("^c", "quit selection"),
 	),
 }
 
@@ -71,16 +76,44 @@ var DefaultSingleKeyMap = SelectionKeyMap{
 		key.WithHelp("tab", "choice it"),
 	),
 	Confirm: key.NewBinding(
-		key.WithKeys("ctrl+c", "tab"),
-		key.WithHelp("ctrl+c/tab", "quit"),
+		key.WithKeys("tab", "tab"),
+		key.WithHelp("tab", "confirm selection"),
 	),
+	Quit: key.NewBinding(
+		key.WithKeys("ctrl+c"),
+		key.WithHelp("^c", "quit selection"),
+	),
+}
+
+type SelectionItem struct {
+	idx int
+	val string
+}
+
+type SelectionKeyMap struct {
+	Up      key.Binding
+	Down    key.Binding
+	Choice  key.Binding
+	Confirm key.Binding
+	Quit    key.Binding
+}
+
+func (k SelectionKeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{k.Up, k.Down, k.Choice, k.Confirm, k.Quit}
+}
+
+func (k SelectionKeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.Up, k.Down},                // first column
+		{k.Choice, k.Confirm, k.Quit}, // second column
+	}
 }
 
 type Selection struct {
 	// result
 	Selected map[int]struct{}
-	// if true then quit.
-	quited bool
+	// on SelectionKeyMap.Confirm msg handle
+	confirmed bool
 	// Current cursor index in currentChoices
 	cursor int
 	// the offset of screen
@@ -90,7 +123,6 @@ type Selection struct {
 	// currently valid option
 	currentChoices []SelectionItem
 
-	/* options start */
 	Choices []SelectionItem
 	// how many options to display at a time
 	PageSize            int
@@ -121,12 +153,12 @@ type Selection struct {
 	EnableFilter bool
 	FilterInput  *Input
 	FilterFunc   func(input string, items []SelectionItem) []SelectionItem
-	/* options end */
 }
 
 func DefaultRowRender(cursorSymbol string, hintSymbol string, choice string) string {
 	return fmt.Sprintf("%s [%s] %s", cursorSymbol, hintSymbol, choice)
 }
+
 func DefaultFilterFunc(input string, items []SelectionItem) []SelectionItem {
 	choiceVals := slice.Map[SelectionItem, string](items, func(index int, item SelectionItem) string {
 		return item.val
@@ -159,6 +191,9 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
+
+		// 关于为什么不用 switch, 为了适配单选的key 和 choice 和 confirm 这两个key要相同.
+
 		if key.Matches(msg, s.Keymap.Up) {
 			s.moveUp()
 			shouldSkipFiler = true
@@ -175,6 +210,10 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		if key.Matches(msg, s.Keymap.Confirm) {
+			return s.confirm()
+		}
+
+		if key.Matches(msg, s.Keymap.Quit) {
 			return s.quit()
 		}
 
@@ -194,7 +233,7 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (s *Selection) View() string {
-	if s.quited {
+	if s.confirmed {
 		return s.viewResult()
 	}
 
@@ -347,9 +386,13 @@ func (s *Selection) choice() {
 	}
 }
 
-// quit These keys should exit the Program.
+// confirm These keys should exit the Program.
+func (s *Selection) confirm() (tea.Model, tea.Cmd) {
+	s.confirmed = true
+	return s.quit()
+}
+
 func (s *Selection) quit() (tea.Model, tea.Cmd) {
-	s.quited = true
 	return s, tea.Quit
 }
 
