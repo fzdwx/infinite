@@ -2,6 +2,7 @@ package components
 
 import (
 	"fmt"
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/pkg/strx"
@@ -17,6 +18,22 @@ import (
 var (
 	lastID int
 	idMtx  sync.Mutex
+
+	ProgressDefaultTotal           int64 = 100
+	ProgressDefaultCurrent         int64 = 0
+	ProgressDefaultPercentAgeFunc        = DefaultPercentAgeFunc
+	ProgressDefaultPercentAgeStyle       = style.New().Inline()
+	ProgressDefaultWidth                 = 45
+	ProgressDefaultFull                  = '█'
+	ProgressDefaultFullColor             = "#7571F9"
+	ProgressDefaultEmpty                 = '░'
+	ProgressDefaultEmptyColor            = "#606060"
+	ProgressDefaultShowPercentage        = true
+	ProgressDefaultShowCost              = true
+	ProgressDefaultPrevAmount      int64 = 0
+	ProgressDefaultCostView              = DefaultCostView
+	ProgressDefaultTickCostDelay         = time.Millisecond * 100
+	ProgressDefaultQuit                  = InterruptKey
 )
 
 // Return the next ID we should use on the model.
@@ -27,10 +44,11 @@ func nextID() int {
 	return lastID
 }
 
-const (
-	defaultWidth         = 45
-	defaultTicKCostDelay = time.Millisecond * 100
-)
+// WithQuitKey replace `Quit` key, user interrupt, kill program.
+func (pro *Progress) WithQuitKey(key key.Binding) *Progress {
+	pro.Quit = key
+	return pro
+}
 
 // WithTickCostDelay defaultTicKCostDelay
 // the interval time between each refresh cost time
@@ -169,6 +187,8 @@ type Progress struct {
 	percent    float64
 	prevAmount int64
 
+	// kill program
+	Quit key.Binding
 	// Total width of the progress bar, including percentage, if set.
 	Width int
 
@@ -268,6 +288,11 @@ func (pro *Progress) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 
 	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch {
+		case key.Matches(msg, pro.Quit):
+			OnUserInterrupt(pro.program)
+		}
 	case ProgressMsg:
 		if msg.Id == pro.Id {
 			pro.refresh(msg)

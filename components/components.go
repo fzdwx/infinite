@@ -4,7 +4,6 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/duke-git/lancet/v2/slice"
-	"github.com/fzdwx/infinite/style"
 )
 
 type (
@@ -75,20 +74,21 @@ func NewPrintHelper(program *tea.Program) *PrintHelper {
 func NewProgress() *Progress {
 	p := &Progress{
 		Id:              nextID(),
-		Total:           100,
-		Current:         0,
-		PercentAgeFunc:  DefaultPercentAgeFunc,
-		PercentAgeStyle: style.New().Inline(),
-		Width:           defaultWidth,
-		Full:            '█',
-		FullColor:       "#7571F9",
-		Empty:           '░',
-		EmptyColor:      "#606060",
-		ShowPercentage:  true,
-		ShowCost:        true,
-		prevAmount:      0,
-		CostView:        DefaultCostView,
-		TickCostDelay:   defaultTicKCostDelay,
+		Total:           ProgressDefaultTotal,
+		Current:         ProgressDefaultCurrent,
+		PercentAgeFunc:  ProgressDefaultPercentAgeFunc,
+		PercentAgeStyle: ProgressDefaultPercentAgeStyle,
+		Width:           ProgressDefaultWidth,
+		Full:            ProgressDefaultFull,
+		FullColor:       ProgressDefaultFullColor,
+		Empty:           ProgressDefaultEmpty,
+		EmptyColor:      ProgressDefaultEmptyColor,
+		ShowPercentage:  ProgressDefaultShowPercentage,
+		ShowCost:        ProgressDefaultShowCost,
+		prevAmount:      ProgressDefaultPrevAmount,
+		CostView:        ProgressDefaultCostView,
+		TickCostDelay:   ProgressDefaultTickCostDelay,
+		Quit:            ProgressDefaultQuit,
 	}
 
 	return p

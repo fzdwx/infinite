@@ -61,6 +61,10 @@ func (p PrintHelper) Print(str string) {
 	p.program.Println(str)
 }
 
+func (p PrintHelper) GetProgram() *tea.Program {
+	return p.program
+}
+
 func (p PrintHelper) PrintWithPrefix(prefix, format string, a ...any) {
 	printWithPrefix(p.program, prefix, format, a...)
 }

@@ -1,6 +1,7 @@
 package progress
 
 import (
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/pkg/strx"
@@ -22,6 +23,8 @@ type Group struct {
 	startUp  *components.StartUp
 	done     int
 	doneView func() string
+	// kill program
+	Quit key.Binding
 }
 
 type progressUpdater struct {
@@ -61,7 +64,7 @@ func NewGroup(progressList ...*components.Progress) *Group {
 
 	sort.Ints(ids)
 
-	group := &Group{m: m, ids: ids}
+	group := &Group{m: m, ids: ids, Quit: components.InterruptKey}
 	startUp := components.NewStartUp(group)
 	group.startUp = startUp
 
@@ -75,6 +78,7 @@ func (g *Group) AppendRunner(f func(progress *components.Progress) func()) *Grou
 			updater.runner = runner
 			g.done++
 		}
+		updater.progress.Quit.Unbind()
 	})
 	return g
 }
@@ -103,6 +107,11 @@ func (g *Group) Init() tea.Cmd {
 
 func (g *Group) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch {
+		case key.Matches(msg, g.Quit):
+			components.OnUserInterrupt(g.GetProgram())
+		}
 	case done:
 		g.done--
 		if g.isDone() {
