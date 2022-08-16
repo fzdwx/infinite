@@ -8,6 +8,8 @@ export default defineUserConfig({
     port: 7777,
     base: "/infinite/",
     theme: hopeTheme({
+        iconAssets: "iconfont",
+        
         footer: "<a href=\"https://github.com/fzdwx\">fzdwx</a>",
         repo: 'fzdwx/infinite',
         // 全屏
