@@ -15,6 +15,12 @@ func (g *Group) WithDoneView(f func() string) *Group {
 	return g
 }
 
+// WithQuitKey replace `Quit` key, user interrupt, kill program.
+func (g *Group) WithQuitKey(key key.Binding) *Group {
+	g.Quit = key
+	return g
+}
+
 // Group the progress group
 type Group struct {
 	*components.PrintHelper
