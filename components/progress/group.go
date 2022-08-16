@@ -31,13 +31,13 @@ type progressUpdater struct {
 
 type done int
 
-func NewGroupWithCount(processCnt int) *Group {
-	if processCnt <= 0 {
+func NewGroupWithCount(progressCnt int) *Group {
+	if progressCnt <= 0 {
 		return nil
 	}
 
 	var progressList []*components.Progress
-	for i := 0; i < processCnt; i++ {
+	for i := 0; i < progressCnt; i++ {
 		progressList = append(progressList, components.NewProgress())
 	}
 
