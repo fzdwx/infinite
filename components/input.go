@@ -36,12 +36,14 @@ var (
 	InputDefaultTextStyle        = style.New()
 	InputDefaultBackgroundStyle  = style.New()
 	InputDefaultCursorStyle      = style.New()
-	cleanRequiredMsg             = func(t time.Time) tea.Msg {
-		return cleanRequired(1)
+	cleanRequiredMsg             = func(i int) func(t time.Time) tea.Msg {
+		return func(t time.Time) tea.Msg {
+			return cleanRequired(i)
+		}
 	}
 )
 
-type cleanRequired byte
+type cleanRequired int
 
 type InputKeyMap struct {
 	Confirm key.Binding
@@ -54,6 +56,7 @@ type (
 		Model           textinput.Model
 		program         *tea.Program
 		showRequiredMsg bool
+		cleanId         int
 
 		Required                 bool
 		RequiredMsg              string
@@ -197,7 +200,7 @@ func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return in.quit()
 		}
 	case cleanRequired:
-		in.showRequiredMsg = false
+		in.cleanRequiredMsg(msg)
 	}
 
 	model, modelCmd := in.Model.Update(msg)
@@ -221,10 +224,12 @@ func (in *Input) SetProgram(program *tea.Program) {
 	in.program = program
 }
 
+// confirm input val, if the verification passes, it will exit.
 func (in *Input) confirm() (tea.Model, tea.Cmd) {
 	if in.shouldShowRequiredMsg() {
 		in.showRequiredMsg = true
-		return in, tea.Tick(in.RequiredMsgKeepAliveTime, cleanRequiredMsg)
+		in.cleanId++
+		return in, tea.Tick(in.RequiredMsgKeepAliveTime, cleanRequiredMsg(in.cleanId))
 	}
 
 	return in.quit()
@@ -237,4 +242,10 @@ func (in *Input) quit() (tea.Model, tea.Cmd) {
 
 func (in *Input) shouldShowRequiredMsg() bool {
 	return in.Required && len(in.Model.Value()) == 0
+}
+
+func (in *Input) cleanRequiredMsg(msg cleanRequired) {
+	if int(msg) == in.cleanId {
+		in.showRequiredMsg = false
+	}
 }
