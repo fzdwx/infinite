@@ -4,6 +4,7 @@ export default defineUserConfig({
     title: 'infinite docs',
     description: 'infinite 项目的文档',
     port: 7777,
+    base: "/infinite/",
     locales: {
         '/': {
             lang: 'zh-CN',
