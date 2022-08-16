@@ -359,7 +359,7 @@ func main() {
 
 ### Confirm with Input
 
-![demo](https://user-images.githubusercontent.com/65269574/184919493-46a36849-d034-4677-92d0-d4bca15f7ac5.gif)
+![demo](https://user-images.githubusercontent.com/65269574/184920302-9c9c2cfd-4ca7-49d8-9192-8487b2832b36.gif)
 
 <details>
 <summary>代码</summary>
