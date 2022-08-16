@@ -7,7 +7,7 @@
 </div>
 <img src="https://user-images.githubusercontent.com/65269574/183641765-e8de7441-3c4e-4008-b2a9-b2ba556ddd72.gif" alt="demo">
 
-[中文](https://github.com/fzdwx/infinite/blob/main/docs/en/README.md) | English
+[中文](https://fzdwx.github.io/infinite/) | English
 
 ## Features
 
