@@ -1,7 +1,6 @@
 package text
 
 import (
-	"github.com/charmbracelet/bubbles/key"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/style"
 	"time"
@@ -9,10 +8,12 @@ import (
 
 type Option func(i *Text)
 
-// WithQuitKey bindQuitKey,default is "enter"
-func WithQuitKey(quitKey key.Binding) Option {
+// WithKeyMap replace keymap
+//
+// components.InputDefaultKeyMap
+func WithKeyMap(keymap components.InputKeyMap) Option {
 	return func(i *Text) {
-		i.inner.QuitKey = quitKey
+		i.inner.KeyMap = keymap
 	}
 }
 

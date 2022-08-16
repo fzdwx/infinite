@@ -21,18 +21,32 @@ var (
 	InputDefaultEchoMode            = EchoNormal
 	InputDefaultEchoCharacter       = '*'
 	InputDefaultCharLimit           = 0
-	InputDefaultQuitKey             = key.NewBinding()
-	InputDefaultPlaceholderStyle    = style.New().Fg(color.Gray)
-	InputDefaultPromptStyle         = style.New()
-	InputDefaultTextStyle           = style.New()
-	InputDefaultBackgroundStyle     = style.New()
-	InputDefaultCursorStyle         = style.New()
-	cleanRequiredMsg                = func(t time.Time) tea.Msg {
+	InputDefaultKeyMap              = InputKeyMap{
+		Confirm: key.NewBinding(
+			key.WithKeys("enter"),
+			key.WithHelp("enter", "confirm input value"),
+		),
+		Quit: key.NewBinding(
+			key.WithKeys("ctrl+c"),
+			key.WithHelp("^c", "quit input"),
+		),
+	}
+	InputDefaultPlaceholderStyle = style.New().Fg(color.Gray)
+	InputDefaultPromptStyle      = style.New()
+	InputDefaultTextStyle        = style.New()
+	InputDefaultBackgroundStyle  = style.New()
+	InputDefaultCursorStyle      = style.New()
+	cleanRequiredMsg             = func(t time.Time) tea.Msg {
 		return cleanRequired(1)
 	}
 )
 
 type cleanRequired byte
+
+type InputKeyMap struct {
+	Confirm key.Binding
+	Quit    key.Binding
+}
 
 type (
 	// Input the Input component.
@@ -55,8 +69,7 @@ type (
 		BackgroundStyle          *style.Style
 		PlaceholderStyle         *style.Style
 		CursorStyle              *style.Style
-		// default is disable
-		QuitKey key.Binding
+		KeyMap                   InputKeyMap
 		// CharLimit is the maximum amount of characters this Input element will
 		// accept. If 0 or less, there's no limit.
 		CharLimit int
@@ -167,8 +180,10 @@ func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 
 		switch {
-		case key.Matches(msg, in.QuitKey):
+		case key.Matches(msg, in.KeyMap.Confirm):
 			// todo Verification function can be added
+			return in.confirm()
+		case key.Matches(msg, in.KeyMap.Quit):
 			return in.quit()
 		}
 	case Status:
@@ -206,13 +221,16 @@ func (in *Input) SetProgram(program *tea.Program) {
 	in.program = program
 }
 
-func (in *Input) quit() (tea.Model, tea.Cmd) {
+func (in *Input) confirm() (tea.Model, tea.Cmd) {
 	if in.shouldShowRequiredMsg() {
 		in.showRequiredMsg = true
 		return in, tea.Tick(in.RequiredMsgKeepAliveTime, cleanRequiredMsg)
 	}
 
-	// do quit
+	return in.quit()
+}
+
+func (in *Input) quit() (tea.Model, tea.Cmd) {
 	in.Model.Blur()
 	return in, tea.Quit
 }

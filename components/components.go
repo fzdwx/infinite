@@ -59,7 +59,7 @@ func NewInput() *Input {
 		EchoMode:                 InputDefaultEchoMode,
 		EchoCharacter:            InputDefaultEchoCharacter,
 		CharLimit:                InputDefaultCharLimit,
-		QuitKey:                  InputDefaultQuitKey,
+		KeyMap:                   InputDefaultKeyMap,
 		PlaceholderStyle:         InputDefaultPlaceholderStyle,
 		PromptStyle:              InputDefaultPromptStyle,
 		TextStyle:                InputDefaultTextStyle,
