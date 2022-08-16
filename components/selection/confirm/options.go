@@ -34,7 +34,7 @@ func DefaultKeyBinding() KeyMap {
 		),
 		Choice: key.NewBinding(
 			key.WithKeys("enter"),
-			key.WithHelp("enter", "choice item"),
+			key.WithHelp("enter", "status item"),
 		),
 		Quit: components.InterruptKey,
 	}

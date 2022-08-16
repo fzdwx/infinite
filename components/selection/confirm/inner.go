@@ -19,7 +19,7 @@ type inner struct {
 	keyMap          KeyMap
 	Value           bool
 	DefaultVal      bool
-	choice          bool
+	status          components.Status
 	outputResult    bool
 	program         *tea.Program
 }
@@ -48,7 +48,7 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, i.keyMap.Switch):
 			i.switchIt()
 		case key.Matches(msg, i.keyMap.Choice):
-			i.choice = true
+			i.status = components.Finish
 			return i, tea.Quit
 		case key.Matches(msg, i.keyMap.Quit):
 			components.OnUserInterrupt(i.program)
@@ -94,14 +94,14 @@ func (i *inner) switchIt() {
 }
 
 func (i *inner) interval() string {
-	if i.choice {
+	if components.IsFinish(i.status) {
 		return i.unFocusInterval
 	}
 	return i.focusInterval
 }
 
 func (i *inner) prompt() string {
-	if i.choice {
+	if components.IsFinish(i.status) {
 		return i.unFocusPrompt
 	}
 	return i.focusPrompt

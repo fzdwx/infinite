@@ -15,3 +15,8 @@ const (
 	// Normal ignore it
 	Normal
 )
+
+// IsFinish status == Finish ?
+func IsFinish(status Status) bool {
+	return status == Finish
+}
