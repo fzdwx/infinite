@@ -10,6 +10,7 @@ func main() {
 
 	c := inf.NewConfirm(
 		confirm.WithDefaultYes(),
+		//confirm.WithDisableOutputResult(),
 		//confirm.WithPrompt("hello world?"),
 		confirm.WithDisplayHelp(),
 		//confirm.WithSymbol(emoji.Question),

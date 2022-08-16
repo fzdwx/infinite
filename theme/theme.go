@@ -38,11 +38,12 @@ var (
 		FocusSymbol:                  "? ",
 		UnFocusSymbol:                "√ ",
 		FocusInterval:                " » ",
-		UnFocusInterval:              " … ",
-		FocusSymbolStyle:             style.New().Fg(color.Cyan),
-		UnFocusSymbolStyle:           style.New().Fg(color.Green),
-		FocusIntervalStyle:           style.New().Fg(color.Gray),
-		UnFocusIntervalStyle:         style.New().Fg(color.White).Bold(),
+		//FocusInterval:        " › ",
+		UnFocusInterval:      " … ",
+		FocusSymbolStyle:     style.New().Fg(color.Cyan),
+		UnFocusSymbolStyle:   style.New().Fg(color.Green),
+		FocusIntervalStyle:   style.New().Fg(color.Gray),
+		UnFocusIntervalStyle: style.New().Fg(color.Gray).Bold(),
 	}
 
 	// fix https://github.com/fzdwx/infinite/issues/5

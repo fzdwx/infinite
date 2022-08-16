@@ -4,10 +4,10 @@ import (
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
+	"github.com/fzdwx/infinite/theme"
 )
 
 // inner is confirm impl
@@ -24,21 +24,45 @@ type inner struct {
 	Value       bool
 	Notice      string
 	NoticeStyle *style.Style
-	Symbol      string
-	SymbolStyle *style.Style
+
+	FocusSymbol          string
+	UnFocusSymbol        string
+	FocusInterval        string
+	UnFocusInterval      string
+	FocusSymbolStyle     *style.Style
+	UnFocusSymbolStyle   *style.Style
+	FocusIntervalStyle   *style.Style
+	UnFocusIntervalStyle *style.Style
+	PromptStyle          *style.Style
+	ValueStyle           *style.Style
+	OutputResult         bool
+
+	focusPrompt   string
+	unFocusPrompt string
+	status        components.Status
 }
 
 func newInner() *inner {
 	i := &inner{
-		input:       components.NewInput(),
-		KeyMap:      DefaultKeyMap(),
-		Help:        help.New(),
-		DisplayHelp: false,
-		Value:       false,
-		Notice:      " ( y/N ) ",
-		NoticeStyle: style.New(),
-		Symbol:      "? ",
-		SymbolStyle: style.New().Fg(color.Special),
+		input:                components.NewInput(),
+		KeyMap:               DefaultKeyMap(),
+		Help:                 help.New(),
+		DisplayHelp:          false,
+		Value:                false,
+		Notice:               " ( y/N )",
+		NoticeStyle:          style.New(),
+		PromptStyle:          style.New(),
+		FocusSymbol:          theme.DefaultTheme.FocusSymbol,
+		UnFocusSymbol:        theme.DefaultTheme.UnFocusSymbol,
+		FocusInterval:        theme.DefaultTheme.FocusInterval,
+		UnFocusInterval:      theme.DefaultTheme.UnFocusInterval,
+		FocusSymbolStyle:     theme.DefaultTheme.FocusSymbolStyle,
+		UnFocusSymbolStyle:   theme.DefaultTheme.UnFocusSymbolStyle,
+		FocusIntervalStyle:   theme.DefaultTheme.FocusIntervalStyle,
+		UnFocusIntervalStyle: theme.DefaultTheme.UnFocusIntervalStyle,
+		ValueStyle:           theme.DefaultTheme.ChoiceTextStyle.Underline(),
+		status:               components.Normal,
+		OutputResult:         true,
 	}
 
 	i.input.Prompt = "Are you handsome?"
@@ -48,11 +72,21 @@ func newInner() *inner {
 
 // Init confirm
 func (i *inner) Init() tea.Cmd {
-	i.input.Prompt = strx.NewFluent().
-		Write(i.SymbolStyle.Render(i.Symbol)).
-		Write(i.input.Prompt).
-		Write(i.NoticeStyle.Render(i.Notice)).
+	i.focusPrompt = strx.NewFluent().
+		Style(i.FocusSymbolStyle, i.FocusSymbol).
+		Style(i.PromptStyle, i.input.Prompt).
+		Style(i.NoticeStyle, i.Notice).
+		Style(i.FocusIntervalStyle, i.FocusInterval).
 		String()
+
+	i.unFocusPrompt = strx.NewFluent().
+		Style(i.UnFocusSymbolStyle, i.UnFocusSymbol).
+		Style(i.PromptStyle, i.input.Prompt).
+		Style(i.NoticeStyle, i.Notice).
+		Style(i.UnFocusIntervalStyle, i.UnFocusInterval).
+		String()
+
+	i.input.Prompt = i.focusPrompt
 
 	i.input.Init()
 
@@ -67,10 +101,10 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msgCast, i.KeyMap.Quit):
 			components.OnUserInterrupt(i.program)
 		case key.Matches(msgCast, i.KeyMap.Yes):
-			msg = components.Finish
+			msg = i.finish()
 			i.Value = true
 		case key.Matches(msgCast, i.KeyMap.No):
-			msg = components.Finish
+			msg = i.finish()
 			i.Value = false
 		default:
 			// discard, maybe output some error msg to user?
@@ -83,18 +117,30 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (i *inner) View() string {
-	if i.DisplayHelp {
-		return strx.NewFluent().
-			Write(i.input.View()).
-			NewLine().
-			Write(i.Help.View(i.KeyMap)).
-			String()
+	if components.IsFinish(i.status) && !i.OutputResult {
+		return strx.Empty
 	}
 
-	return i.input.View()
+	builder := strx.NewFluent().Write(i.input.View())
+
+	if components.IsFinish(i.status) {
+		builder.Style(i.ValueStyle, strx.BoolMapYesOrNo(i.Value))
+	}
+
+	if i.DisplayHelp {
+		builder.NewLine().Write(i.Help.View(i.KeyMap))
+	}
+
+	return builder.String()
 }
 
 func (i *inner) SetProgram(program *tea.Program) {
 	i.program = program
 	i.input.SetProgram(program)
+}
+
+func (i *inner) finish() tea.Msg {
+	i.input.Model.Prompt = i.unFocusPrompt
+	i.status = components.Finish
+	return i.status
 }

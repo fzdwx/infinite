@@ -124,3 +124,10 @@ func RemoveEmpty(str []string) []string {
 
 	return result
 }
+
+func BoolMapYesOrNo(b bool) string {
+	if b {
+		return "Yes"
+	}
+	return "No"
+}

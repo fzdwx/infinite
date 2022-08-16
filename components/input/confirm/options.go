@@ -15,6 +15,20 @@ func WithDefaultYes() Option {
 	}
 }
 
+// WithDisableOutputResult disable output result
+func WithDisableOutputResult() Option {
+	return func(confirm *Confirm) {
+		confirm.inner.OutputResult = false
+	}
+}
+
+// WithValueStyle render value
+func WithValueStyle(s *style.Style) Option {
+	return func(c *Confirm) {
+		c.inner.ValueStyle = s
+	}
+}
+
 // WithPrompt change `confirm` default prompt.
 func WithPrompt(prompt string) Option {
 	return func(c *Confirm) {
@@ -25,7 +39,7 @@ func WithPrompt(prompt string) Option {
 // WithPromptStyle change `confirm` default promptStyle.
 func WithPromptStyle(style *style.Style) Option {
 	return func(c *Confirm) {
-		c.inner.input.PromptStyle = style
+		c.inner.PromptStyle = style
 	}
 }
 
@@ -50,7 +64,7 @@ func WithDisplayHelp() Option {
 	}
 }
 
-// WithNotice replace notice, default is  " ( y/N ):".
+// WithNotice replace notice, default is  " ( y/N ) ".
 func WithNotice(notice string) Option {
 	return func(c *Confirm) {
 		c.inner.Notice = notice
@@ -64,16 +78,58 @@ func WithNoticeStyle(style *style.Style) Option {
 	}
 }
 
-// WithSymbol replace symbol, default is "?".
-func WithSymbol(symbol string) Option {
-	return func(c *Confirm) {
-		c.inner.Symbol = symbol
+// WithFocusSymbol default is theme.DefaultTheme#FocusSymbol
+func WithFocusSymbol(s string) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.FocusSymbol = s
 	}
 }
 
-// WithSymbolStyle replace symbol style.
-func WithSymbolStyle(style *style.Style) Option {
-	return func(c *Confirm) {
-		c.inner.SymbolStyle = style
+// WithUnFocusSymbol default is theme.DefaultTheme#UnFocusSymbol
+func WithUnFocusSymbol(s string) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.UnFocusSymbol = s
+	}
+}
+
+// WithFocusInterval default is theme.DefaultTheme#FocusInterval
+func WithFocusInterval(s string) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.FocusInterval = s
+	}
+}
+
+// WithUnFocusInterval default is theme.DefaultTheme#UnFocusInterval
+func WithUnFocusInterval(s string) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.UnFocusInterval = s
+	}
+}
+
+// WithFocusSymbolStyle default is theme.DefaultTheme#FocusSymbolStyle
+func WithFocusSymbolStyle(s *style.Style) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.FocusSymbolStyle = s
+	}
+}
+
+// WithUnFocusSymbolStyle default is theme.DefaultTheme#UnFocusIntervalStyle
+func WithUnFocusSymbolStyle(s *style.Style) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.UnFocusSymbolStyle = s
+	}
+}
+
+// WithFocusIntervalStyle default is theme.DefaultTheme#FocusIntervalStyle
+func WithFocusIntervalStyle(s *style.Style) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.FocusIntervalStyle = s
+	}
+}
+
+// WithUnFocusIntervalStyle default is theme.DefaultTheme#UnFocusIntervalStyle
+func WithUnFocusIntervalStyle(s *style.Style) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.UnFocusIntervalStyle = s
 	}
 }
