@@ -4,10 +4,4 @@
 # https://codybontecou.com/tailwindcss-with-vitepress.html
 
 run:
-    yarn docs:dev
-
-init:
-    npm install
-
-r:
-    npm run docs:dev
+    vitepress dev docs

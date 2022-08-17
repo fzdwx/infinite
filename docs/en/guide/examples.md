@@ -139,24 +139,25 @@ func main() {
 ![demo](https://user-images.githubusercontent.com/65269574/184918112-419df5b7-f4f8-44ff-b421-c65841a4e5c7.gif)
 
 :::details 代码
+```go
 package main
 
 import (
-inf "github.com/fzdwx/infinite"
-"github.com/fzdwx/infinite/components"
-"github.com/fzdwx/infinite/components/spinner"
-"time"
+	inf "github.com/fzdwx/infinite"
+	"github.com/fzdwx/infinite/components"
+	"github.com/fzdwx/infinite/components/spinner"
+	"time"
 )
 
 func main() {
-_ = inf.NewSpinner(
-spinner.WithShape(components.Dot),
-//spinner.WithDisableOutputResult(),
-).Display(func(spinner *spinner.Spinner) {
-for i := 0; i < 10; i++ {
-time.Sleep(time.Millisecond * 100)
-spinner.Refreshf("hello world %d", i)
-}
+	_ = inf.NewSpinner(
+		spinner.WithShape(components.Dot),
+		//spinner.WithDisableOutputResult(),
+	).Display(func(spinner *spinner.Spinner) {
+		for i := 0; i < 10; i++ {
+			time.Sleep(time.Millisecond * 100)
+			spinner.Refreshf("hello world %d", i)
+		}
 
 		spinner.Finish("finish")
 
@@ -164,7 +165,9 @@ spinner.Refreshf("hello world %d", i)
 	})
 
 	time.Sleep(time.Millisecond * 100 * 15)
+
 }
+```
 :::
 
 ## input text
@@ -205,6 +208,7 @@ func main() {
 ![demo](https://user-images.githubusercontent.com/65269574/184920302-9c9c2cfd-4ca7-49d8-9192-8487b2832b36.gif)
 
 :::details 代码
+```go
 package main
 
 import (
@@ -227,7 +231,9 @@ func main() {
 	} else {
 		fmt.Println("no,you are not.")
 	}
+
 }
+```
 :::
 
 ### with selection
