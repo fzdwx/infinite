@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	Yes = "Yes"
-	No  = "No"
+	Yes      = "Yes"
+	No       = "No"
+	ShowHelp = true
 
 	FocusSymbol     = theme.DefaultTheme.FocusSymbol
 	UnFocusSymbol   = theme.DefaultTheme.UnFocusSymbol
@@ -42,6 +43,13 @@ func DefaultKeyBinding() KeyMap {
 }
 
 type Option func(c *Confirm)
+
+// WithDisableShowHelp  disable show help info.
+func WithDisableShowHelp() Option {
+	return func(c *Confirm) {
+		c.ShowHelp = false
+	}
+}
 
 // WithDefaultYes  set Confirm default val is `true`
 func WithDefaultYes() Option {

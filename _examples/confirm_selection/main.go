@@ -10,6 +10,7 @@ func main() {
 
 	val, _ := inf.NewConfirmWithSelection(
 		//confirm.WithDisableOutputResult(),
+		//confirm.WithDisableShowHelp(),
 		confirm.WithDefaultYes(),
 	).Display()
 

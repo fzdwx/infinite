@@ -13,6 +13,17 @@ type KeyMap struct {
 	Quit   key.Binding
 }
 
+func (k KeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{k.Switch, k.Choice}
+}
+
+func (k KeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.Switch, k.Choice},
+		{k.Quit},
+	}
+}
+
 // Confirm with components.Selection
 type Confirm struct {
 	startUp *components.StartUp
@@ -23,6 +34,7 @@ type Confirm struct {
 	No           string
 	OutputResult bool
 	DefaultVal   bool
+	ShowHelp     bool
 
 	FocusSymbol     string
 	UnFocusSymbol   string
@@ -48,6 +60,7 @@ func WithSelection(ops ...Option) *Confirm {
 		KeyMap:       DefaultKeyBinding(),
 		OutputResult: true,
 		DefaultVal:   false,
+		ShowHelp:     true,
 		ops:          ops,
 
 		FocusSymbol:          FocusSymbol,
@@ -83,6 +96,7 @@ func (c *Confirm) init() {
 	c.inner = newInner(components.NewSelection([]string{c.No, c.Yes}))
 	c.inner.focusInterval = c.FocusInterval
 	c.inner.unFocusInterval = c.UnFocusInterval
+	c.inner.ShowHelp = c.ShowHelp
 	// default true
 	c.inner.DefaultVal = c.DefaultVal
 	c.inner.keyMap = c.KeyMap
