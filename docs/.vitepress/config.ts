@@ -2,6 +2,9 @@ import {defineConfig} from 'vitepress'
 
 export default defineConfig(
     {
+        head: [
+            ['link', {rel: 'stylesheet', href: 'https://unpkg.com/tailwindcss@2.0.4/dist/tailwind.min.css'}]
+        ],
         title: "infinite",
         description: '测试测试测试测试',
         base: "/infinite/",
@@ -34,7 +37,7 @@ export default defineConfig(
                 message: 'Released under the MIT License.',
                 copyright: 'Copyright © 2022-present fzdwx'
             },
-            
+
             sidebar: {
 
                 '/zh/': [
