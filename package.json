@@ -4,8 +4,9 @@
   "description": "infinite docs",
   "main": "index.js",
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "repository": {
     "type": "git",
@@ -14,9 +15,7 @@
   "author": "fzdwx",
   "license": "MIT",
   "devDependencies": {
-    "vuepress": "^2.0.0-beta.49"
-  },
-  "dependencies": {
-    "vuepress-theme-hope": "^2.0.0-beta.91"
+    "vitepress": "^1.0.0-alpha.5",
+    "vue": "^3.2.37"
   }
 }
