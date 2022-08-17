@@ -6,7 +6,6 @@ export default defineConfig(
             ['link', {rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css'}]
         ],
         title: "infinite",
-        description: '测试测试测试测试',
         base: "/infinite/",
         themeConfig: {
 
@@ -47,6 +46,7 @@ export default defineConfig(
                         items: [
                             {text: '简介', link: 'zh/guide/'},
                             {text: '快速开始', link: 'zh/guide/getting-started'},
+                            {text: '示例', link: 'zh/guide/examples'},
                         ]
                     },
                     {
@@ -65,6 +65,7 @@ export default defineConfig(
                         items: [
                             {text: 'Introduction', link: 'en/guide/'},
                             {text: 'Getting started', link: 'en/guide/getting-started'},
+                            {text: 'Examples', link: 'en/guide/examples'},
                         ]
                     },
                     {

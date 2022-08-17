@@ -5,3 +5,9 @@
 
 run:
     yarn docs:dev
+
+init:
+    npm install
+
+r:
+    npm run docs:dev
