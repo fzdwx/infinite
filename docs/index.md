@@ -10,7 +10,7 @@ hero:
     actions:
       - theme: brand
         text: 快速开始
-        link: /zh/getting-started
+        link: /zh/guide/
       - theme: alt
         text: View on GitHub
         link: https://github.com/fzdwx/infinite
