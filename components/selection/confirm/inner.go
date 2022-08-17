@@ -1,6 +1,7 @@
 package confirm
 
 import (
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/fzdwx/infinite/components"
@@ -11,7 +12,10 @@ import (
 type switchIt int
 
 type inner struct {
-	selection       *components.Selection
+	selection *components.Selection
+	help      help.Model
+	ShowHelp  bool
+
 	focusPrompt     string
 	unFocusPrompt   string
 	focusInterval   string
@@ -25,7 +29,11 @@ type inner struct {
 }
 
 func newInner(selection *components.Selection) *inner {
-	return &inner{selection: selection}
+	return &inner{
+		selection: selection,
+		help:      help.New(),
+		ShowHelp:  true,
+	}
 }
 
 func (i *inner) Init() tea.Cmd {
@@ -66,6 +74,10 @@ func (i *inner) View() string {
 		Write(i.prompt()).
 		Write(i.interval()).
 		Write(rows[1]).Space().Write("/").Space().Write(rows[2])
+
+	if i.ShowHelp {
+		row.NewLine().Write(i.help.View(i.keyMap))
+	}
 
 	if i.outputResult {
 		row.NewLine()
