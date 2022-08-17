@@ -25,25 +25,27 @@ const config: UserConfig = {
         nav: [
             {
                 text: '快速开始',
-                link: '/getting-started',
-                activeMatch: '/'
+                link: '/zh/getting-started',
+                activeMatch: '^/zh/'
             },
-            {text: 'team', link: '/team', activeMatch: '/'},
+            {text: 'team', link: '/zh/team', activeMatch: '^/infinite/zh'},
+            
+            {text: 'team', link: '/en/team', activeMatch: '^/infinite/en'},
         ],
 
         sidebar: {
 
-            '/': [
+            '/zh/': [
                 {
                     items: [
-                        {text: '快速开始', link: 'getting-started'},
+                        {text: '快速开始', link: 'zh/getting-started'},
                     ]
                 },
                 {
                     text: '组件',
                     collapsible: true,
                     items: [
-                        {text: 'input', link: '/components/input'},
+                        {text: 'input', link: 'zh//components/input'},
                     ]
                 }
             ],
