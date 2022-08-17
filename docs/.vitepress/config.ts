@@ -3,7 +3,7 @@ import {defineConfig} from 'vitepress'
 export default defineConfig(
     {
         head: [
-            ['link', {rel: 'stylesheet', href: 'https://unpkg.com/tailwindcss@2.0.4/dist/tailwind.min.css'}]
+            ['link', {rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css'}]
         ],
         title: "infinite",
         description: '测试测试测试测试',
