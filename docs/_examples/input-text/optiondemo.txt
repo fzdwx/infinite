@@ -1,0 +1,7 @@
+i := inf.NewText(
+	text.WithPrompt("what's your name?"),
+	text.WithPromptStyle(style.New().Fg(color.White).Bold()),
+	text.WithDefaultValue("fzdwx (maybe)"),
+	text.WithTextStyle(style.New().Fg(color.HotPink)),
+	text.WithCursorStyle(style.New().Fg(color.Special)),
+)

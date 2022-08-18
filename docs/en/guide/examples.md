@@ -58,7 +58,7 @@ Use `spinner` and refresh input prompt text on the fly.
 
 A text input box.
 
-![demo](https://user-images.githubusercontent.com/65269574/184918464-96194014-0063-48bf-85f3-e0410bdaaba6.gif)
+![demo](https://user-images.githubusercontent.com/65269574/185403896-a9ab46c0-9f3d-4957-9c30-a336c9ba855c.gif)
 
 ::: details code
 <<< @/_examples/input-text/main.go

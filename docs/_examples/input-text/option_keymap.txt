@@ -1,0 +1,12 @@
+i := inf.NewText(
+	text.WithKeyMap(components.InputKeyMap{
+		Confirm: key.NewBinding(
+			key.WithKeys("enter"),
+			key.WithHelp("enter", "confirm input value"),
+		),
+		Quit: key.NewBinding(
+			key.WithKeys("xxx"),
+			key.WithHelp("xxx", "confirm input value"),
+		),
+	}),
+)

@@ -8,7 +8,10 @@ hero:
     actions:
       - theme: brand
         text: Getting started
-        link: /en/guide/
+        link: /en/guide/getting-started
+      - theme: alt
+        text: Introduction
+        link: /zh/guide/
       - theme: alt
         text: View on GitHub
         link: https://github.com/fzdwx/infinite

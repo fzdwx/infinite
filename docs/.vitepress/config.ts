@@ -51,7 +51,7 @@ export default defineConfig(
                         ]
                     },
                     {
-                        text: '组件',
+                        text: 'Components',
                         collapsible: true,
                         items: [
                             {text: 'input', link: 'zh/components/input'},

@@ -8,6 +8,9 @@ hero:
     actions:
       - theme: brand
         text: 快速开始
+        link: /zh/guide/getting-started
+      - theme: alt
+        text: 简介
         link: /zh/guide/
       - theme: alt
         text: View on GitHub

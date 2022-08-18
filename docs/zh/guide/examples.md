@@ -57,7 +57,7 @@
 
 一个文本输入框。
 
-![demo](https://user-images.githubusercontent.com/65269574/184918464-96194014-0063-48bf-85f3-e0410bdaaba6.gif)
+![demo](https://user-images.githubusercontent.com/65269574/185403896-a9ab46c0-9f3d-4957-9c30-a336c9ba855c.gif)
 
 ::: details 代码
 <<< @/_examples/input-text/main.go
@@ -83,4 +83,15 @@
 
 ::: details 代码
 <<< @/_examples/confirm-with-selection/main.go
+:::
+
+
+## input original demo
+
+这是一个最原始的 input demo，直接使用`startUp` 启动 `input`。
+
+![demo](https://user-images.githubusercontent.com/65269574/185384071-1d383fe9-fc28-4abc-904f-8a2de524c29f.gif)
+
+:::details 代码
+<<< @/_examples/input-original-demo/main.go
 :::
