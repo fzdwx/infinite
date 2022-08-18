@@ -2,14 +2,14 @@ import {defineConfig} from 'vitepress'
 
 export default defineConfig(
     {
-        
-        markdown: {
-        },
-        
-        title: "♾️ infinite",
+
+        markdown: {},
+        head: [
+            ['link', {rel: 'icon', href: '/infinite/asset/infinite.svg'}]
+        ],
+        title: "Infinite",
         base: "/infinite/",
         themeConfig: {
-
             editLink: {
                 pattern: 'https://github.com/fzdwx/infinite/edit/page/docs/:path',
                 text: 'Suggest changes to this page'
