@@ -6,7 +6,7 @@ export default defineConfig(
         markdown: {
         },
         
-        title: "infinite",
+        title: "♾️ infinite",
         base: "/infinite/",
         themeConfig: {
 

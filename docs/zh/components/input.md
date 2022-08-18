@@ -6,21 +6,8 @@ input 是一个用于接收用户输入的基础组件。
 
 ## original demo
 
-```go
-package main
+这是一个最原始的demo，直接使用`startUp` 启动 `input`。
 
-import (
-	"fmt"
-	"github.com/fzdwx/infinite/components"
-)
+![demo](https://user-images.githubusercontent.com/65269574/185384071-1d383fe9-fc28-4abc-904f-8a2de524c29f.gif)
 
-func main() {
-	input := components.NewInput()
-
-	if err := components.NewStartUp(input).Start(); err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Get:", input.Value())
-}
-```
+<<< @/_examples/input-original-demo/main.go
