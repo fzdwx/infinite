@@ -13,7 +13,7 @@
     - multi/single select
     - spinner
     - confirm(input/selection)
-    - [input text](https://fzdwx.github.io/infinite/zh/components/input.html#input-text)
+    - [input text](/zh/components/input#input-text)
 - 跨平台
 - 可定制,你可以替换组件中的某些选项或方法为你自己的实现
     - 通过修改 `multi select`
