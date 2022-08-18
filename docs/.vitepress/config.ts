@@ -6,10 +6,6 @@ export default defineConfig(
         markdown: {
         },
         
-        locales:{
-            
-        },
-        
         title: "infinite",
         base: "/infinite/",
         themeConfig: {

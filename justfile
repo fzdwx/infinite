@@ -5,3 +5,6 @@
 
 run:
     vitepress dev docs
+    
+build:
+    vitepress build docs
