@@ -105,10 +105,10 @@ func WithBackgroundStyle(style *style.Style) Option {
 	}
 }
 
-// WithPlaceholderStyle set the placeholder style
-func WithPlaceholderStyle(style *style.Style) Option {
+// WithDefaultValueStyle set the default value style
+func WithDefaultValueStyle(style *style.Style) Option {
 	return func(i *Text) {
-		i.inner.PlaceholderStyle = style
+		i.inner.DefaultValueStyle = style
 	}
 }
 

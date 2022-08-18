@@ -83,7 +83,7 @@ func (i *inner) Init() tea.Cmd {
 		Style(i.UnFocusSymbolStyle, i.UnFocusSymbol).
 		Style(i.PromptStyle, i.input.Prompt).
 		Style(i.NoticeStyle, i.Notice).
-		Style(i.UnFocusIntervalStyle, i.UnFocusInterval).
+		Style(i.UnFocusIntervalStyle, i.UnFocusInterval[:len(i.UnFocusInterval)-1]).
 		String()
 
 	i.input.Prompt = i.focusPrompt

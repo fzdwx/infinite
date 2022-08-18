@@ -61,21 +61,25 @@ type (
 		Required                 bool
 		RequiredMsg              string
 		RequiredMsgKeepAliveTime time.Duration
-		Status                   Status
-		Prompt                   string
-		DefaultValue             string
-		BlinkSpeed               time.Duration
-		EchoMode                 EchoMode
-		EchoCharacter            rune
-		PromptStyle              *style.Style
-		TextStyle                *style.Style
-		BackgroundStyle          *style.Style
-		PlaceholderStyle         *style.Style
-		CursorStyle              *style.Style
-		KeyMap                   InputKeyMap
+
+		BlinkSpeed    time.Duration
+		Status        Status
+		EchoMode      EchoMode
+		EchoCharacter rune
 		// CharLimit is the maximum amount of characters this Input element will
 		// accept. If 0 or less, there's no limit.
 		CharLimit int
+
+		Prompt       string
+		DefaultValue string
+
+		PromptStyle       *style.Style
+		DefaultValueStyle *style.Style
+
+		TextStyle       *style.Style
+		BackgroundStyle *style.Style
+		CursorStyle     *style.Style
+		KeyMap          InputKeyMap
 	}
 )
 
@@ -162,7 +166,7 @@ func (in *Input) Init() tea.Cmd {
 	in.Model.PromptStyle = in.PromptStyle.Inner()
 	in.Model.TextStyle = in.TextStyle.Inner()
 	in.Model.BackgroundStyle = in.BackgroundStyle.Inner()
-	in.Model.PlaceholderStyle = in.PlaceholderStyle.Inner()
+	in.Model.PlaceholderStyle = in.DefaultValueStyle.Inner()
 	in.Model.CursorStyle = in.CursorStyle.Inner()
 	in.Model.CharLimit = in.CharLimit
 
