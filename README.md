@@ -12,20 +12,20 @@
 ## Features
 
 - 提供一系列开箱即用的组件
-  - autocomplete
-  - progress-bar group
-  - multi/single select
-  - spinner
-  - confirm(input/selection)
-  - text
+    - autocomplete
+    - progress-bar group
+    - multi/single select
+    - spinner
+    - confirm(input/selection)
+    - text
 - 跨平台
 - 可定制,你可以替换组件中的某些选项或方法为你自己的实现
-  - 通过修改 `multi select`
-    的[某些选项](https://github.com/fzdwx/infinite/blob/main/components/selection/singleselect/single_select.go#L49)
-    实现 `single select`
+    - 通过修改 `multi select`
+      的 [某些选项](https://github.com/fzdwx/infinite/blob/main/components/selection/singleselect/single_select.go#L49)
+      实现 `single select`
 - 可组合,你可以将一个或多个基础组件联合在一起使用
-  - `autocomplete` 通过 `input` 来实现输入接收，通过 `selection` 来实现待选项的选择.
-  - `selection` 通过嵌入 `input` 来实现过滤功能.
+    - `autocomplete` 通过 `input` 来实现输入接收，通过 `selection` 来实现待选项的选择.
+    - `selection` 通过嵌入 `input` 来实现过滤功能.
 
 ## Install
 
