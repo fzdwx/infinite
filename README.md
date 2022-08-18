@@ -33,6 +33,14 @@
 go get github.com/fzdwx/infinite
 ```
 
+## Getting started
+
+https://fzdwx.github.io/infinite/zh/guide/getting-started
+
+## Examples
+
+https://fzdwx.github.io/infinite/zh/guide/examples
+
 ## Documentation
 
 https://fzdwx.github.io/infinite/
