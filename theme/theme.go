@@ -28,7 +28,7 @@ type Theme struct {
 
 var (
 	DefaultTheme = Theme{
-		PromptStyle:                  style.New().Fg(color.Cyan),
+		PromptStyle:                  style.New().Fg(color.White).Bold(),
 		MultiSelectedHintSymbolStyle: style.New().Fg(color.Special),
 		ChoiceTextStyle:              style.New().Fg(color.Highlight).Bold(),
 		CursorSymbolStyle:            style.New(),
