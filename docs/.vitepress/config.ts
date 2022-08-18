@@ -5,7 +5,7 @@ export default defineConfig(
 
         markdown: {},
         head: [
-            ['link', {rel: 'icon', href: '/infinite/asset/infinite.svg'}]
+            ['link', {rel: 'icon', href: 'https://raw.githubusercontent.com/fzdwx/infinite/page/docs/asset/infinite.svg'}]
         ],
         title: "Infinite",
         base: "/infinite/",
