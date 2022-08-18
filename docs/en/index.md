@@ -3,9 +3,6 @@ layout: home
 
 title: Home
 hero:
-    image:
-        src: https://raw.githubusercontent.com/fzdwx/infinite/page/docs/asset/Infinite2.svg
-        alt: infinite logo
     name: Infinite
     tagline: A component library for developing interactive CLI (tui,terminal) programs.
     actions:

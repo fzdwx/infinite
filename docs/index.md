@@ -4,9 +4,6 @@ layout: home
 title: Home
 hero:
     name: Infinite
-    image:
-        src: https://raw.githubusercontent.com/fzdwx/infinite/page/docs/asset/Infinite2.svg
-        alt: infinite logo
     tagline: 用于开发交互式 CLI(tui,terminal) 程序的组件库。
     actions:
       - theme: brand
