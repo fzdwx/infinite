@@ -126,3 +126,66 @@ func WithCharLimit(charLimit int) Option {
 		i.inner.CharLimit = charLimit
 	}
 }
+
+// WithFocusSymbol default is theme.DefaultTheme#FocusSymbol
+func WithFocusSymbol(s string) Option {
+	return func(i *Text) {
+		i.inner.FocusSymbol = s
+	}
+}
+
+// WithUnFocusSymbol default is theme.DefaultTheme#UnFocusSymbol
+func WithUnFocusSymbol(s string) Option {
+	return func(i *Text) {
+		i.inner.UnFocusSymbol = s
+	}
+}
+
+// WithFocusInterval default is theme.DefaultTheme#FocusInterval
+func WithFocusInterval(s string) Option {
+	return func(i *Text) {
+		i.inner.FocusInterval = s
+	}
+}
+
+// WithUnFocusInterval default is theme.DefaultTheme#UnFocusInterval
+func WithUnFocusInterval(s string) Option {
+	return func(i *Text) {
+		i.inner.UnFocusInterval = s
+	}
+}
+
+// WithFocusSymbolStyle default is theme.DefaultTheme#FocusSymbolStyle
+func WithFocusSymbolStyle(s *style.Style) Option {
+	return func(i *Text) {
+		i.inner.FocusSymbolStyle = s
+	}
+}
+
+// WithUnFocusSymbolStyle default is theme.DefaultTheme#UnFocusIntervalStyle
+func WithUnFocusSymbolStyle(s *style.Style) Option {
+	return func(i *Text) {
+		i.inner.UnFocusSymbolStyle = s
+	}
+}
+
+// WithFocusIntervalStyle default is theme.DefaultTheme#FocusIntervalStyle
+func WithFocusIntervalStyle(s *style.Style) Option {
+	return func(i *Text) {
+		i.inner.FocusIntervalStyle = s
+	}
+}
+
+// WithUnFocusIntervalStyle default is theme.DefaultTheme#UnFocusIntervalStyle
+func WithUnFocusIntervalStyle(s *style.Style) Option {
+	return func(i *Text) {
+		i.inner.UnFocusIntervalStyle = s
+	}
+}
+
+// WithDisableOutputResult disable output result
+func WithDisableOutputResult() Option {
+	return func(i *Text) {
+		i.inner.OutputResult = false
+	}
+}

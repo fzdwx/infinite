@@ -4,6 +4,7 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/duke-git/lancet/v2/slice"
+	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
 )
 
@@ -62,6 +63,11 @@ func NewInput() *Input {
 		TextStyle:                InputDefaultTextStyle,
 		BackgroundStyle:          InputDefaultBackgroundStyle,
 		CursorStyle:              InputDefaultCursorStyle,
+		FocusSymbolStyle:         style.New(),
+		UnFocusSymbolStyle:       style.New(),
+		FocusIntervalStyle:       style.New(),
+		UnFocusIntervalStyle:     style.New(),
+		OutputResult:             true,
 	}
 	return c
 }

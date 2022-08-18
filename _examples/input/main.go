@@ -10,10 +10,18 @@ import (
 func main() {
 
 	i := inf.NewText(
-		text.WithPrompt("what's your name ? "),
+		text.WithPrompt("what's your name ?"),
 		text.WithPromptStyle(theme.DefaultTheme.PromptStyle),
 		text.WithDefaultValue("fzdwx (maybe)"),
 		text.WithRequired(),
+		//text.WithFocusSymbol(theme.DefaultTheme.FocusSymbol),
+		//text.WithUnFocusSymbol(theme.DefaultTheme.UnFocusSymbol),
+		//text.WithFocusInterval(theme.DefaultTheme.FocusInterval),
+		//text.WithUnFocusInterval(theme.DefaultTheme.UnFocusInterval),
+		//text.WithFocusSymbolStyle(theme.DefaultTheme.FocusSymbolStyle),
+		//text.WithUnFocusSymbolStyle(theme.DefaultTheme.UnFocusSymbolStyle),
+		//text.WithFocusIntervalStyle(theme.DefaultTheme.FocusIntervalStyle),
+		//text.WithUnFocusIntervalStyle(theme.DefaultTheme.UnFocusIntervalStyle),
 	)
 	//go func() {
 	//	i.Display()

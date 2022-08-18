@@ -3,6 +3,7 @@ package text
 import (
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/pkg/strx"
+	"github.com/fzdwx/infinite/theme"
 )
 
 type Text struct {
@@ -12,6 +13,15 @@ type Text struct {
 
 func New(ops ...Option) *Text {
 	inner := components.NewInput()
+	inner.FocusSymbol = theme.DefaultTheme.FocusSymbol
+	inner.UnFocusSymbol = theme.DefaultTheme.UnFocusSymbol
+	inner.FocusInterval = theme.DefaultTheme.FocusInterval
+	inner.UnFocusInterval = theme.DefaultTheme.UnFocusInterval
+	inner.FocusSymbolStyle = theme.DefaultTheme.FocusSymbolStyle
+	inner.UnFocusSymbolStyle = theme.DefaultTheme.UnFocusSymbolStyle
+	inner.FocusIntervalStyle = theme.DefaultTheme.FocusIntervalStyle
+	inner.UnFocusIntervalStyle = theme.DefaultTheme.UnFocusIntervalStyle
+
 	i := &Text{inner: inner, startUp: components.NewStartUp(inner)}
 
 	i.Apply(ops...)

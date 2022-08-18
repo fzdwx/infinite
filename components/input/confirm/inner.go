@@ -37,9 +37,7 @@ type inner struct {
 	ValueStyle           *style.Style
 	OutputResult         bool
 
-	focusPrompt   string
-	unFocusPrompt string
-	status        components.Status
+	status components.Status
 }
 
 func newInner() *inner {
@@ -72,23 +70,25 @@ func newInner() *inner {
 
 // Init confirm
 func (i *inner) Init() tea.Cmd {
-	i.focusPrompt = strx.NewFluent().
+	focusPrompt := strx.NewFluent().
 		Style(i.FocusSymbolStyle, i.FocusSymbol).
 		Style(i.PromptStyle, i.input.Prompt).
 		Style(i.NoticeStyle, i.Notice).
 		Style(i.FocusIntervalStyle, i.FocusInterval).
 		String()
 
-	i.unFocusPrompt = strx.NewFluent().
+	unFocusPrompt := strx.NewFluent().
 		Style(i.UnFocusSymbolStyle, i.UnFocusSymbol).
 		Style(i.PromptStyle, i.input.Prompt).
 		Style(i.NoticeStyle, i.Notice).
 		Style(i.UnFocusIntervalStyle, i.UnFocusInterval[:len(i.UnFocusInterval)-1]).
 		String()
 
-	i.input.Prompt = i.focusPrompt
-
+	i.input.OutputResult = false
 	i.input.Init()
+
+	i.input.Model.Prompt = focusPrompt
+	i.input.UnFocusPrompt = unFocusPrompt
 
 	return components.FocusCmd
 }
@@ -127,8 +127,12 @@ func (i *inner) View() string {
 		builder.Style(i.ValueStyle, strx.BoolMapYesOrNo(i.Value))
 	}
 
-	if i.DisplayHelp {
+	if !i.DisplayHelp {
 		builder.NewLine().Write(i.Help.View(i.KeyMap))
+	}
+
+	if components.IsFinish(i.status) && i.OutputResult {
+		builder.NewLine()
 	}
 
 	return builder.String()
@@ -140,7 +144,6 @@ func (i *inner) SetProgram(program *tea.Program) {
 }
 
 func (i *inner) finish() tea.Msg {
-	i.input.Model.Prompt = i.unFocusPrompt
 	i.status = components.Finish
 	return i.status
 }

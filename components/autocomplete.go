@@ -218,7 +218,6 @@ func (a *Autocomplete) View() string {
 	return strx.NewFluent().
 		Write(a.Input.View()).
 		WriteFunc(a.suggesterView).
-		NewLine().
 		String()
 }
 

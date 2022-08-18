@@ -57,7 +57,10 @@ type (
 		program         *tea.Program
 		showRequiredMsg bool
 		cleanId         int
+		FocusPrompt     string
+		UnFocusPrompt   string
 
+		OutputResult             bool
 		Required                 bool
 		RequiredMsg              string
 		RequiredMsgKeepAliveTime time.Duration
@@ -76,6 +79,16 @@ type (
 		PromptStyle       *style.Style
 		DefaultValueStyle *style.Style
 
+		FocusSymbol     string
+		UnFocusSymbol   string
+		FocusInterval   string
+		UnFocusInterval string
+
+		FocusSymbolStyle     *style.Style
+		UnFocusSymbolStyle   *style.Style
+		FocusIntervalStyle   *style.Style
+		UnFocusIntervalStyle *style.Style
+
 		TextStyle       *style.Style
 		BackgroundStyle *style.Style
 		CursorStyle     *style.Style
@@ -85,166 +98,182 @@ type (
 
 // Focus sets the Focus state on the model. When the model is in Focus it can
 // receive keyboard Input and the cursor will be hidden.
-func (in *Input) Focus() {
-	in.program.Send(Focus)
+func (i *Input) Focus() {
+	i.program.Send(Focus)
 }
 
 // Blur removes the Focus state on the model.  When the model is blurred it can
 // not receive keyboard Input and the cursor will be hidden.
-func (in *Input) Blur() {
-	in.program.Send(Blur)
+func (i *Input) Blur() {
+	i.program.Send(Blur)
 }
 
 // Value returns the value of the text Input.
-func (in *Input) Value() string {
-	value := in.Model.Value()
+func (i *Input) Value() string {
+	value := i.Model.Value()
 
 	if len(value) == 0 {
-		value = in.DefaultValue
+		value = i.DefaultValue
 	}
 
 	return value
 }
 
 // Cursor returns the cursor position.
-func (in *Input) Cursor() int {
-	return in.Model.Cursor()
+func (i *Input) Cursor() int {
+	return i.Model.Cursor()
 }
 
 // Blink returns whether or not to draw the cursor.
-func (in *Input) Blink() bool {
-	return in.Model.Blink()
+func (i *Input) Blink() bool {
+	return i.Model.Blink()
 }
 
 // SetCursor moves the cursor to the given position. If the position is
 // out of bounds the cursor will be moved to the start or end accordingly.
-func (in *Input) SetCursor(pos int) {
-	in.Model.SetCursor(pos)
+func (i *Input) SetCursor(pos int) {
+	i.Model.SetCursor(pos)
 }
 
 // Focused returns the focus state on the model.
-func (in *Input) Focused() bool {
-	return in.Model.Focused()
+func (i *Input) Focused() bool {
+	return i.Model.Focused()
 }
 
 // CursorStart moves the cursor to the start of the Input field.
-func (in *Input) CursorStart() {
-	in.Model.CursorStart()
+func (i *Input) CursorStart() {
+	i.Model.CursorStart()
 }
 
 // CursorEnd moves the cursor to the end of the Input field.
-func (in *Input) CursorEnd() {
-	in.Model.CursorEnd()
+func (i *Input) CursorEnd() {
+	i.Model.CursorEnd()
 }
 
 // Reset sets the Input to its default state with no Input. Returns whether
 // or not the cursor blink should reset.
-func (in *Input) Reset() bool {
-	return in.Model.Reset()
+func (i *Input) Reset() bool {
+	return i.Model.Reset()
 }
 
 // CursorMode returns the model's cursor mode. For available cursor modes, see
 // type CursorMode.
-func (in *Input) CursorMode() CursorMode {
-	return newCursorMode(in.Model.CursorMode())
+func (i *Input) CursorMode() CursorMode {
+	return newCursorMode(i.Model.CursorMode())
 }
 
 // SetCursorMode sets the model's cursor mode. This method returns a command.
 //
 // For available cursor modes, see type CursorMode.
-func (in *Input) SetCursorMode(model CursorMode) {
-	in.Model.SetCursorMode(model.Map())
+func (i *Input) SetCursorMode(model CursorMode) {
+	i.Model.SetCursorMode(model.Map())
 }
 
-func (in *Input) Init() tea.Cmd {
+func (i *Input) Init() tea.Cmd {
+	i.FocusPrompt = strx.NewFluent().
+		Style(i.FocusSymbolStyle, i.FocusSymbol).
+		Style(i.PromptStyle, i.Prompt).
+		Style(i.FocusIntervalStyle, i.FocusInterval).
+		String()
 
-	in.Model.Prompt = in.Prompt
-	in.Model.Placeholder = in.DefaultValue
-	in.Model.BlinkSpeed = in.BlinkSpeed
-	in.Model.EchoMode = textinput.EchoMode(in.EchoMode)
-	in.Model.EchoCharacter = in.EchoCharacter
-	in.Model.PromptStyle = in.PromptStyle.Inner()
-	in.Model.TextStyle = in.TextStyle.Inner()
-	in.Model.BackgroundStyle = in.BackgroundStyle.Inner()
-	in.Model.PlaceholderStyle = in.DefaultValueStyle.Inner()
-	in.Model.CursorStyle = in.CursorStyle.Inner()
-	in.Model.CharLimit = in.CharLimit
+	i.UnFocusPrompt = strx.NewFluent().
+		Style(i.UnFocusSymbolStyle, i.UnFocusSymbol).
+		Style(i.PromptStyle, i.Prompt).
+		Style(i.UnFocusIntervalStyle, i.UnFocusInterval).
+		String()
+
+	i.Model.Prompt = i.FocusPrompt
+	i.Model.Placeholder = i.DefaultValue
+	i.Model.BlinkSpeed = i.BlinkSpeed
+	i.Model.EchoMode = textinput.EchoMode(i.EchoMode)
+	i.Model.EchoCharacter = i.EchoCharacter
+	i.Model.TextStyle = i.TextStyle.Inner()
+	i.Model.BackgroundStyle = i.BackgroundStyle.Inner()
+	i.Model.PlaceholderStyle = i.DefaultValueStyle.Inner()
+	i.Model.CursorStyle = i.CursorStyle.Inner()
+	i.Model.CharLimit = i.CharLimit
 
 	return tea.Batch(textinput.Blink, func() tea.Msg {
-		return in.Status
+		return i.Status
 	})
 }
 
-func (in *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (i *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 
 		switch {
-		case key.Matches(msg, in.KeyMap.Confirm):
+		case key.Matches(msg, i.KeyMap.Confirm):
 			// todo Verification function can be added
-			return in.confirm()
-		case key.Matches(msg, in.KeyMap.Quit):
-			OnUserInterrupt(in.program)
+			return i.confirm()
+		case key.Matches(msg, i.KeyMap.Quit):
+			OnUserInterrupt(i.program)
 		}
 	case Status:
-		in.Status = msg
+		i.Status = msg
 		switch msg {
 		case Focus:
-			cmds = append(cmds, in.Model.Focus())
+			cmds = append(cmds, i.Model.Focus())
 		case Blur:
-			in.Model.Blur()
+			i.Model.Blur()
 		case Finish:
-			return in.finish()
+			return i.finish()
 		}
 	case cleanRequired:
-		in.cleanRequiredMsg(msg)
+		i.cleanRequiredMsg(msg)
 	}
 
-	model, modelCmd := in.Model.Update(msg)
-	in.Model = model
+	model, modelCmd := i.Model.Update(msg)
+	i.Model = model
 	cmds = append(cmds, modelCmd)
 
-	return in, tea.Batch(cmds...)
+	return i, tea.Batch(cmds...)
 }
 
-func (in *Input) View() string {
-	builder := strx.NewFluent().Write(in.Model.View())
+func (i *Input) View() string {
+	builder := strx.NewFluent().Write(i.Model.View())
 
-	if in.showRequiredMsg {
-		builder.NewLine().Write(in.RequiredMsg)
+	if i.showRequiredMsg {
+		builder.NewLine().Write(i.RequiredMsg)
+	}
+
+	if IsFinish(i.Status) && i.OutputResult {
+		builder.NewLine()
 	}
 
 	return builder.String()
 }
 
-func (in *Input) SetProgram(program *tea.Program) {
-	in.program = program
+func (i *Input) SetProgram(program *tea.Program) {
+	i.program = program
 }
 
 // confirm input val, if the verification passes, it will exit.
-func (in *Input) confirm() (tea.Model, tea.Cmd) {
-	if in.shouldShowRequiredMsg() {
-		in.showRequiredMsg = true
-		in.cleanId++
-		return in, tea.Tick(in.RequiredMsgKeepAliveTime, cleanRequiredMsg(in.cleanId))
+func (i *Input) confirm() (tea.Model, tea.Cmd) {
+	if i.shouldShowRequiredMsg() {
+		i.showRequiredMsg = true
+		i.cleanId++
+		return i, tea.Tick(i.RequiredMsgKeepAliveTime, cleanRequiredMsg(i.cleanId))
 	}
 
-	return in.finish()
+	return i.finish()
 }
 
-func (in *Input) finish() (tea.Model, tea.Cmd) {
-	in.Model.Blur()
-	return in, tea.Quit
+func (i *Input) finish() (tea.Model, tea.Cmd) {
+	i.Model.Blur()
+	i.Model.Prompt = i.UnFocusPrompt
+	i.Status = Finish
+	return i, tea.Quit
 }
 
-func (in *Input) shouldShowRequiredMsg() bool {
-	return in.Required && len(in.Model.Value()) == 0
+func (i *Input) shouldShowRequiredMsg() bool {
+	return i.Required && len(i.Model.Value()) == 0
 }
 
-func (in *Input) cleanRequiredMsg(msg cleanRequired) {
-	if int(msg) == in.cleanId {
-		in.showRequiredMsg = false
+func (i *Input) cleanRequiredMsg(msg cleanRequired) {
+	if int(msg) == i.cleanId {
+		i.showRequiredMsg = false
 	}
 }
