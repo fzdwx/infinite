@@ -6,7 +6,6 @@ title: Home
 hero:
     name: Infinite
     tagline: 用于开发交互式 CLI(tui,terminal) 程序的组件库。
-
     actions:
       - theme: brand
         text: 快速开始
