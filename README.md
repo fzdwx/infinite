@@ -27,6 +27,12 @@
   - `autocomplete` 通过 `input` 来实现输入接收，通过 `selection` 来实现待选项的选择.
   - `selection` 通过嵌入 `input` 来实现过滤功能.
 
+## Install
+
+```shell
+go get github.com/fzdwx/infinite
+```
+
 ## Documentation
 
 https://fzdwx.github.io/infinite/
