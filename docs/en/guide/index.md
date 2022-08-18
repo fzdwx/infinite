@@ -13,7 +13,7 @@ programs,You can use it in `Golang` Quickly complete a good-looking and practica
     - multi/single select
     - spinner
     - confirm(input/selection)
-    - [input text](https://fzdwx.github.io/infinite/zh/components/input.html#input-text)
+    - [input text](/en/components/input#input-text)
 - Cross-platform
   -Customizable, you can replace some options or methods in the component for your own implementation
     - By modifying  `multi select`
