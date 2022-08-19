@@ -77,7 +77,7 @@ func WithEchoPassword(maskedSymbol ...rune) Option {
 	return func(i *Text) {
 		i.inner.EchoMode = components.EchoPassword
 
-		if len(maskedSymbol) < 0 {
+		if len(maskedSymbol) <= 0 {
 			return
 		}
 		i.inner.EchoCharacter = maskedSymbol[0]
