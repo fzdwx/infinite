@@ -34,8 +34,8 @@ export default defineConfig(
             ],
 
             footer: {
-                message: 'Released under the MIT License.',
-                copyright: 'Copyright © 2022-present fzdwx'
+                message: 'Released under the <a target="_blank" style="color: #a5a3a3" href="https://github.com/fzdwx/infinite/blob/main/LICENSE">MIT License</a>.',
+                copyright: 'Copyright © 2022-present <a target="_blank" style="color: #1BE5BB" href="https://github.com/fzdwx">fzdwx</a>'
             },
 
             sidebar: {
