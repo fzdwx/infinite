@@ -1,0 +1,3 @@
+i := inf.NewText(
+	text.WithDefaultValue("hello world"),
+)

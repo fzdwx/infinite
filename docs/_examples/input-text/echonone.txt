@@ -1,0 +1,18 @@
+package main
+
+import (
+	"fmt"
+	inf "github.com/fzdwx/infinite"
+	"github.com/fzdwx/infinite/components/input/text"
+)
+
+func main() {
+
+	i := inf.NewText(
+		text.WithEchoNone(),
+	)
+
+	val, _ := i.Display()
+
+	fmt.Println("your input:", val)
+}

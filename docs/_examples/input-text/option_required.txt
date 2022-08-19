@@ -1,0 +1,5 @@
+i := inf.NewText(
+	text.WithRequired(),
+	text.WithRequiredMsg("请输入！！！"),
+	text.WithRequiredMsgKeepAliveTime(time.Second*3),
+)

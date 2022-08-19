@@ -1,0 +1,19 @@
+package main
+
+import (
+	"fmt"
+	inf "github.com/fzdwx/infinite"
+	"github.com/fzdwx/infinite/components/input/text"
+)
+
+func main() {
+
+	i := inf.NewText(
+	    // 这里你也可以不输入，它默认就是 '*'
+		text.WithEchoPassword('*'),
+	)
+
+	val, _ := i.Display()
+
+	fmt.Println("your input:", val)
+}

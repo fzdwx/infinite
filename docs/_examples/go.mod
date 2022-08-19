@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/duke-git/lancet/v2 v2.1.4
-	github.com/fzdwx/infinite v0.8.5
+	github.com/fzdwx/infinite v0.8.7
 	github.com/sahilm/fuzzy v0.1.0
 )
 
@@ -22,6 +22,7 @@ require (
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.12.0 // indirect
 	github.com/rivo/uniseg v0.3.4 // indirect
-	golang.org/x/sys v0.0.0-20220817070843-5a390386f1f2 // indirect
+	github.com/rotisserie/eris v0.5.4 // indirect
+	golang.org/x/sys v0.0.0-20220818161305-2296e01440c6 // indirect
 	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035 // indirect
 )
