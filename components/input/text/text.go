@@ -9,22 +9,27 @@ import (
 type Text struct {
 	inner   *components.Input
 	startUp *components.StartUp
+	pure    bool
 }
 
 func New(ops ...Option) *Text {
 	inner := components.NewInput()
-	inner.FocusSymbol = theme.DefaultTheme.FocusSymbol
-	inner.UnFocusSymbol = theme.DefaultTheme.UnFocusSymbol
-	inner.FocusInterval = theme.DefaultTheme.FocusInterval
-	inner.UnFocusInterval = theme.DefaultTheme.UnFocusInterval
-	inner.FocusSymbolStyle = theme.DefaultTheme.FocusSymbolStyle
-	inner.UnFocusSymbolStyle = theme.DefaultTheme.UnFocusSymbolStyle
-	inner.FocusIntervalStyle = theme.DefaultTheme.FocusIntervalStyle
-	inner.UnFocusIntervalStyle = theme.DefaultTheme.UnFocusIntervalStyle
 
 	i := &Text{inner: inner, startUp: components.NewStartUp(inner)}
 
 	i.Apply(ops...)
+
+	if !i.pure {
+		i.inner.Prompt = "input"
+		i.inner.FocusSymbol = theme.DefaultTheme.FocusSymbol
+		i.inner.UnFocusSymbol = theme.DefaultTheme.UnFocusSymbol
+		i.inner.FocusInterval = theme.DefaultTheme.FocusInterval
+		i.inner.UnFocusInterval = theme.DefaultTheme.UnFocusInterval
+		i.inner.FocusSymbolStyle = theme.DefaultTheme.FocusSymbolStyle
+		i.inner.UnFocusSymbolStyle = theme.DefaultTheme.UnFocusSymbolStyle
+		i.inner.FocusIntervalStyle = theme.DefaultTheme.FocusIntervalStyle
+		i.inner.UnFocusIntervalStyle = theme.DefaultTheme.UnFocusIntervalStyle
+	}
 
 	return i
 }
