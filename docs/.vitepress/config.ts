@@ -55,6 +55,7 @@ export default defineConfig(
                         collapsible: true,
                         items: [
                             {text: 'input', link: 'zh/components/input'},
+                            {text: 'selection', link: 'zh/components/selection'},
                         ]
                     }
                 ],
