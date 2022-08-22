@@ -1,7 +1,6 @@
 package confirm
 
 import (
-	"github.com/charmbracelet/bubbles/help"
 	"github.com/fzdwx/infinite/style"
 )
 
@@ -47,13 +46,6 @@ func WithPromptStyle(style *style.Style) Option {
 func WithKeyMap(keyMap KeyMap) Option {
 	return func(c *Confirm) {
 		c.inner.KeyMap = keyMap
-	}
-}
-
-// WithHelp replace help model.
-func WithHelp(help help.Model) Option {
-	return func(c *Confirm) {
-		c.inner.Help = help
 	}
 }
 
