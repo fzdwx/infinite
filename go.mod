@@ -3,10 +3,10 @@ module github.com/fzdwx/infinite
 go 1.18
 
 require (
-	github.com/charmbracelet/bubbles v0.13.0
-	github.com/charmbracelet/bubbletea v0.22.0
-	github.com/charmbracelet/lipgloss v0.5.0
-	github.com/duke-git/lancet/v2 v2.1.4
+	github.com/charmbracelet/bubbles v0.14.0
+	github.com/charmbracelet/bubbletea v0.22.1
+	github.com/charmbracelet/lipgloss v0.6.0
+	github.com/duke-git/lancet/v2 v2.1.6
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/mattn/go-runewidth v0.0.13
 	github.com/muesli/reflow v0.3.0
@@ -24,8 +24,8 @@ require (
 	github.com/muesli/termenv v0.12.0 // indirect
 	github.com/rivo/uniseg v0.3.4 // indirect
 	github.com/yuin/charsetutil v1.0.0 // indirect
-	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
-	golang.org/x/sys v0.0.0-20220817070843-5a390386f1f2 // indirect
+	golang.org/x/net v0.0.0-20220907135653-1e95f45603a7 // indirect
+	golang.org/x/sys v0.0.0-20220908164124-27713097b956 // indirect
 	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035 // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
