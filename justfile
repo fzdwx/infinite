@@ -17,5 +17,6 @@ rec:
     rm -rf demo.cast
     asciinema rec demo.cast
 
+
 cast row="15":
     asciicast2gif -h {{row}} demo.cast demo.gif
