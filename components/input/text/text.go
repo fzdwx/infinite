@@ -38,8 +38,11 @@ func New(ops ...Option) *Text {
 		i.inner.UnFocusSymbolStyle = style.Empty
 		i.inner.FocusIntervalStyle = style.Empty
 		i.inner.UnFocusIntervalStyle = style.Empty
-		i.inner.PromptStyle = style.Empty
-		//i.inner.DefaultValueStyle = style.Empty
+		i.inner.PromptStyle = components.InputDefaultPromptStyle
+		i.inner.TextStyle = components.InputDefaultTextStyle
+		i.inner.BackgroundStyle = components.InputDefaultBackgroundStyle
+		i.inner.DefaultValueStyle = components.InputDefaultPlaceholderStyle
+		i.inner.CursorStyle = components.InputDefaultCursorStyle
 	}
 
 	return i
