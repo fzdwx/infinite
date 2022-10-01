@@ -190,7 +190,8 @@ func WithDisableOutputResult() Option {
 	}
 }
 
-// WithPure do not use any beautification features
+// WithPure do not use any beautification features,
+// any options you customize will be cleared
 func WithPure() Option {
 	return func(i *Text) {
 		i.pure = true

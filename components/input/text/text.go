@@ -3,6 +3,7 @@ package text
 import (
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/pkg/strx"
+	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
 )
 
@@ -15,20 +16,30 @@ type Text struct {
 func New(ops ...Option) *Text {
 	inner := components.NewInput()
 
-	i := &Text{inner: inner, startUp: components.NewStartUp(inner)}
+	i := &Text{inner: inner, startUp: components.NewStartUp(inner), pure: false}
+
+	i.inner.FocusSymbol = theme.DefaultTheme.FocusSymbol
+	i.inner.UnFocusSymbol = theme.DefaultTheme.UnFocusSymbol
+	i.inner.FocusInterval = theme.DefaultTheme.FocusInterval
+	i.inner.UnFocusInterval = theme.DefaultTheme.UnFocusInterval
+	i.inner.FocusSymbolStyle = theme.DefaultTheme.FocusSymbolStyle
+	i.inner.UnFocusSymbolStyle = theme.DefaultTheme.UnFocusSymbolStyle
+	i.inner.FocusIntervalStyle = theme.DefaultTheme.FocusIntervalStyle
+	i.inner.UnFocusIntervalStyle = theme.DefaultTheme.UnFocusIntervalStyle
 
 	i.Apply(ops...)
 
-	if !i.pure {
-		i.inner.Prompt = "input"
-		i.inner.FocusSymbol = theme.DefaultTheme.FocusSymbol
-		i.inner.UnFocusSymbol = theme.DefaultTheme.UnFocusSymbol
-		i.inner.FocusInterval = theme.DefaultTheme.FocusInterval
-		i.inner.UnFocusInterval = theme.DefaultTheme.UnFocusInterval
-		i.inner.FocusSymbolStyle = theme.DefaultTheme.FocusSymbolStyle
-		i.inner.UnFocusSymbolStyle = theme.DefaultTheme.UnFocusSymbolStyle
-		i.inner.FocusIntervalStyle = theme.DefaultTheme.FocusIntervalStyle
-		i.inner.UnFocusIntervalStyle = theme.DefaultTheme.UnFocusIntervalStyle
+	if i.pure {
+		i.inner.FocusSymbol = strx.Empty
+		i.inner.UnFocusSymbol = strx.Empty
+		i.inner.FocusInterval = strx.Empty
+		i.inner.UnFocusInterval = strx.Empty
+		i.inner.FocusSymbolStyle = style.Empty
+		i.inner.UnFocusSymbolStyle = style.Empty
+		i.inner.FocusIntervalStyle = style.Empty
+		i.inner.UnFocusIntervalStyle = style.Empty
+		i.inner.PromptStyle = style.Empty
+		//i.inner.DefaultValueStyle = style.Empty
 	}
 
 	return i

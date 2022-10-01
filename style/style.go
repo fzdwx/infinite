@@ -10,6 +10,8 @@ func New() *Style {
 	return &Style{inner: style}
 }
 
+var Empty = New()
+
 // Style wrapper lipgloss.Style
 type Style struct {
 	inner lipgloss.Style
