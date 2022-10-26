@@ -9,6 +9,7 @@ import (
 func main() {
 
 	c := inf.NewConfirm(
+		confirm.WithPure(),
 		confirm.WithDefaultYes(),
 		//confirm.WithDisableOutputResult(),
 		//confirm.WithPrompt("hello world?"),

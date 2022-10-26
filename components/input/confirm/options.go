@@ -6,6 +6,18 @@ import (
 
 type Option func(confirm *Confirm)
 
+// WithPure do not use any beautification features,
+// any options you customize will be cleared
+func WithPure() Option {
+	return func(i *Confirm) {
+		i.inner.FocusSymbolStyle = style.New()
+		i.inner.UnFocusSymbolStyle = style.New()
+		i.inner.FocusIntervalStyle = style.New()
+		i.inner.UnFocusIntervalStyle = style.New()
+		i.inner.ValueStyle = style.New()
+	}
+}
+
 // WithDefaultYes the `confirm` default is no,
 // adding this option will turn into yes.
 func WithDefaultYes() Option {
