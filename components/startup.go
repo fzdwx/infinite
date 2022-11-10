@@ -23,9 +23,17 @@ func NewStartUp(c Components, ops ...tea.ProgramOption) *StartUp {
 	}
 }
 
+// Start
+// Deprecated: please use [StartUp.Run] instead.
 func (s *StartUp) Start() error {
+	_, err := s.Run()
+	return err
+}
+
+// Run Returns the final model.
+func (s *StartUp) Run() (tea.Model, error) {
 	s.started = true
-	return s.P.Start()
+	return s.P.Run()
 }
 
 // Kill Components
