@@ -116,7 +116,7 @@ func (g *Group) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, g.Quit):
-			components.OnUserInterrupt(g.GetProgram())
+			return g, tea.Quit
 		}
 	case done:
 		g.done--

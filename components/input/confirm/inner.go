@@ -99,7 +99,7 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msgCast, i.KeyMap.Quit):
-			components.OnUserInterrupt(i.program)
+			return i, tea.Quit
 		case key.Matches(msgCast, i.KeyMap.Yes):
 			msg = i.finish()
 			i.Value = true

@@ -1,6 +1,8 @@
 package confirm
 
-import "github.com/fzdwx/infinite/components"
+import (
+	"github.com/fzdwx/infinite/components"
+)
 
 type Confirm struct {
 	startUp *components.StartUp

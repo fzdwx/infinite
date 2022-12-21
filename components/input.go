@@ -209,7 +209,7 @@ func (i *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// todo Verification function can be added
 			return i.confirm()
 		case key.Matches(msg, i.KeyMap.Quit):
-			OnUserInterrupt(i.program)
+			return i, tea.Quit
 		}
 	case Status:
 		i.Status = msg

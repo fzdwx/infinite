@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/duke-git/lancet/v2/random"
 	"github.com/duke-git/lancet/v2/strutil"
 	inf "github.com/fzdwx/infinite"
@@ -11,7 +13,6 @@ import (
 	"github.com/fzdwx/infinite/components/selection/multiselect"
 	"github.com/fzdwx/infinite/components/spinner"
 	"github.com/fzdwx/infinite/style"
-	"time"
 )
 
 func main() {

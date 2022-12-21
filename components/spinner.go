@@ -65,7 +65,7 @@ func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, s.Quit):
-			OnUserInterrupt(s.program)
+			return s, tea.Quit
 		}
 	case Status:
 		switch msg {

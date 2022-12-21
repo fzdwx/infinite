@@ -223,7 +223,7 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		if key.Matches(msg, s.Keymap.Quit) {
-			OnUserInterrupt(s.program)
+			return s, tea.Quit
 		}
 
 		if !shouldSkipFiler && s.shouldFilter() {

@@ -290,7 +290,7 @@ func (pro *Progress) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, pro.Quit):
-			OnUserInterrupt(pro.program)
+			return pro, tea.Quit
 		}
 	case ProgressMsg:
 		if msg.Id == pro.Id {
