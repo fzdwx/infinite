@@ -121,6 +121,9 @@ type Selection struct {
 	program        *tea.Program
 
 	Choices []SelectionItem
+
+	Validators       []Validator
+	ValidatorsErrMsg []string
 	// how many options to display at a time
 	PageSize            int
 	DisableOutPutResult bool
@@ -219,7 +222,17 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		if key.Matches(msg, s.Keymap.Confirm) {
-			return s.finish()
+			for _, v := range s.Validators {
+				err := v(s.Value())
+				if err != nil {
+					s.ValidatorsErrMsg = append(s.ValidatorsErrMsg, err.Error())
+				}
+			}
+			if len(s.ValidatorsErrMsg) == 0 {
+				return s.finish()
+			}
+
+			shouldSkipFiler = true
 		}
 
 		if key.Matches(msg, s.Keymap.Quit) {
@@ -247,6 +260,16 @@ func (s *Selection) View() string {
 	}
 
 	msg := s.promptLine()
+
+	if s.shouldShowValidatorsErrMsg() {
+		for _, errMsg := range s.ValidatorsErrMsg {
+			msg.NewLine().Style(
+				theme.DefaultTheme.UnHintSymbolStyle,
+				fmt.Sprintf("%s [%s]", SelectionDefaultUnHintSymbol, errMsg),
+			)
+			s.clearValidatorsErrMsg()
+		}
+	}
 
 	if s.shouldFilter() {
 		msg.NewLine().Write(s.FilterInput.View())
@@ -476,4 +499,12 @@ func (s *Selection) canScrollUp() bool {
 
 func (s *Selection) shouldFilter() bool {
 	return s.EnableFilter && s.FilterFunc != nil && s.FilterInput != nil
+}
+
+func (s *Selection) shouldShowValidatorsErrMsg() bool {
+	return len(s.ValidatorsErrMsg) > 0
+}
+
+func (s *Selection) clearValidatorsErrMsg() {
+	s.ValidatorsErrMsg = []string{}
 }
