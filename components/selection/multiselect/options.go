@@ -188,3 +188,11 @@ func WithValueStyle(stl *style.Style) Option {
 		s.inner.ValueStyle = stl
 	}
 }
+
+// WithValidator specifies a validator to use while prompting the user
+func WithValidator(v components.Validator) Option {
+	return func(s *Select) {
+		// add the provided validator to the list
+		s.inner.Validators = append(s.inner.Validators, v)
+	}
+}
