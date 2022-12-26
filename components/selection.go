@@ -83,8 +83,8 @@ func DefaultSingleKeyMap() SelectionKeyMap {
 }
 
 type SelectionItem struct {
-	idx int
-	val string
+	Idx int
+	Val string
 }
 
 type SelectionKeyMap struct {
@@ -123,7 +123,7 @@ type Selection struct {
 	Choices []SelectionItem
 
 	Validators       []Validator
-	ValidatorsErrMsg []string
+	validatorsErrMsg []string
 	// how many options to display at a time
 	PageSize            int
 	DisableOutPutResult bool
@@ -135,6 +135,7 @@ type Selection struct {
 	ShowHelp bool
 
 	Prompt         string
+	Header         string
 	CursorSymbol   string
 	UnCursorSymbol string
 	HintSymbol     string
@@ -173,7 +174,7 @@ func DefaultRowRender(cursorSymbol string, hintSymbol string, choice string) str
 
 func DefaultFilterFunc(input string, items []SelectionItem) []SelectionItem {
 	choiceVals := slice.Map[SelectionItem, string](items, func(index int, item SelectionItem) string {
-		return item.val
+		return item.Val
 	})
 
 	var ranks = fuzzy.Find(input, choiceVals)
@@ -225,10 +226,10 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			for _, v := range s.Validators {
 				err := v(s.Value())
 				if err != nil {
-					s.ValidatorsErrMsg = append(s.ValidatorsErrMsg, err.Error())
+					s.validatorsErrMsg = append(s.validatorsErrMsg, err.Error())
 				}
 			}
-			if len(s.ValidatorsErrMsg) == 0 {
+			if len(s.validatorsErrMsg) == 0 {
 				return s.finish()
 			}
 
@@ -262,7 +263,7 @@ func (s *Selection) View() string {
 	msg := s.promptLine()
 
 	if s.shouldShowValidatorsErrMsg() {
-		for _, errMsg := range s.ValidatorsErrMsg {
+		for _, errMsg := range s.validatorsErrMsg {
 			msg.NewLine().Style(
 				theme.DefaultTheme.UnHintSymbolStyle,
 				fmt.Sprintf("%s [%s]", SelectionDefaultUnHintSymbol, errMsg),
@@ -275,9 +276,13 @@ func (s *Selection) View() string {
 		msg.NewLine().Write(s.FilterInput.View())
 	}
 
+	if s.Header != "" {
+		msg.NewLine().Write(s.Header)
+	}
+
 	// Iterate over our Choices
 	for i, choice := range s.currentChoices {
-		val := choice.val
+		val := choice.Val
 
 		// Is the CursorSymbol pointing at this choice?
 		cursorSymbol := s.UnCursorSymbol // no CursorSymbol
@@ -288,7 +293,7 @@ func (s *Selection) View() string {
 
 		// Is this choice Selected?
 		hintSymbol := s.UnHintSymbol // not Selected
-		if _, ok := s.Selected[choice.idx]; ok {
+		if _, ok := s.Selected[choice.Idx]; ok {
 			hintSymbol = s.HintSymbol // Selected!
 		}
 
@@ -371,7 +376,7 @@ func (s *Selection) viewResult() string {
 	output := s.promptLine()
 
 	for i := range s.Selected {
-		output.Style(s.ValueStyle, s.Choices[i].val).Space()
+		output.Style(s.ValueStyle, s.Choices[i].Val).Space()
 	}
 
 	output.NewLine()
@@ -423,7 +428,7 @@ func (s *Selection) moveDown() {
 // the Selected state for the SelectionItem that the cursor is pointing at.
 func (s *Selection) choice() {
 	// get Current choice.
-	idx := s.currentChoices[s.cursor].idx
+	idx := s.currentChoices[s.cursor].Idx
 
 	_, ok := s.Selected[idx]
 	if ok {
@@ -502,9 +507,9 @@ func (s *Selection) shouldFilter() bool {
 }
 
 func (s *Selection) shouldShowValidatorsErrMsg() bool {
-	return len(s.ValidatorsErrMsg) > 0
+	return len(s.validatorsErrMsg) > 0
 }
 
 func (s *Selection) clearValidatorsErrMsg() {
-	s.ValidatorsErrMsg = []string{}
+	s.validatorsErrMsg = []string{}
 }

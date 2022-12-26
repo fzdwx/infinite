@@ -119,6 +119,13 @@ func WithPrompt(prompt ...string) Option {
 	}
 }
 
+// WithHeader default is ""
+func WithHeader(header string) Option {
+	return func(s *Select) {
+		s.inner.Header = header
+	}
+}
+
 // WithDisableOutputResult disable output result.
 func WithDisableOutputResult() Option {
 	return func(s *Select) {

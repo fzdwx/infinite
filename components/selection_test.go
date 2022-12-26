@@ -28,7 +28,7 @@ func TestFilter(t *testing.T) {
 		return SelectionItem{idx, item}
 	}))
 
-	got := items[selection.Value()[0]].val
+	got := items[selection.Value()[0]].Val
 	want := strings[5]
 	if got != want {
 		t.Errorf("choice : got %v, want %v\n", got, want)
