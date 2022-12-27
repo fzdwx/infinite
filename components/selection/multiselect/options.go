@@ -203,3 +203,10 @@ func WithValidator(v components.Validator) Option {
 		s.inner.Validators = append(s.inner.Validators, v)
 	}
 }
+
+// WithDisableHelp disable show help.
+func WithDisableShowHelp() Option {
+	return func(s *Select) {
+		s.inner.ShowHelp = false
+	}
+}
