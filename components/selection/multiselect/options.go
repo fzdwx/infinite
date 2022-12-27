@@ -119,6 +119,13 @@ func WithPrompt(prompt ...string) Option {
 	}
 }
 
+// WithHeader default is ""
+func WithHeader(header string) Option {
+	return func(s *Select) {
+		s.inner.Header = header
+	}
+}
+
 // WithDisableOutputResult disable output result.
 func WithDisableOutputResult() Option {
 	return func(s *Select) {
@@ -194,5 +201,12 @@ func WithValidator(v components.Validator) Option {
 	return func(s *Select) {
 		// add the provided validator to the list
 		s.inner.Validators = append(s.inner.Validators, v)
+	}
+}
+
+// WithDisableHelp disable show help.
+func WithDisableShowHelp() Option {
+	return func(s *Select) {
+		s.inner.ShowHelp = false
 	}
 }

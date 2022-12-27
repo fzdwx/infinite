@@ -159,3 +159,10 @@ func WithValueStyle(stl *style.Style) Option {
 		s.inner.Apply(multiselect.WithValueStyle(stl))
 	}
 }
+
+// WithDisableHelp disable show help.
+func WithDisableHelp() Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithDisableShowHelp())
+	}
+}

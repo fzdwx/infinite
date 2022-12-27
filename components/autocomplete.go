@@ -252,7 +252,7 @@ func (a *Autocomplete) complete() {
 
 	// get complete word
 	a.Selection.choice()
-	choiceWord := a.Selection.Choices[a.Selection.Value()[0]].val
+	choiceWord := a.Selection.Choices[a.Selection.Value()[0]].Val
 
 	newVal, newCursor := a.Completer(a.getValCtx(), choiceWord)
 
