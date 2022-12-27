@@ -2,9 +2,10 @@ package singleselect
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
-	"github.com/rotisserie/eris"
 )
 
 type Select struct {
@@ -29,8 +30,8 @@ func (s *Select) Display(prompt ...string) (int, error) {
 		return -1, err
 	}
 
-	if len(hints) <= 0 {
-		return -1, eris.New("not found selected")
+	if len(hints) == 0 {
+		os.Exit(0)
 	}
 
 	return hints[0], nil
