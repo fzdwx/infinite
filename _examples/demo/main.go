@@ -49,6 +49,7 @@ func main() {
 
 	selected, _ := inf.NewMultiSelect(options,
 		multiselect.WithFilterInput(input),
+		multiselect.WithPageSize(1),
 	).Display("请选择你要下载的歌曲")
 
 	yes, _ := inf.NewConfirmWithSelection(
