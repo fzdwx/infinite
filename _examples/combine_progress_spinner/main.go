@@ -56,7 +56,8 @@ func (c *Component) Display(runner func(c *Component)) error {
 		c.Quit()
 	}()
 
-	return c.Start()
+	_, err := c.Run()
+	return err
 }
 
 func (c *Component) Init() tea.Cmd {

@@ -52,7 +52,8 @@ func (s *Spinner) Display(runner func(spinner *Spinner)) error {
 		s.Finish()
 	}()
 
-	return s.startUp.Start()
+	_, err := s.startUp.Run()
+	return err
 }
 
 // Finish Spinner

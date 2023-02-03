@@ -28,7 +28,7 @@ func (ms *Select) Display(prompt ...string) ([]int, error) {
 
 	ms.inner.RenderColor()
 
-	err := ms.startUp.Start()
+	_, err := ms.startUp.Run()
 	if err != nil {
 		return nil, eris.Wrap(err, "start inner selection fail")
 	}

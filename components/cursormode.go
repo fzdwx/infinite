@@ -2,7 +2,7 @@ package components
 
 import (
 	"fmt"
-	"github.com/charmbracelet/bubbles/textinput"
+	"github.com/charmbracelet/bubbles/cursor"
 )
 
 // CursorMode describes the behavior of the cursor.
@@ -24,26 +24,26 @@ func (c CursorMode) String() string {
 	}[c]
 }
 
-func (c CursorMode) Map() textinput.CursorMode {
+func (c CursorMode) Map() cursor.Mode {
 	switch c {
 	case CursorBlink:
-		return textinput.CursorBlink
+		return cursor.CursorBlink
 	case CursorStatic:
-		return textinput.CursorStatic
+		return cursor.CursorStatic
 	case CursorHide:
-		return textinput.CursorHide
+		return cursor.CursorHide
 	}
 
 	panic(fmt.Sprintf("unknow cursorMode :%d", c))
 }
 
-func newCursorMode(other textinput.CursorMode) CursorMode {
+func newCursorMode(other cursor.Mode) CursorMode {
 	switch other {
-	case textinput.CursorBlink:
+	case cursor.CursorBlink:
 		return CursorBlink
-	case textinput.CursorStatic:
+	case cursor.CursorStatic:
 		return CursorStatic
-	case textinput.CursorHide:
+	case cursor.CursorHide:
 		return CursorHide
 	}
 

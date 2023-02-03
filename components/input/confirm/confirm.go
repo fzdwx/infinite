@@ -25,7 +25,7 @@ func New(ops ...Option) *Confirm {
 
 // Display Confirm component.
 func (c *Confirm) Display() (bool, error) {
-	err := c.startUp.Start()
+	_, err := c.startUp.Run()
 	return c.Value(), err
 }
 

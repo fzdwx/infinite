@@ -47,7 +47,7 @@ func main() {
 		startUp.Quit()
 	}()
 
-	startUp.Start()
+	startUp.Run()
 }
 
 func sleep() {

@@ -87,7 +87,7 @@ func (c *Confirm) Display() (bool, error) {
 	c.init()
 
 	c.startUp = components.NewStartUp(c.inner)
-	err := c.startUp.Start()
+	_, err := c.startUp.Run()
 	return c.inner.Value, err
 }
 

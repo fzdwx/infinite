@@ -31,7 +31,7 @@ func main() {
 		return suggester, true
 	}).WithInput(input).WithSuggestionViewRender(components.TabSuggestionRender)
 
-	err := components.NewStartUp(c).Start()
+	_, err := components.NewStartUp(c).Run()
 	if err != nil {
 		fmt.Println(err)
 	}

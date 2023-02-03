@@ -97,7 +97,8 @@ func (g *Group) Display() error {
 			g.startUp.Send(done(1))
 		}()
 	})
-	return g.startUp.Start()
+	_, err := g.startUp.Run()
+	return err
 }
 
 func (g *Group) Kill() {

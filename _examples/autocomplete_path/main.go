@@ -31,5 +31,5 @@ func main() {
 
 	c := components.NewAutocomplete(f)
 
-	components.NewStartUp(c).Start()
+	components.NewStartUp(c).Run()
 }

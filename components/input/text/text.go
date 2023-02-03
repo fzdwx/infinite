@@ -59,7 +59,7 @@ func (i *Text) Apply(ops ...Option) *Text {
 }
 
 func (i *Text) Display() (string, error) {
-	err := i.startUp.Start()
+	_, err := i.startUp.Run()
 
 	if err == nil {
 		return i.Value(), nil
@@ -131,6 +131,6 @@ func (i *Text) CursorEnd() {
 
 // Reset sets the input to its default state with no input. Returns whether
 // or not the cursor blink should reset.
-func (i *Text) Reset() bool {
-	return i.inner.Reset()
+func (i *Text) Reset() {
+	i.inner.Reset()
 }

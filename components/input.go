@@ -120,13 +120,18 @@ func (i *Input) Value() string {
 }
 
 // Cursor returns the cursor position.
+// deprecated: use Position() instead.
 func (i *Input) Cursor() int {
-	return i.Model.Cursor()
+	return i.Model.Position()
+}
+
+func (i *Input) Position() int {
+	return i.Model.Position()
 }
 
 // Blink returns whether or not to draw the cursor.
 func (i *Input) Blink() bool {
-	return i.Model.Blink()
+	return i.Model.Cursor.Blink
 }
 
 // SetCursor moves the cursor to the given position. If the position is
@@ -152,21 +157,21 @@ func (i *Input) CursorEnd() {
 
 // Reset sets the Input to its default state with no Input. Returns whether
 // or not the cursor blink should reset.
-func (i *Input) Reset() bool {
-	return i.Model.Reset()
+func (i *Input) Reset() {
+	i.Model.Reset()
 }
 
 // CursorMode returns the model's cursor mode. For available cursor modes, see
 // type CursorMode.
 func (i *Input) CursorMode() CursorMode {
-	return newCursorMode(i.Model.CursorMode())
+	return newCursorMode(i.Model.Cursor.Mode())
 }
 
 // SetCursorMode sets the model's cursor mode. This method returns a command.
 //
 // For available cursor modes, see type CursorMode.
 func (i *Input) SetCursorMode(model CursorMode) {
-	i.Model.SetCursorMode(model.Map())
+	i.Model.Cursor.SetMode(model.Map())
 }
 
 func (i *Input) Init() tea.Cmd {
@@ -184,7 +189,7 @@ func (i *Input) Init() tea.Cmd {
 
 	i.Model.Prompt = i.FocusPrompt
 	i.Model.Placeholder = i.DefaultValue
-	i.Model.BlinkSpeed = i.BlinkSpeed
+	i.Model.Cursor.BlinkSpeed = i.BlinkSpeed
 	i.Model.EchoMode = textinput.EchoMode(i.EchoMode)
 	i.Model.EchoCharacter = i.EchoCharacter
 	i.Model.TextStyle = i.TextStyle.Inner()

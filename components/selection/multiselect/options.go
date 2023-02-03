@@ -204,7 +204,7 @@ func WithValidator(v components.Validator) Option {
 	}
 }
 
-// WithDisableHelp disable show help.
+// WithDisableShowHelp disable show help.
 func WithDisableShowHelp() Option {
 	return func(s *Select) {
 		s.inner.ShowHelp = false
