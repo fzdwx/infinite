@@ -86,14 +86,6 @@ func DefaultSingleKeyMap() SelectionKeyMap {
 			key.WithKeys("tab", "tab"),
 			key.WithHelp("tab", "finish selection"),
 		),
-		SelectAll: key.NewBinding(
-			key.WithKeys("right"),
-			key.WithHelp("→", "select all"),
-		),
-		Flip: key.NewBinding(
-			key.WithKeys("left"),
-			key.WithHelp("←", "flip select"),
-		),
 		Quit: InterruptKey,
 	}
 }

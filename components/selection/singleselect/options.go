@@ -49,9 +49,17 @@ func WithPageSize(pageSize int) Option {
 }
 
 // WithKeyBinding replace key map.
-func WithKeyBinding(keymap components.SelectionKeyMap) Option {
+// see DefaultSingleKeyMap
+func WithKeyBinding(keymap KeyMap) Option {
 	return func(s *Select) {
-		s.inner.Apply(multiselect.WithKeyMap(keymap))
+		s.inner.Apply(multiselect.WithKeyMap(
+			components.SelectionKeyMap{
+				Up:      keymap.Up,
+				Down:    keymap.Down,
+				Choice:  keymap.Choice,
+				Confirm: keymap.Confirm,
+				Quit:    keymap.Quit,
+			}))
 	}
 }
 
