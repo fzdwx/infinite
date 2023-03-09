@@ -48,6 +48,17 @@ func WithPageSize(pageSize int) Option {
 }
 
 // WithKeyMap replace key map.
+// see components.DefaultMultiKeyMap
+//
+// example:
+//
+// keymap := components.DefaultMultiKeyMap()
+//
+// keymap.Choice = key.NewBinding(
+//
+//	key.WithKeys(tea.KeySpace.String()),
+//
+// )
 func WithKeyMap(keymap components.SelectionKeyMap) Option {
 	return func(s *Select) {
 		s.inner.Keymap = keymap

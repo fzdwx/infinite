@@ -56,6 +56,14 @@ func DefaultMultiKeyMap() SelectionKeyMap {
 			key.WithKeys("enter"),
 			key.WithHelp("enter", "finish selection"),
 		),
+		SelectAll: key.NewBinding(
+			key.WithKeys("right"),
+			key.WithHelp("→", "select all"),
+		),
+		Flip: key.NewBinding(
+			key.WithKeys("left"),
+			key.WithHelp("←", "flip select"),
+		),
 		Quit: InterruptKey,
 	}
 }
@@ -78,6 +86,14 @@ func DefaultSingleKeyMap() SelectionKeyMap {
 			key.WithKeys("tab", "tab"),
 			key.WithHelp("tab", "finish selection"),
 		),
+		SelectAll: key.NewBinding(
+			key.WithKeys("right"),
+			key.WithHelp("→", "select all"),
+		),
+		Flip: key.NewBinding(
+			key.WithKeys("left"),
+			key.WithHelp("←", "flip select"),
+		),
 		Quit: InterruptKey,
 	}
 }
@@ -88,10 +104,12 @@ type SelectionItem struct {
 }
 
 type SelectionKeyMap struct {
-	Up      key.Binding
-	Down    key.Binding
-	Choice  key.Binding
-	Confirm key.Binding
+	Up        key.Binding
+	Down      key.Binding
+	Choice    key.Binding
+	Confirm   key.Binding
+	SelectAll key.Binding // 全选
+	Flip      key.Binding // 反选
 	// kill program
 	Quit key.Binding
 }
@@ -219,6 +237,14 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		if key.Matches(msg, s.Keymap.Choice) {
 			s.choice()
+			shouldSkipFiler = true
+		}
+		if key.Matches(msg, s.Keymap.SelectAll) {
+			s.selectAll()
+			shouldSkipFiler = true
+		}
+		if key.Matches(msg, s.Keymap.Flip) {
+			s.flip()
 			shouldSkipFiler = true
 		}
 
@@ -435,6 +461,25 @@ func (s *Selection) choice() {
 		delete(s.Selected, idx)
 	} else {
 		s.Selected[idx] = struct{}{}
+	}
+}
+
+// selectAll add all item to Selected
+func (s *Selection) selectAll() {
+	for _, choice := range s.Choices {
+		s.Selected[choice.Idx] = struct{}{}
+	}
+}
+
+// flip all Selected
+func (s *Selection) flip() {
+	for _, choice := range s.Choices {
+		_, ok := s.Selected[choice.Idx]
+		if ok {
+			delete(s.Selected, choice.Idx)
+		} else {
+			s.Selected[choice.Idx] = struct{}{}
+		}
 	}
 }
 
