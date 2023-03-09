@@ -64,30 +64,23 @@ func DefaultMultiKeyMap() SelectionKeyMap {
 			key.WithKeys("left"),
 			key.WithHelp("←", "flip select"),
 		),
+		NextPage: key.NewBinding(
+			key.WithKeys(tea.KeyPgDown.String()),
+			key.WithHelp("pageup", "next page"),
+		),
+		PrevPage: key.NewBinding(
+			key.WithKeys(tea.KeyPgUp.String()),
+			key.WithHelp("pagedown", "prev page"),
+		),
 		Quit: InterruptKey,
 	}
 }
 
 func DefaultSingleKeyMap() SelectionKeyMap {
-	return SelectionKeyMap{
-		Up: key.NewBinding(
-			key.WithKeys("up"),
-			key.WithHelp("↑", "move up"),
-		),
-		Down: key.NewBinding(
-			key.WithKeys("down"),
-			key.WithHelp("↓", "move down"),
-		),
-		Choice: key.NewBinding(
-			key.WithKeys("tab"),
-			key.WithHelp("tab", "choice it"),
-		),
-		Confirm: key.NewBinding(
-			key.WithKeys("tab", "tab"),
-			key.WithHelp("tab", "finish selection"),
-		),
-		Quit: InterruptKey,
-	}
+	keymap := DefaultMultiKeyMap()
+	keymap.SelectAll.SetEnabled(false)
+	keymap.Flip.SetEnabled(false)
+	return keymap
 }
 
 type SelectionItem struct {
@@ -103,7 +96,9 @@ type SelectionKeyMap struct {
 	SelectAll key.Binding // 全选
 	Flip      key.Binding // 反选
 	// kill program
-	Quit key.Binding
+	Quit     key.Binding
+	NextPage key.Binding
+	PrevPage key.Binding
 }
 
 func (k SelectionKeyMap) ShortHelp() []key.Binding {
@@ -224,6 +219,21 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		if key.Matches(msg, s.Keymap.Down) {
 			s.moveDown()
+			shouldSkipFiler = true
+		}
+
+		if key.Matches(msg, s.Keymap.NextPage) {
+			for i := 0; i < s.PageSize; i++ {
+				s.moveDown()
+			}
+			shouldSkipFiler = true
+		}
+		str := msg.String()
+		_ = str == ""
+		if key.Matches(msg, s.Keymap.PrevPage) {
+			for i := 0; i < s.PageSize; i++ {
+				s.moveUp()
+			}
 			shouldSkipFiler = true
 		}
 

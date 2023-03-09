@@ -54,11 +54,13 @@ func WithKeyBinding(keymap KeyMap) Option {
 	return func(s *Select) {
 		s.inner.Apply(multiselect.WithKeyMap(
 			components.SelectionKeyMap{
-				Up:      keymap.Up,
-				Down:    keymap.Down,
-				Choice:  keymap.Choice,
-				Confirm: keymap.Confirm,
-				Quit:    keymap.Quit,
+				Up:       keymap.Up,
+				Down:     keymap.Down,
+				Choice:   keymap.Choice,
+				Confirm:  keymap.Confirm,
+				Quit:     keymap.Quit,
+				NextPage: keymap.NextPage,
+				PrevPage: keymap.PrevPage,
 			}))
 	}
 }
