@@ -265,6 +265,7 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		if key.Matches(msg, s.Keymap.Quit) {
+			s.unselectAll()
 			return s, tea.Quit
 		}
 
@@ -470,6 +471,13 @@ func (s *Selection) choice() {
 func (s *Selection) selectAll() {
 	for _, choice := range s.Choices {
 		s.Selected[choice.Idx] = struct{}{}
+	}
+}
+
+// unselectAll change all item to unSelected
+func (s *Selection) unselectAll() {
+	for idx := range s.Choices {
+		delete(s.Selected, idx)
 	}
 }
 
