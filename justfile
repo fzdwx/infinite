@@ -20,6 +20,3 @@ rec:
 cast row="15":
     asciicast2gif -h {{row}} demo.cast demo.gif
 #    rm -rf demo.cast
-
-test file="":
-    go test -run  -o qwe && ./qwe && rm -rf ./qwe
