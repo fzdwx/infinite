@@ -12,6 +12,9 @@ import (
 	"github.com/fzdwx/infinite/pkg/strx"
 	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
+	"github.com/fzdwx/iter"
+	"github.com/fzdwx/iter/mapx"
+	"github.com/fzdwx/iter/stream"
 	"github.com/mattn/go-runewidth"
 	"github.com/sahilm/fuzzy"
 	"sort"
@@ -54,7 +57,7 @@ func DefaultMultiKeyMap() SelectionKeyMap {
 		),
 		Confirm: key.NewBinding(
 			key.WithKeys("enter"),
-			key.WithHelp("enter", "finish selection"),
+			key.WithHelp("enter", "finish select"),
 		),
 		SelectAll: key.NewBinding(
 			key.WithKeys("right"),
@@ -101,7 +104,22 @@ type SelectionKeyMap struct {
 	PrevPage key.Binding
 }
 
+func keyBindMatch(a key.Binding, b key.Binding) bool {
+	a1Map := stream.ToMap[string, string](iter.Stream(a.Keys()), func(s string) string {
+		return s
+	})
+
+	b1Map := stream.ToMap[string, string](iter.Stream(b.Keys()), func(s string) string {
+		return s
+	})
+
+	return mapx.EqDefault(a1Map, b1Map)
+}
+
 func (k SelectionKeyMap) ShortHelp() []key.Binding {
+	if keyBindMatch(k.Choice, k.Confirm) {
+		return []key.Binding{k.Up, k.Down, k.Choice, k.Quit}
+	}
 	return []key.Binding{k.Up, k.Down, k.Choice, k.Confirm, k.Quit}
 }
 

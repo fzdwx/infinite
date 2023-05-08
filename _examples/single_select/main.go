@@ -22,9 +22,11 @@ func main() {
 	selectKeymap := singleselect.DefaultSingleKeyMap()
 	selectKeymap.Confirm = key.NewBinding(
 		key.WithKeys("enter"),
+		key.WithHelp("enter", "finish select"),
 	)
 	selectKeymap.Choice = key.NewBinding(
 		key.WithKeys("enter"),
+		key.WithHelp("enter", "finish select"),
 	)
 	selected, err := inf.NewSingleSelect(
 		options,

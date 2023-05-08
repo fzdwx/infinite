@@ -20,6 +20,10 @@ github.com/duke-git/lancet/v2 v2.1.13 h1:KOCCVrfh4pjuwl6td5MQ4OqvV73qFdoGxv20HWm
 github.com/duke-git/lancet/v2 v2.1.13/go.mod h1:hNcc06mV7qr+crH/0nP+rlC3TB0Q9g5OrVnO8/TGD4c=
 github.com/duke-git/lancet/v2 v2.1.20 h1:r6TG9xVFGuDKNbohIHvonAl90RGrq2o0gfKxt0jWi4o=
 github.com/duke-git/lancet/v2 v2.1.20/go.mod h1:zGa2R4xswg6EG9I6WnyubDbFO/+A/RROxIbXcwryTsc=
+github.com/fzdwx/iter v0.0.0-20230507120709-11f500fc3b44 h1:pVyfkoONyboSDFngQvOGcmgQjbofmNJM3MgNXJrx4+4=
+github.com/fzdwx/iter v0.0.0-20230507120709-11f500fc3b44/go.mod h1:Z3Qmt8lMUUP2dyDnzDSOLJwL3jBG/SuX/dnGcm30f/U=
+github.com/fzdwx/iter v0.0.0-20230508020341-daedf08517ce h1:lqg+HZjl1jFEYu9LX5bcuO41m4rYmMRnsr53H1K1eYg=
+github.com/fzdwx/iter v0.0.0-20230508020341-daedf08517ce/go.mod h1:Z3Qmt8lMUUP2dyDnzDSOLJwL3jBG/SuX/dnGcm30f/U=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/lucasb-eyer/go-colorful v1.2.0 h1:1nnpGOrhyZZuNyfu1QjKiUICQ74+3FNCN69Aj6K7nkY=
