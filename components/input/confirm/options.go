@@ -10,10 +10,8 @@ type Option func(confirm *Confirm)
 // any options you customize will be cleared
 func WithPure() Option {
 	return func(i *Confirm) {
-		i.inner.FocusSymbolStyle = style.New()
-		i.inner.UnFocusSymbolStyle = style.New()
-		i.inner.FocusIntervalStyle = style.New()
-		i.inner.UnFocusIntervalStyle = style.New()
+		i.inner.FocusStyle = resetStyle(i.inner.FocusStyle)
+		i.inner.UnFocusStyle = resetStyle(i.inner.UnFocusStyle)
 		i.inner.ValueStyle = style.New()
 	}
 }
@@ -48,9 +46,11 @@ func WithPrompt(prompt string) Option {
 }
 
 // WithPromptStyle change `confirm` default promptStyle.
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithPromptStyle(style *style.Style) Option {
 	return func(c *Confirm) {
-		c.inner.PromptStyle = style
+		c.inner.FocusStyle.PromptStyle = style
+		c.inner.UnFocusStyle.PromptStyle = style
 	}
 }
 
@@ -69,71 +69,95 @@ func WithDisplayHelp() Option {
 }
 
 // WithNotice replace notice, default is  " ( y/N ) ".
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithNotice(notice string) Option {
 	return func(c *Confirm) {
-		c.inner.Notice = notice
+		c.inner.FocusStyle.Notice = notice
+		c.inner.UnFocusStyle.Notice = notice
 	}
 }
 
 // WithNoticeStyle replace notice style.
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithNoticeStyle(style *style.Style) Option {
 	return func(c *Confirm) {
-		c.inner.NoticeStyle = style
+		c.inner.FocusStyle.NoticeStyle = style
+		c.inner.UnFocusStyle.NoticeStyle = style
 	}
 }
 
-// WithFocusSymbol default is theme.DefaultTheme#FocusSymbol
+// WithFocusSymbol default is FocusStyle#Symbol
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithFocusSymbol(s string) Option {
 	return func(confirm *Confirm) {
-		confirm.inner.FocusSymbol = s
+		confirm.inner.FocusStyle.Symbol = s
 	}
 }
 
-// WithUnFocusSymbol default is theme.DefaultTheme#UnFocusSymbol
+// WithUnFocusSymbol default is UnFocusStyle#Symbol
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithUnFocusSymbol(s string) Option {
 	return func(confirm *Confirm) {
-		confirm.inner.UnFocusSymbol = s
+		confirm.inner.UnFocusStyle.Symbol = s
 	}
 }
 
-// WithFocusInterval default is theme.DefaultTheme#FocusInterval
+// WithFocusInterval default FocusStyle#Interval
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithFocusInterval(s string) Option {
 	return func(confirm *Confirm) {
-		confirm.inner.FocusInterval = s
+		confirm.inner.FocusStyle.Interval = s
 	}
 }
 
-// WithUnFocusInterval default is theme.DefaultTheme#UnFocusInterval
+// WithUnFocusInterval default is UnFocusStyle#Interval
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithUnFocusInterval(s string) Option {
 	return func(confirm *Confirm) {
-		confirm.inner.UnFocusInterval = s
+		confirm.inner.UnFocusStyle.Interval = s
 	}
 }
 
-// WithFocusSymbolStyle default is theme.DefaultTheme#FocusSymbolStyle
+// WithFocusSymbolStyle default is FocusStyle#SymbolStyle
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithFocusSymbolStyle(s *style.Style) Option {
 	return func(confirm *Confirm) {
-		confirm.inner.FocusSymbolStyle = s
+		confirm.inner.FocusStyle.SymbolStyle = s
 	}
 }
 
-// WithUnFocusSymbolStyle default is theme.DefaultTheme#UnFocusIntervalStyle
+// WithUnFocusSymbolStyle default is UnFocusStyle#SymbolStyle
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithUnFocusSymbolStyle(s *style.Style) Option {
 	return func(confirm *Confirm) {
-		confirm.inner.UnFocusSymbolStyle = s
+		confirm.inner.UnFocusStyle.SymbolStyle = s
 	}
 }
 
-// WithFocusIntervalStyle default is theme.DefaultTheme#FocusIntervalStyle
+// WithFocusIntervalStyle default is FocusStyle#IntervalStyle
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithFocusIntervalStyle(s *style.Style) Option {
 	return func(confirm *Confirm) {
-		confirm.inner.FocusIntervalStyle = s
+		confirm.inner.FocusStyle.IntervalStyle = s
 	}
 }
 
-// WithUnFocusIntervalStyle default is theme.DefaultTheme#UnFocusIntervalStyle
+// WithUnFocusIntervalStyle default is UnFocusStyle#IntervalStyle
+// Deprecated: use WithFocusStyle or WithUnFocusStyle instead.
 func WithUnFocusIntervalStyle(s *style.Style) Option {
 	return func(confirm *Confirm) {
-		confirm.inner.UnFocusIntervalStyle = s
+		confirm.inner.UnFocusStyle.IntervalStyle = s
+	}
+}
+
+func WithFocusStyle(s *Style) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.FocusStyle = s
+	}
+}
+
+func WithUnFocusStyle(s *Style) Option {
+	return func(confirm *Confirm) {
+		confirm.inner.UnFocusStyle = s
 	}
 }

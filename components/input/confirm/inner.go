@@ -21,46 +21,30 @@ type inner struct {
 	// display help? default is false
 	DisplayHelp bool
 	// default is false
-	Value       bool
-	Notice      string
-	NoticeStyle *style.Style
+	Value      bool
+	ValueStyle *style.Style
 
-	FocusSymbol          string
-	UnFocusSymbol        string
-	FocusInterval        string
-	UnFocusInterval      string
-	FocusSymbolStyle     *style.Style
-	UnFocusSymbolStyle   *style.Style
-	FocusIntervalStyle   *style.Style
-	UnFocusIntervalStyle *style.Style
-	PromptStyle          *style.Style
-	ValueStyle           *style.Style
-	OutputResult         bool
+	FocusStyle   *Style
+	UnFocusStyle *Style
+
+	// OutputResult is whether to output the result to the screen
+	OutputResult bool
 
 	status components.Status
 }
 
 func newInner() *inner {
 	i := &inner{
-		input:                components.NewInput(),
-		KeyMap:               DefaultKeyMap(),
-		Help:                 help.New(),
-		DisplayHelp:          false,
-		Value:                false,
-		Notice:               " ( y/N )",
-		NoticeStyle:          style.New(),
-		PromptStyle:          style.New(),
-		FocusSymbol:          theme.DefaultTheme.FocusSymbol,
-		UnFocusSymbol:        theme.DefaultTheme.UnFocusSymbol,
-		FocusInterval:        theme.DefaultTheme.FocusInterval,
-		UnFocusInterval:      theme.DefaultTheme.UnFocusInterval,
-		FocusSymbolStyle:     theme.DefaultTheme.FocusSymbolStyle,
-		UnFocusSymbolStyle:   theme.DefaultTheme.UnFocusSymbolStyle,
-		FocusIntervalStyle:   theme.DefaultTheme.FocusIntervalStyle,
-		UnFocusIntervalStyle: theme.DefaultTheme.UnFocusIntervalStyle,
-		ValueStyle:           theme.DefaultTheme.ChoiceTextStyle.Underline(),
-		status:               components.Normal,
-		OutputResult:         true,
+		input:        components.NewInput(),
+		KeyMap:       DefaultKeyMap(),
+		Help:         help.New(),
+		DisplayHelp:  false,
+		Value:        false,
+		ValueStyle:   theme.DefaultTheme.ChoiceTextStyle.Underline(),
+		status:       components.Normal,
+		OutputResult: true,
+		UnFocusStyle: UnFocusStyle(),
+		FocusStyle:   FocusStyle(),
 	}
 
 	i.input.Prompt = "Are you handsome?"
@@ -71,17 +55,17 @@ func newInner() *inner {
 // Init confirm
 func (i *inner) Init() tea.Cmd {
 	focusPrompt := strx.NewFluent().
-		Style(i.FocusSymbolStyle, i.FocusSymbol).
-		Style(i.PromptStyle, i.input.Prompt).
-		Style(i.NoticeStyle, i.Notice).
-		Style(i.FocusIntervalStyle, i.FocusInterval).
+		Style(i.FocusStyle.SymbolStyle, i.FocusStyle.Symbol).
+		Style(i.FocusStyle.PromptStyle, i.input.Prompt).
+		Style(i.FocusStyle.NoticeStyle, i.FocusStyle.Notice).
+		Style(i.FocusStyle.IntervalStyle, i.FocusStyle.Interval).
 		String()
 
 	unFocusPrompt := strx.NewFluent().
-		Style(i.UnFocusSymbolStyle, i.UnFocusSymbol).
-		Style(i.PromptStyle, i.input.Prompt).
-		Style(i.NoticeStyle, i.Notice).
-		Style(i.UnFocusIntervalStyle, i.UnFocusInterval[:len(i.UnFocusInterval)-1]).
+		Style(i.UnFocusStyle.SymbolStyle, i.UnFocusStyle.Symbol).
+		Style(i.UnFocusStyle.PromptStyle, i.input.Prompt).
+		Style(i.UnFocusStyle.NoticeStyle, i.UnFocusStyle.Notice).
+		Style(i.UnFocusStyle.IntervalStyle, i.UnFocusStyle.Interval[:len(i.UnFocusStyle.Interval)-1]).
 		String()
 
 	i.input.OutputResult = false
