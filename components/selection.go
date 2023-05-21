@@ -211,7 +211,7 @@ func DefaultFilterFunc(input string, items []SelectionItem) []SelectionItem {
 func (s *Selection) Init() tea.Cmd {
 	var cmd tea.Cmd
 
-	s.refreshChoices()
+	s.RefreshChoices()
 
 	s.UnCursorSymbol = strutil.PadEnd("", runewidth.StringWidth(s.CursorSymbol), " ")
 
@@ -380,8 +380,8 @@ func (s *Selection) RenderColor() {
 	s.UnHintSymbol = s.UnHintSymbolStyle.Render(s.UnHintSymbol)
 }
 
-// refreshChoices refresh Choices
-func (s *Selection) refreshChoices() {
+// RefreshChoices refresh Choices
+func (s *Selection) RefreshChoices() {
 	var choices []SelectionItem
 	var filterChoices []SelectionItem
 	var available, ignored int
@@ -536,7 +536,7 @@ func (s *Selection) shouldScrollUp() bool {
 func (s *Selection) moveToTop() {
 	s.cursor = 0
 	s.scrollOffset = 0
-	s.refreshChoices()
+	s.RefreshChoices()
 }
 
 func (s *Selection) scrollUp() {
@@ -546,7 +546,7 @@ func (s *Selection) scrollUp() {
 
 	s.cursor = mathutil.Min(len(s.currentChoices)-1, s.cursor+1)
 	s.scrollOffset--
-	s.refreshChoices()
+	s.RefreshChoices()
 }
 
 func (s *Selection) scrollDown() {
@@ -556,7 +556,7 @@ func (s *Selection) scrollDown() {
 
 	s.cursor = mathutil.Max(0, s.cursor-1)
 	s.scrollOffset++
-	s.refreshChoices()
+	s.RefreshChoices()
 }
 
 func (s *Selection) canScrollDown() bool {
