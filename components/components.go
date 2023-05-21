@@ -110,7 +110,7 @@ func NewSelection(choices []string) *Selection {
 
 	c := &Selection{
 		Choices:              items,
-		Selected:             make(map[int]struct{}),
+		Selected:             make(map[int]bool),
 		CursorSymbol:         SelectionDefaultCursorSymbol,
 		UnCursorSymbol:       SelectionDefaultUnCursorSymbol,
 		CursorSymbolStyle:    SelectionDefaultCursorSymbolStyle,
