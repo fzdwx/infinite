@@ -132,7 +132,7 @@ func (k SelectionKeyMap) FullHelp() [][]key.Binding {
 
 type Selection struct {
 	// result
-	Selected map[int]struct{}
+	Selected map[int]bool
 	// Current cursor index in currentChoices
 	cursor int
 	// the offset of screen
@@ -481,14 +481,14 @@ func (s *Selection) choice() {
 	if ok {
 		delete(s.Selected, idx)
 	} else {
-		s.Selected[idx] = struct{}{}
+		s.Selected[idx] = true
 	}
 }
 
 // selectAll add all item to Selected
 func (s *Selection) selectAll() {
 	for _, choice := range s.Choices {
-		s.Selected[choice.Idx] = struct{}{}
+		s.Selected[choice.Idx] = true
 	}
 }
 
@@ -506,7 +506,7 @@ func (s *Selection) flip() {
 		if ok {
 			delete(s.Selected, choice.Idx)
 		} else {
-			s.Selected[choice.Idx] = struct{}{}
+			s.Selected[choice.Idx] = true
 		}
 	}
 }
