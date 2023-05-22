@@ -1,6 +1,8 @@
 package components
 
 import (
+	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/duke-git/lancet/v2/slice"
@@ -156,5 +158,30 @@ func NewSpinner() *Spinner {
 		Status:              SpinnerDefaultStatus,
 		Quit:                InterruptKey,
 	}
+	return c
+}
+
+func NewSelectionWithList[T list.DefaultItem](items []T) *SelectionWithList[T] {
+	keymap := &SelectionWithListKeyMap{
+		Choice: key.NewBinding(
+			key.WithKeys("tab"),
+		),
+	}
+	del := &selectionWithListDelegate[T]{
+		height:   2,
+		spacing:  1,
+		Selected: make(map[string]list.DefaultItem),
+		Styles:   list.NewDefaultItemStyles(),
+	}
+
+	listModel := list.New([]list.Item{}, del, 0, 0)
+
+	c := &SelectionWithList[T]{
+		del:    del,
+		List:   &listModel,
+		KeyMap: keymap,
+	}
+
+	c.SetItems(items)
 	return c
 }
