@@ -504,12 +504,13 @@ func (s *Selection) finish() (tea.Model, tea.Cmd) {
 	return s, tea.Quit
 }
 
-// shouldMoveToTop should move to top?
+// shouldMoveToTop should go to page 0?
 func (s *Selection) shouldMoveToTop() bool {
 	if s.Paginator.OnLastPage() == false {
 		return false
 	}
 
+	// cursor * page size * page == total items length
 	return s.Paginator.Page*s.PageSize+s.cursor == len(s.currentChoices)-1
 }
 
