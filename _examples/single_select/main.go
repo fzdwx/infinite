@@ -28,10 +28,19 @@ func main() {
 		key.WithKeys("enter"),
 		key.WithHelp("enter", "finish select"),
 	)
+	selectKeymap.NextPage = key.NewBinding(
+		key.WithKeys("q"),
+		key.WithHelp("q", "next page"),
+	)
+	selectKeymap.PrevPage = key.NewBinding(
+		key.WithKeys("b"),
+		key.WithHelp("b", "prev page"),
+	)
 	selected, err := inf.NewSingleSelect(
 		options,
 		singleselect.WithDisableFilter(),
 		singleselect.WithKeyBinding(selectKeymap),
+		singleselect.WithPageSize(5),
 	).Display("Hello world")
 
 	if err == nil {

@@ -3,8 +3,10 @@ package components
 import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/charmbracelet/bubbles/paginator"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/duke-git/lancet/v2/slice"
 	"github.com/fzdwx/infinite/style"
 	"github.com/fzdwx/infinite/theme"
@@ -109,8 +111,13 @@ func NewSelection(choices []string) *Selection {
 	items := slice.Map[string, SelectionItem](choices, func(idx int, item string) SelectionItem {
 		return SelectionItem{idx, item}
 	})
-
+	model := paginator.New()
+	p := paginator.New()
+	p.Type = paginator.Dots
+	p.ActiveDot = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "235", Dark: "252"}).Render("•")
+	p.InactiveDot = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "250", Dark: "238"}).Render("•")
 	c := &Selection{
+		Paginator:            model,
 		Choices:              items,
 		Selected:             make(map[int]bool),
 		CursorSymbol:         SelectionDefaultCursorSymbol,
@@ -161,6 +168,7 @@ func NewSpinner() *Spinner {
 	return c
 }
 
+// NewSelectionWithList WIP
 func NewSelectionWithList[T list.DefaultItem](items []T) *SelectionWithList[T] {
 	keymap := &SelectionWithListKeyMap{
 		Choice: key.NewBinding(
