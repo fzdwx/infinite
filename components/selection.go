@@ -225,8 +225,9 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-
-		// 关于为什么不用 switch, 为了适配单选的key 和 choice 和 confirm 这两个key要相同.
+		/**
+		  关于为什么不用 switch, 为了适配单选的key 和 choice 和 confirm 这两个key要相同.
+		*/
 
 		if key.Matches(msg, s.Keymap.Up) {
 			s.moveUp()
@@ -443,19 +444,25 @@ func (s *Selection) moveDown() {
 		return
 	}
 
+	// next page
 	if s.shouldScrollDown() {
 		s.scrollDown()
+		s.cursor = 0
+	} else {
+		s.cursor = mathutil.Min(len(s.currentChoices)-1, s.cursor+1)
 	}
 
-	s.cursor = mathutil.Min(len(s.currentChoices)-1, s.cursor+1)
 }
 
 // choice
 // The "enter" key and the spacebar (a literal space) toggle
 // the Selected state for the SelectionItem that the cursor is pointing at.
 func (s *Selection) choice() {
+	s.Paginator.SetTotalPages(len(s.currentChoices))
+	start, end := s.Paginator.GetSliceBounds(len(s.currentChoices))
+
 	// get Current choice.
-	idx := s.currentChoices[s.cursor].Idx
+	idx := s.currentChoices[start:end][s.cursor].Idx
 
 	_, ok := s.Selected[idx]
 	if ok {
@@ -530,6 +537,7 @@ func (s *Selection) scrollDown() {
 	}
 
 	s.cursor = mathutil.Max(0, s.cursor-1)
+	s.Paginator.NextPage()
 	s.RefreshChoices()
 }
 
