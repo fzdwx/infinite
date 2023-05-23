@@ -506,7 +506,11 @@ func (s *Selection) finish() (tea.Model, tea.Cmd) {
 
 // shouldMoveToTop should move to top?
 func (s *Selection) shouldMoveToTop() bool {
-	return s.cursor == (s.PageSize-1) && s.Paginator.OnLastPage()
+	if s.Paginator.OnLastPage() == false {
+		return false
+	}
+
+	return s.Paginator.Page*s.PageSize+s.cursor == len(s.currentChoices)-1
 }
 
 // shouldScrollDown should scroll down?
