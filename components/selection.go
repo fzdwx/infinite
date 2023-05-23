@@ -233,7 +233,6 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			s.moveUp()
 			shouldSkipFiler = true
 		}
-
 		if key.Matches(msg, s.Keymap.Down) {
 			s.moveDown()
 			shouldSkipFiler = true
@@ -241,12 +240,12 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		if key.Matches(msg, s.Keymap.NextPage) {
 			s.Paginator.NextPage()
+			s.checkCursor()
 			shouldSkipFiler = true
 		}
-		str := msg.String()
-		_ = str == ""
 		if key.Matches(msg, s.Keymap.PrevPage) {
 			s.Paginator.PrevPage()
+			s.checkCursor()
 			shouldSkipFiler = true
 		}
 
@@ -564,4 +563,12 @@ func (s *Selection) shouldShowValidatorsErrMsg() bool {
 
 func (s *Selection) clearValidatorsErrMsg() {
 	s.validatorsErrMsg = []string{}
+}
+
+func (s *Selection) checkCursor() {
+	start, end := s.Paginator.GetSliceBounds(len(s.currentChoices))
+	items := s.currentChoices[start:end]
+	if s.cursor >= len(items) {
+		s.cursor = len(items) - 1
+	}
 }
