@@ -1,6 +1,7 @@
 package singleselect
 
 import (
+	"github.com/charmbracelet/bubbles/paginator"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
 	"github.com/fzdwx/infinite/style"
@@ -174,5 +175,12 @@ func WithValueStyle(stl *style.Style) Option {
 func WithDisableHelp() Option {
 	return func(s *Select) {
 		s.inner.Apply(multiselect.WithDisableShowHelp())
+	}
+}
+
+// WithPaginator set paginator.
+func WithPaginator(pager paginator.Model) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithPaginator(pager))
 	}
 }

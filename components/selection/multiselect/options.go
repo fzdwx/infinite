@@ -1,6 +1,7 @@
 package multiselect
 
 import (
+	"github.com/charmbracelet/bubbles/paginator"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/style"
 )
@@ -219,5 +220,12 @@ func WithValidator(v components.Validator) Option {
 func WithDisableShowHelp() Option {
 	return func(s *Select) {
 		s.inner.ShowHelp = false
+	}
+}
+
+// WithPaginator set paginator.
+func WithPaginator(pager paginator.Model) Option {
+	return func(s *Select) {
+		s.inner.Paginator = pager
 	}
 }

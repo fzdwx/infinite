@@ -105,19 +105,23 @@ func NewProgress() *Progress {
 	return p
 }
 
-// NewSelection constructor
-func NewSelection(choices []string) *Selection {
-
-	items := slice.Map[string, SelectionItem](choices, func(idx int, item string) SelectionItem {
-		return SelectionItem{idx, item}
-	})
+func newDefaultPager() paginator.Model {
 	model := paginator.New()
 	p := paginator.New()
 	p.Type = paginator.Dots
 	p.ActiveDot = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "235", Dark: "252"}).Render("•")
 	p.InactiveDot = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "250", Dark: "238"}).Render("•")
+	return model
+}
+
+// NewSelection constructor
+func NewSelection(choices []string) *Selection {
+	items := slice.Map[string, SelectionItem](choices, func(idx int, item string) SelectionItem {
+		return SelectionItem{idx, item}
+	})
+
 	c := &Selection{
-		Paginator:            model,
+		Paginator:            newDefaultPager(),
 		Choices:              items,
 		Selected:             make(map[int]bool),
 		CursorSymbol:         SelectionDefaultCursorSymbol,

@@ -29,12 +29,12 @@ func main() {
 		key.WithHelp("enter", "finish select"),
 	)
 	selectKeymap.NextPage = key.NewBinding(
-		key.WithKeys("q"),
-		key.WithHelp("q", "next page"),
+		key.WithKeys("right"),
+		key.WithHelp("->", "next page"),
 	)
 	selectKeymap.PrevPage = key.NewBinding(
-		key.WithKeys("b"),
-		key.WithHelp("b", "prev page"),
+		key.WithKeys("left"),
+		key.WithHelp("<-", "prev page"),
 	)
 	selected, err := inf.NewSingleSelect(
 		options,
