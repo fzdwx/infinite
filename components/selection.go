@@ -140,8 +140,9 @@ type Selection struct {
 	currentChoices []SelectionItem
 	program        *tea.Program
 
-	Paginator paginator.Model
-	Choices   []SelectionItem
+	ShowPaginator bool // default true
+	Paginator     paginator.Model
+	Choices       []SelectionItem
 
 	Validators       []Validator
 	validatorsErrMsg []string
@@ -345,7 +346,9 @@ func (s *Selection) View() string {
 		msg.NewLine().Write(s.RowRender(cursorSymbol, hintSymbol, val))
 	}
 
-	msg.NewLine().Write(s.Paginator.View())
+	if s.ShowPaginator {
+		msg.NewLine().Write(s.Paginator.View())
+	}
 
 	if s.ShowHelp {
 		msg.NewLine().Write(s.Help.View(s.Keymap))

@@ -229,3 +229,10 @@ func WithPaginator(pager paginator.Model) Option {
 		s.inner.Paginator = pager
 	}
 }
+
+// WithHiddenPaginator hidden paginator view.
+func WithHiddenPaginator() Option {
+	return func(s *Select) {
+		s.inner.ShowPaginator = false
+	}
+}

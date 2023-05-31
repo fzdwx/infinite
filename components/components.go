@@ -122,6 +122,7 @@ func NewSelection(choices []string) *Selection {
 
 	c := &Selection{
 		Paginator:            newDefaultPager(),
+		ShowPaginator:        true,
 		Choices:              items,
 		Selected:             make(map[int]bool),
 		CursorSymbol:         SelectionDefaultCursorSymbol,

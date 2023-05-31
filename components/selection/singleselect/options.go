@@ -184,3 +184,10 @@ func WithPaginator(pager paginator.Model) Option {
 		s.inner.Apply(multiselect.WithPaginator(pager))
 	}
 }
+
+// WithHiddenPaginator hidden paginator view.
+func WithHiddenPaginator() Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithHiddenPaginator())
+	}
+}
