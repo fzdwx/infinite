@@ -106,11 +106,11 @@ type SelectionKeyMap struct {
 }
 
 func keyBindMatch(a key.Binding, b key.Binding) bool {
-	a1Map := stream.ToMap[string, string](iter.Stream(a.Keys()), func(s string) string {
+	a1Map := stream.ToMap2[string, string](iter.Stream(a.Keys()), func(s string) string {
 		return s
 	})
 
-	b1Map := stream.ToMap[string, string](iter.Stream(b.Keys()), func(s string) string {
+	b1Map := stream.ToMap2[string, string](iter.Stream(b.Keys()), func(s string) string {
 		return s
 	})
 
