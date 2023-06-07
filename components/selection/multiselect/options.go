@@ -44,7 +44,7 @@ func WithRowRender(rowRender func(string, string, string) string) Option {
 // WithPageSize default is 5
 func WithPageSize(pageSize int) Option {
 	return func(s *Select) {
-		s.inner.PageSize = pageSize
+		s.inner.SetPageSize(pageSize)
 	}
 }
 

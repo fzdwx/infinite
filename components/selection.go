@@ -144,10 +144,8 @@ type Selection struct {
 	Paginator     paginator.Model
 	Choices       []SelectionItem
 
-	Validators       []Validator
-	validatorsErrMsg []string
-	// how many options to display at a time
-	PageSize            int
+	Validators          []Validator
+	validatorsErrMsg    []string
 	DisableOutPutResult bool
 
 	// key binding
@@ -322,7 +320,6 @@ func (s *Selection) View() string {
 		msg.NewLine().Write(s.Header)
 	}
 
-	s.Paginator.PerPage = s.PageSize
 	s.Paginator.SetTotalPages(len(s.currentChoices))
 	start, end := s.Paginator.GetSliceBounds(len(s.currentChoices))
 	// Iterate over our Choices
@@ -363,6 +360,11 @@ func (s *Selection) SetProgram(program *tea.Program) {
 	if s.shouldFilter() {
 		s.FilterInput.SetProgram(program)
 	}
+}
+
+// SetPageSize set page size
+func (s *Selection) SetPageSize(pageSize int) {
+	s.Paginator.PerPage = pageSize
 }
 
 // Value get all Selected
@@ -513,12 +515,12 @@ func (s *Selection) shouldMoveToTop() bool {
 	}
 
 	// cursor * page size * page == total items length
-	return s.Paginator.Page*s.PageSize+s.cursor == len(s.currentChoices)-1
+	return s.Paginator.Page*s.Paginator.PerPage+s.cursor == len(s.currentChoices)-1
 }
 
 // shouldScrollDown should scroll down?
 func (s *Selection) shouldScrollDown() bool {
-	return s.cursor == (s.PageSize-1) && s.canScrollDown()
+	return s.cursor == (s.Paginator.PerPage-1) && s.canScrollDown()
 }
 
 // shouldScrollUp should scroll up?
@@ -539,7 +541,7 @@ func (s *Selection) scrollUp() {
 }
 
 func (s *Selection) scrollDown() {
-	if s.PageSize <= 0 {
+	if s.Paginator.PerPage <= 0 {
 		return
 	}
 

@@ -111,6 +111,7 @@ func newDefaultPager() paginator.Model {
 	p.Type = paginator.Dots
 	p.ActiveDot = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "235", Dark: "252"}).Render("•")
 	p.InactiveDot = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "250", Dark: "238"}).Render("•")
+	p.PerPage = SelectionDefaultPageSize
 	return model
 }
 
@@ -136,7 +137,6 @@ func NewSelection(choices []string) *Selection {
 		UnHintSymbol:         SelectionDefaultUnHintSymbol,
 		UnHintSymbolStyle:    SelectionDefaultUnHintSymbolStyle,
 		DisableOutPutResult:  SelectionDefaultDisableOutPutResult,
-		PageSize:             SelectionDefaultPageSize,
 		Keymap:               DefaultMultiKeyMap(),
 		Help:                 SelectionDefaultHelp,
 		RowRender:            SelectionDefaultRowRender,
