@@ -40,7 +40,6 @@ func New(ops ...Option) *Text {
 		i.inner.UnFocusIntervalStyle = style.Empty
 		i.inner.PromptStyle = components.InputDefaultPromptStyle
 		i.inner.TextStyle = components.InputDefaultTextStyle
-		i.inner.BackgroundStyle = components.InputDefaultBackgroundStyle
 		i.inner.DefaultValueStyle = components.InputDefaultPlaceholderStyle
 		i.inner.CursorStyle = components.InputDefaultCursorStyle
 	}

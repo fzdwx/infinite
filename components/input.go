@@ -24,7 +24,6 @@ var (
 	InputDefaultPlaceholderStyle    = style.New().Fg(color.Gray)
 	InputDefaultPromptStyle         = style.New()
 	InputDefaultTextStyle           = style.New()
-	InputDefaultBackgroundStyle     = style.New()
 	InputDefaultCursorStyle         = style.New()
 	cleanRequiredMsg                = func(i int) func(t time.Time) tea.Msg {
 		return func(t time.Time) tea.Msg {
@@ -89,10 +88,9 @@ type (
 		FocusIntervalStyle   *style.Style
 		UnFocusIntervalStyle *style.Style
 
-		TextStyle       *style.Style
-		BackgroundStyle *style.Style
-		CursorStyle     *style.Style
-		KeyMap          InputKeyMap
+		TextStyle   *style.Style
+		CursorStyle *style.Style
+		KeyMap      InputKeyMap
 	}
 )
 
@@ -193,9 +191,8 @@ func (i *Input) Init() tea.Cmd {
 	i.Model.EchoMode = textinput.EchoMode(i.EchoMode)
 	i.Model.EchoCharacter = i.EchoCharacter
 	i.Model.TextStyle = i.TextStyle.Inner()
-	i.Model.BackgroundStyle = i.BackgroundStyle.Inner()
 	i.Model.PlaceholderStyle = i.DefaultValueStyle.Inner()
-	i.Model.CursorStyle = i.CursorStyle.Inner()
+	i.Model.Cursor.Style = i.CursorStyle.Inner()
 	i.Model.CharLimit = i.CharLimit
 
 	return tea.Batch(textinput.Blink, func() tea.Msg {

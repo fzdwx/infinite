@@ -98,13 +98,6 @@ func WithTextStyle(style *style.Style) Option {
 	}
 }
 
-// WithBackgroundStyle set the background style
-func WithBackgroundStyle(style *style.Style) Option {
-	return func(i *Text) {
-		i.inner.BackgroundStyle = style
-	}
-}
-
 // WithDefaultValueStyle set the default value style
 func WithDefaultValueStyle(style *style.Style) Option {
 	return func(i *Text) {

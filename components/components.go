@@ -65,7 +65,6 @@ func NewInput() *Input {
 		DefaultValueStyle:        InputDefaultPlaceholderStyle,
 		PromptStyle:              InputDefaultPromptStyle,
 		TextStyle:                InputDefaultTextStyle,
-		BackgroundStyle:          InputDefaultBackgroundStyle,
 		CursorStyle:              InputDefaultCursorStyle,
 		FocusSymbolStyle:         style.New(),
 		UnFocusSymbolStyle:       style.New(),
