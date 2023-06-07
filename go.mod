@@ -3,10 +3,10 @@ module github.com/fzdwx/infinite
 go 1.18
 
 require (
-	github.com/charmbracelet/bubbles v0.15.0
-	github.com/charmbracelet/bubbletea v0.24.1
+	github.com/charmbracelet/bubbles v0.16.1
+	github.com/charmbracelet/bubbletea v0.24.2
 	github.com/charmbracelet/lipgloss v0.7.1
-	github.com/duke-git/lancet/v2 v2.2.0
+	github.com/duke-git/lancet/v2 v2.2.1
 	github.com/fzdwx/iter v0.0.0-20230511075109-0afee9319312
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/mattn/go-runewidth v0.0.14
