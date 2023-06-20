@@ -104,6 +104,8 @@ func (c *Confirm) init() {
 	c.inner.unFocusPrompt = strx.NewFluent().Style(c.UnFocusSymbolStyle, c.UnFocusSymbol).Style(c.PromptStyle, c.Prompt).String()
 	c.inner.selection.EnableFilter = false
 	c.inner.selection.ShowHelp = false
+	c.inner.selection.ShowPaginator = false
+	c.inner.selection.Paginator.PerPage = 2
 	c.inner.selection.ChoiceTextStyle = c.ChoiceStyle
 	c.inner.outputResult = c.OutputResult
 	c.inner.selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
