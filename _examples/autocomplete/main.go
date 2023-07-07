@@ -11,7 +11,7 @@ import (
 func main() {
 
 	suggesterOptions := []string{
-		"package", "main", "func", "[]", "{}", "string", "int", "好", "我很好", "好啊",
+		"package", "public", "main", "func", "[]", "{}", "string", "int", "好", "我很好", "好啊",
 	}
 
 	input := components.NewInput()

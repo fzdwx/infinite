@@ -105,10 +105,12 @@ func DefaultSelectionCreator(suggester []string, a *Autocomplete) *Selection {
 	selection.UnFocusInterval = strx.Empty
 	selection.Init()
 	selection.ShowHelp = false
+	selection.ShowPaginator = false
 	selection.Keymap = DefaultSingleKeyMap()
 	selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
 		return choice
 	}
+	selection.SetPageSize(10)
 
 	return selection
 }
