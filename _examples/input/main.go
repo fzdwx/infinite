@@ -14,6 +14,7 @@ func main() {
 		text.WithPromptStyle(theme.DefaultTheme.PromptStyle),
 		text.WithDefaultValue("fzdwx (maybe)"),
 		text.WithRequired(),
+		text.WithDefaultValueRequireValue(false),
 		//text.WithFocusSymbol(theme.DefaultTheme.FocusSymbol),
 		//text.WithUnFocusSymbol(theme.DefaultTheme.UnFocusSymbol),
 		//text.WithFocusInterval(theme.DefaultTheme.FocusInterval),

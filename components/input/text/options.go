@@ -56,6 +56,14 @@ func WithDefaultValue(s string) Option {
 	}
 }
 
+// WithDefaultValueRequireValue set the default value required
+// default is true
+func WithDefaultValueRequireValue(b bool) Option {
+	return func(i *Text) {
+		i.inner.DefaultValueRequired = b
+	}
+}
+
 // WithBlinkSpeed set the blink speed
 func WithBlinkSpeed(blinkSpeed time.Duration) Option {
 	return func(i *Text) {

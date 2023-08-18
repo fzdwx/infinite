@@ -17,6 +17,7 @@ var (
 	InputDefaultStatus              = Focus
 	InputDefaultPrompt              = "> "
 	InputDefaultValue               = strx.Empty
+	InputDefaultValueRequired       = true
 	InputDefaultBlinkSpeed          = time.Millisecond * 530
 	InputDefaultEchoMode            = EchoNormal
 	InputDefaultEchoCharacter       = '*'
@@ -75,6 +76,9 @@ type (
 		Prompt       string
 		DefaultValue string
 
+		// set the default value required
+		DefaultValueRequired bool
+
 		PromptStyle       *style.Style
 		DefaultValueStyle *style.Style
 
@@ -110,7 +114,7 @@ func (i *Input) Blur() {
 func (i *Input) Value() string {
 	value := i.Model.Value()
 
-	if len(value) == 0 {
+	if len(value) == 0 && i.DefaultValueRequired {
 		value = i.DefaultValue
 	}
 
@@ -186,6 +190,7 @@ func (i *Input) Init() tea.Cmd {
 		String()
 
 	i.Model.Prompt = i.FocusPrompt
+	i.Model.Placeholder = i.DefaultValue
 	i.Model.Placeholder = i.DefaultValue
 	i.Model.Cursor.BlinkSpeed = i.BlinkSpeed
 	i.Model.EchoMode = textinput.EchoMode(i.EchoMode)

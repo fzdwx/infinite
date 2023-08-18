@@ -57,6 +57,7 @@ func NewInput() *Input {
 		Status:                   InputDefaultStatus,
 		Prompt:                   InputDefaultPrompt,
 		DefaultValue:             InputDefaultValue,
+		DefaultValueRequired:     InputDefaultValueRequired,
 		BlinkSpeed:               InputDefaultBlinkSpeed,
 		EchoMode:                 InputDefaultEchoMode,
 		EchoCharacter:            InputDefaultEchoCharacter,
