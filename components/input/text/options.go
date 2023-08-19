@@ -50,17 +50,27 @@ func WithPrompt(prompt string) Option {
 }
 
 // WithDefaultValue set the default value
+// @deprecated use WithPlaceholder instead
 func WithDefaultValue(s string) Option {
 	return func(i *Text) {
-		i.inner.DefaultValue = s
+		i.inner.Placeholder = s
 	}
 }
 
 // WithDefaultValueRequireValue set the default value required
 // default is true
+// @deprecated use WithPlaceholder instead
 func WithDefaultValueRequireValue(b bool) Option {
 	return func(i *Text) {
-		i.inner.DefaultValueRequired = b
+		i.inner.PlaceholderIsDefault = b
+	}
+}
+
+// WithPlaceholder set the placeholder
+func WithPlaceholder(placeholder string, isDefault bool) Option {
+	return func(i *Text) {
+		i.inner.Placeholder = placeholder
+		i.inner.PlaceholderIsDefault = isDefault
 	}
 }
 
