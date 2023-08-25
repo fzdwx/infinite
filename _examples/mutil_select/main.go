@@ -42,6 +42,7 @@ func main() {
 		multiselect.WithKeyMap(keymap),
 		multiselect.WithHintSymbol("x"),
 		multiselect.WithUnHintSymbol("√"),
+		multiselect.WithPageSize(10),
 		//multiselect.WithDisableOutputResult(),
 		//multiselect.WithCursorSymbol(emoji.PointRight),
 		//multiselect.WithDisableFilter(),
