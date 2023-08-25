@@ -49,23 +49,6 @@ func WithPrompt(prompt string) Option {
 	}
 }
 
-// WithDefaultValue set the default value
-// @deprecated use WithPlaceholder instead
-func WithDefaultValue(s string) Option {
-	return func(i *Text) {
-		i.inner.Placeholder = s
-	}
-}
-
-// WithDefaultValueRequireValue set the default value required
-// default is true
-// @deprecated use WithPlaceholder instead
-func WithDefaultValueRequireValue(b bool) Option {
-	return func(i *Text) {
-		i.inner.PlaceholderIsDefault = b
-	}
-}
-
 // WithPlaceholder set the placeholder
 func WithPlaceholder(placeholder string, isDefault bool) Option {
 	return func(i *Text) {
@@ -206,5 +189,22 @@ func WithDisableOutputResult() Option {
 func WithPure() Option {
 	return func(i *Text) {
 		i.pure = true
+	}
+}
+
+// WithDefaultValue set the default value
+// @deprecated use WithPlaceholder instead
+func WithDefaultValue(s string) Option {
+	return func(i *Text) {
+		i.inner.Placeholder = s
+	}
+}
+
+// WithDefaultValueRequireValue set the default value required
+// default is true
+// @deprecated use WithPlaceholder instead
+func WithDefaultValueRequireValue(b bool) Option {
+	return func(i *Text) {
+		i.inner.PlaceholderIsDefault = b
 	}
 }
