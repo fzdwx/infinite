@@ -1,6 +1,7 @@
 package singleselect
 
 import (
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/paginator"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
@@ -28,6 +29,14 @@ func WithFilterInput(input *components.Input) Option {
 func WithFilterFunc(f func(input string, items []components.SelectionItem) []components.SelectionItem) Option {
 	return func(s *Select) {
 		s.inner.Apply(multiselect.WithFilterFunc(f))
+	}
+}
+
+// WithHelpModel replace help model
+// default is help.New()
+func WithHelpModel(h help.Model) Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithHelpModel(h))
 	}
 }
 

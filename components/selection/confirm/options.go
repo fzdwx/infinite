@@ -1,6 +1,7 @@
 package confirm
 
 import (
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/fzdwx/infinite/color"
 	"github.com/fzdwx/infinite/components"
@@ -160,5 +161,13 @@ func WithPromptStyle(s *style.Style) Option {
 func WithChoiceStyle(s *style.Style) Option {
 	return func(c *Confirm) {
 		c.ChoiceStyle = s
+	}
+}
+
+// WithHelpModel replace help model
+// default is help.New()
+func WithHelpModel(h help.Model) Option {
+	return func(c *Confirm) {
+		c.inner.help = h
 	}
 }

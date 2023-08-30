@@ -1,6 +1,7 @@
 package multiselect
 
 import (
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/paginator"
 	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/style"
@@ -220,6 +221,14 @@ func WithValidator(v components.Validator) Option {
 func WithDisableShowHelp() Option {
 	return func(s *Select) {
 		s.inner.ShowHelp = false
+	}
+}
+
+// WithHelpModel replace help model
+// default is help.New()
+func WithHelpModel(h help.Model) Option {
+	return func(s *Select) {
+		s.inner.Help = h
 	}
 }
 
