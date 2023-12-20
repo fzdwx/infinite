@@ -37,7 +37,7 @@ var (
 	SelectionDefaultHelp                = help.New()
 	SelectionDefaultRowRender           = DefaultRowRender
 	SelectionDefaultEnableFilter        = true
-	SelectionDefaultFilterInput         = NewInput()
+	SelectionDefaultFilterInput         = NewSelectionInput()
 	SelectionDefaultFilterFunc          = DefaultFilterFunc
 	SelectionDefaultShowHelp            = true
 )

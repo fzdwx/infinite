@@ -76,6 +76,12 @@ func NewInput() *Input {
 	return c
 }
 
+func NewSelectionInput() *Input {
+	input := NewInput()
+	input.Prompt = "/"
+	return input
+}
+
 // NewPrintHelper constructor
 func NewPrintHelper(program *tea.Program) *PrintHelper {
 	return &PrintHelper{program: program}
