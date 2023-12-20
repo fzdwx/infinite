@@ -1,4 +1,4 @@
-# infinity
+# infinite
 
 ![gif](https://user-images.githubusercontent.com/65269574/184916069-076a0f6a-70bd-49e1-b7d7-0d2e7fc5c6bb.gif)
 
