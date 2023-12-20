@@ -30,7 +30,7 @@
 ## Install
 
 ```shell
-go get github.com/fzdwx/infinite
+go get github.com/fzdwx/infinite@main
 ```
 
 ## Getting started

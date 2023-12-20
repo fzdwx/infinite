@@ -47,7 +47,7 @@ func main() {
 		//multiselect.WithCursorSymbol(emoji.PointRight),
 		//multiselect.WithDisableFilter(),
 		//multiselect.WithFilterInput(input),
-		multiselect.WithDisableFilter(),
+		//multiselect.WithDisableFilter(),
 	).
 		Display("select your items!")
 
