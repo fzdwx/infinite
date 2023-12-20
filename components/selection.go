@@ -36,7 +36,6 @@ var (
 	SelectionDefaultPageSize            = 5
 	SelectionDefaultHelp                = help.New()
 	SelectionDefaultRowRender           = DefaultRowRender
-	SelectionDefaultEnableFilter        = true
 	SelectionDefaultFilterInput         = NewSelectionInput()
 	SelectionDefaultFilterFunc          = DefaultFilterFunc
 	SelectionDefaultShowHelp            = true
@@ -68,6 +67,9 @@ func DefaultMultiKeyMap() SelectionKeyMap {
 			key.WithKeys("left"),
 			key.WithHelp("←", "flip select"),
 		),
+		ToggleFilter: key.NewBinding(
+			key.WithKeys("/"), key.WithHelp("/", "toggle filter"),
+		),
 		NextPage: key.NewBinding(
 			key.WithKeys(tea.KeyPgDown.String()),
 			key.WithHelp("pageup", "next page"),
@@ -93,12 +95,13 @@ type SelectionItem struct {
 }
 
 type SelectionKeyMap struct {
-	Up        key.Binding
-	Down      key.Binding
-	Choice    key.Binding
-	Confirm   key.Binding
-	SelectAll key.Binding // 全选
-	Flip      key.Binding // 反选
+	Up           key.Binding
+	Down         key.Binding
+	Choice       key.Binding
+	Confirm      key.Binding
+	SelectAll    key.Binding // 全选
+	Flip         key.Binding // 反选
+	ToggleFilter key.Binding
 	// kill program
 	Quit     key.Binding
 	NextPage key.Binding
@@ -119,15 +122,15 @@ func keyBindMatch(a key.Binding, b key.Binding) bool {
 
 func (k SelectionKeyMap) ShortHelp() []key.Binding {
 	if keyBindMatch(k.Choice, k.Confirm) {
-		return []key.Binding{k.Up, k.Down, k.Choice, k.Quit}
+		return []key.Binding{k.Up, k.Down, k.ToggleFilter, k.Flip, k.SelectAll, k.Choice}
 	}
-	return []key.Binding{k.Up, k.Down, k.Choice, k.Confirm, k.Quit}
+	return []key.Binding{k.Up, k.Down, k.ToggleFilter, k.Flip, k.SelectAll, k.Choice, k.Confirm}
 }
 
 func (k SelectionKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.Up, k.Down},                // first column
-		{k.Choice, k.Confirm, k.Quit}, // second column
+		{k.Up, k.Down, k.ToggleFilter},                     // first column
+		{k.Choice, k.Confirm, k.Flip, k.SelectAll, k.Quit}, // second column
 	}
 }
 
@@ -171,9 +174,9 @@ type Selection struct {
 	// CursorSymbol,HintSymbol,choice
 	RowRender func(CursorSymbol string, HintSymbol string, choice string) string
 
-	EnableFilter bool
-	FilterInput  *Input
-	FilterFunc   func(input string, items []SelectionItem) []SelectionItem
+	filtering   bool
+	FilterInput *Input
+	FilterFunc  func(input string, items []SelectionItem) []SelectionItem
 
 	FocusSymbol          string
 	UnFocusSymbol        string
@@ -212,7 +215,7 @@ func (s *Selection) Init() tea.Cmd {
 
 	s.UnCursorSymbol = strutil.PadEnd("", runewidth.StringWidth(s.CursorSymbol), " ")
 
-	if s.shouldFilter() {
+	if s.Keymap.ToggleFilter.Enabled() {
 		cmd = s.FilterInput.Init()
 	}
 
@@ -260,6 +263,10 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			s.flip()
 			shouldSkipFiler = true
 		}
+		if key.Matches(msg, s.Keymap.ToggleFilter) {
+			s.filtering = !s.filtering
+			shouldSkipFiler = true
+		}
 
 		if key.Matches(msg, s.Keymap.Confirm) {
 			for _, v := range s.Validators {
@@ -287,7 +294,7 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 	case Status:
-		if s.shouldFilter() {
+		if s.Keymap.ToggleFilter.Enabled() {
 			_, cmd := s.FilterInput.Update(msg)
 			return s, cmd
 		}
@@ -310,10 +317,6 @@ func (s *Selection) View() string {
 			)
 			s.clearValidatorsErrMsg()
 		}
-	}
-
-	if s.shouldFilter() {
-		msg.NewLine().Write(s.FilterInput.View())
 	}
 
 	if s.Header != "" {
@@ -418,15 +421,18 @@ func (s *Selection) viewResult() string {
 
 func (s *Selection) promptLine() *strx.FluentStringBuilder {
 	builder := strx.NewFluent()
-
 	if IsFinish(s.status) {
 		builder.Style(s.UnFocusSymbolStyle, s.UnFocusSymbol).
 			Write(s.Prompt).
 			Style(s.UnFocusIntervalStyle, s.UnFocusInterval)
 	} else {
-		builder.Style(s.FocusSymbolStyle, s.FocusSymbol).
-			Write(s.Prompt).
-			Style(s.FocusIntervalStyle, s.FocusInterval)
+		if s.shouldFilter() {
+			builder.Write(s.FilterInput.View())
+		} else {
+			builder.Style(s.FocusSymbolStyle, s.FocusSymbol).
+				Write(s.Prompt).
+				Style(s.FocusIntervalStyle, s.FocusInterval)
+		}
 	}
 
 	return builder
@@ -559,7 +565,7 @@ func (s *Selection) canScrollUp() bool {
 }
 
 func (s *Selection) shouldFilter() bool {
-	return s.EnableFilter && s.FilterFunc != nil && s.FilterInput != nil
+	return s.filtering && s.FilterFunc != nil && s.FilterInput != nil
 }
 
 func (s *Selection) shouldShowValidatorsErrMsg() bool {

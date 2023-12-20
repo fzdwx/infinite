@@ -45,9 +45,10 @@ func (m *model) Init() tea.Cmd {
 			key.WithKeys("enter"),
 			key.WithHelp("enter", "search"),
 		),
-		Quit:     keyMap.Quit,
-		NextPage: keyMap.NextPage,
-		PrevPage: keyMap.PrevPage,
+		Quit:         keyMap.Quit,
+		ToggleFilter: keyMap.ToggleFilter,
+		NextPage:     keyMap.NextPage,
+		PrevPage:     keyMap.PrevPage,
 	}
 	m.selection.FilterInput = m.filterInput
 

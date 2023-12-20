@@ -146,7 +146,6 @@ func NewSelection(choices []string) *Selection {
 		Keymap:               DefaultMultiKeyMap(),
 		Help:                 SelectionDefaultHelp,
 		RowRender:            SelectionDefaultRowRender,
-		EnableFilter:         SelectionDefaultEnableFilter,
 		FilterInput:          SelectionDefaultFilterInput,
 		FilterFunc:           SelectionDefaultFilterFunc,
 		ShowHelp:             SelectionDefaultShowHelp,

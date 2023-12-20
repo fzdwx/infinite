@@ -102,7 +102,7 @@ func (c *Confirm) init() {
 	c.inner.keyMap = c.KeyMap
 	c.inner.focusPrompt = strx.NewFluent().Style(c.FocusSymbolStyle, c.FocusSymbol).Style(c.PromptStyle, c.Prompt).String()
 	c.inner.unFocusPrompt = strx.NewFluent().Style(c.UnFocusSymbolStyle, c.UnFocusSymbol).Style(c.PromptStyle, c.Prompt).String()
-	c.inner.selection.EnableFilter = false
+	c.inner.selection.Keymap.ToggleFilter.SetEnabled(false)
 	c.inner.selection.ShowHelp = false
 	c.inner.selection.ShowPaginator = false
 	c.inner.selection.Paginator.PerPage = 2

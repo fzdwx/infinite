@@ -97,7 +97,7 @@ func DefaultAutocompleteKeyMap() AutocompleteKeyMap {
 
 func DefaultSelectionCreator(suggester []string, a *Autocomplete) *Selection {
 	selection := NewSelection(suggester)
-	selection.EnableFilter = false
+	selection.Keymap.ToggleFilter.SetEnabled(false)
 	selection.Prompt = strx.Empty
 	selection.FocusSymbol = strx.Empty
 	selection.UnFocusSymbol = strx.Empty

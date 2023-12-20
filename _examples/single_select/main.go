@@ -38,7 +38,7 @@ func main() {
 	)
 	selected, err := inf.NewSingleSelect(
 		options,
-		singleselect.WithDisableFilter(),
+		//singleselect.WithDisableFilter(),
 		singleselect.WithKeyBinding(selectKeymap),
 		singleselect.WithPageSize(5),
 	).Display("Hello world")

@@ -13,7 +13,7 @@ type Option func(s *Select)
 // WithDisableFilter disable filter.
 func WithDisableFilter() Option {
 	return func(s *Select) {
-		s.inner.EnableFilter = false
+		s.inner.Keymap.ToggleFilter.SetEnabled(false)
 	}
 }
 

@@ -105,3 +105,9 @@ func testMoveUp(selection *Selection, tiems, size int) {
 		selection.moveUp()
 	}
 }
+
+func TestKeyHelp(t *testing.T) {
+	s := NewSelection([]string{})
+	view := s.Help.View(s.Keymap)
+	fmt.Println(view)
+}
