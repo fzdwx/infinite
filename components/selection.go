@@ -302,6 +302,10 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return s, nil
 }
 
+func (s *Selection) IsFinish() bool {
+	return IsFinish(s.status)
+}
+
 func (s *Selection) View() string {
 	if IsFinish(s.status) {
 		return s.viewResult()
