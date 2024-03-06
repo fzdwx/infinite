@@ -84,11 +84,11 @@ type selectionWithListDelegate[T list.DefaultItem] struct {
 	ShowDescription bool
 }
 
-func (d *selectionWithListDelegate[T]) Render(w io.Writer, m list.Model, index int, item list.Item) {
+func (s *selectionWithListDelegate[T]) Render(w io.Writer, m list.Model, index int, item list.Item) {
 	var (
 		title, desc  string
 		matchedRunes []int
-		s            = &d.Styles
+		st           = &s.Styles
 	)
 
 	if i, ok := item.(list.DefaultItem); ok {
@@ -104,12 +104,12 @@ func (d *selectionWithListDelegate[T]) Render(w io.Writer, m list.Model, index i
 	}
 
 	// Prevent text from exceeding list width
-	textwidth := uint(m.Width() - s.NormalTitle.GetPaddingLeft() - s.NormalTitle.GetPaddingRight())
+	textwidth := uint(m.Width() - st.NormalTitle.GetPaddingLeft() - st.NormalTitle.GetPaddingRight())
 	title = truncate.StringWithTail(title, textwidth, ellipsis)
-	if d.ShowDescription {
+	if s.ShowDescription {
 		var lines []string
 		for i, line := range strings.Split(desc, "\n") {
-			if i >= d.height-1 {
+			if i >= s.height-1 {
 				break
 			}
 			lines = append(lines, truncate.StringWithTail(line, textwidth, ellipsis))
@@ -130,33 +130,33 @@ func (d *selectionWithListDelegate[T]) Render(w io.Writer, m list.Model, index i
 	}
 
 	if emptyFilter {
-		title = s.DimmedTitle.Render(title)
-		desc = s.DimmedDesc.Render(desc)
+		title = st.DimmedTitle.Render(title)
+		desc = st.DimmedDesc.Render(desc)
 	} else if isSelected && m.FilterState() != list.Filtering {
 		if isFiltered {
 			// Highlight matches
-			unmatched := s.SelectedTitle.Inline(true)
-			matched := unmatched.Copy().Inherit(s.FilterMatch)
+			unmatched := st.SelectedTitle.Inline(true)
+			matched := unmatched.Copy().Inherit(st.FilterMatch)
 			title = lipgloss.StyleRunes(title, matchedRunes, matched, unmatched)
 		}
-		title = s.SelectedTitle.Render(title)
-		desc = s.SelectedDesc.Render(desc)
+		title = st.SelectedTitle.Render(title)
+		desc = st.SelectedDesc.Render(desc)
 	} else {
 		if isFiltered {
 			// Highlight matches
-			unmatched := s.NormalTitle.Inline(true)
-			matched := unmatched.Copy().Inherit(s.FilterMatch)
+			unmatched := st.NormalTitle.Inline(true)
+			matched := unmatched.Copy().Inherit(st.FilterMatch)
 			title = lipgloss.StyleRunes(title, matchedRunes, matched, unmatched)
 		}
-		title = s.NormalTitle.Render(title)
-		desc = s.NormalDesc.Render(desc)
+		title = st.NormalTitle.Render(title)
+		desc = st.NormalDesc.Render(desc)
 	}
 
-	if d.ShowDescription {
-		fmt.Fprintf(w, "%s\n%s", title, desc)
+	if s.ShowDescription {
+		fmt.Fprintf(w, "%st\n%st", title, desc)
 		return
 	}
-	fmt.Fprintf(w, "%s", title)
+	fmt.Fprintf(w, "%st", title)
 }
 
 func (s *selectionWithListDelegate[T]) Height() int {
