@@ -133,3 +133,8 @@ func (i *Text) CursorEnd() {
 func (i *Text) Reset() {
 	i.inner.Reset()
 }
+
+// Status get text current status
+func (i *Text) Status() components.Status {
+	return i.inner.Status
+}
