@@ -91,6 +91,11 @@ func (c *Confirm) Display() (bool, error) {
 	return c.inner.Value, err
 }
 
+// Status get confirm current status
+func (i *Confirm) Status() components.Status {
+	return i.inner.status
+}
+
 // init Adjust the `components.Selection` to fit the ` Confirm ` scene
 func (c *Confirm) init() {
 	c.inner = newInner(components.NewSelection([]string{c.No, c.Yes}))

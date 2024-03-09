@@ -59,6 +59,7 @@ func (i *inner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			i.status = components.Finish
 			return i, tea.Quit
 		case key.Matches(msg, i.keyMap.Quit):
+			i.status = components.Quit
 			return i, tea.Quit
 		}
 	case switchIt:

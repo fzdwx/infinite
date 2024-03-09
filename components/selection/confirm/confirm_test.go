@@ -16,7 +16,6 @@ func TestTrue(t *testing.T) {
 
 	}()
 	val, _ := selection.Display()
-
 	if !val {
 		t.Failed()
 	}
