@@ -79,36 +79,41 @@ func WithSelection(ops ...Option) *Confirm {
 }
 
 // Display Confirm
-func (c *Confirm) Display() (bool, error) {
-	for _, op := range c.ops {
-		op(c)
+func (i *Confirm) Display() (bool, error) {
+	for _, op := range i.ops {
+		op(i)
 	}
 
-	c.init()
+	i.init()
 
-	c.startUp = components.NewStartUp(c.inner)
-	_, err := c.startUp.Run()
-	return c.inner.Value, err
+	i.startUp = components.NewStartUp(i.inner)
+	_, err := i.startUp.Run()
+	return i.inner.Value, err
+}
+
+// Status get confirm current status
+func (i *Confirm) Status() components.Status {
+	return i.inner.status
 }
 
 // init Adjust the `components.Selection` to fit the ` Confirm ` scene
-func (c *Confirm) init() {
-	c.inner = newInner(components.NewSelection([]string{c.No, c.Yes}))
-	c.inner.focusInterval = c.FocusInterval
-	c.inner.unFocusInterval = c.UnFocusInterval
-	c.inner.ShowHelp = c.ShowHelp
+func (i *Confirm) init() {
+	i.inner = newInner(components.NewSelection([]string{i.No, i.Yes}))
+	i.inner.focusInterval = i.FocusInterval
+	i.inner.unFocusInterval = i.UnFocusInterval
+	i.inner.ShowHelp = i.ShowHelp
 	// default true
-	c.inner.DefaultVal = c.DefaultVal
-	c.inner.keyMap = c.KeyMap
-	c.inner.focusPrompt = strx.NewFluent().Style(c.FocusSymbolStyle, c.FocusSymbol).Style(c.PromptStyle, c.Prompt).String()
-	c.inner.unFocusPrompt = strx.NewFluent().Style(c.UnFocusSymbolStyle, c.UnFocusSymbol).Style(c.PromptStyle, c.Prompt).String()
-	c.inner.selection.Keymap.ToggleFilter.SetEnabled(false)
-	c.inner.selection.ShowHelp = false
-	c.inner.selection.ShowPaginator = false
-	c.inner.selection.Paginator.PerPage = 2
-	c.inner.selection.ChoiceTextStyle = c.ChoiceStyle
-	c.inner.outputResult = c.OutputResult
-	c.inner.selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
+	i.inner.DefaultVal = i.DefaultVal
+	i.inner.keyMap = i.KeyMap
+	i.inner.focusPrompt = strx.NewFluent().Style(i.FocusSymbolStyle, i.FocusSymbol).Style(i.PromptStyle, i.Prompt).String()
+	i.inner.unFocusPrompt = strx.NewFluent().Style(i.UnFocusSymbolStyle, i.UnFocusSymbol).Style(i.PromptStyle, i.Prompt).String()
+	i.inner.selection.Keymap.ToggleFilter.SetEnabled(false)
+	i.inner.selection.ShowHelp = false
+	i.inner.selection.ShowPaginator = false
+	i.inner.selection.Paginator.PerPage = 2
+	i.inner.selection.ChoiceTextStyle = i.ChoiceStyle
+	i.inner.outputResult = i.OutputResult
+	i.inner.selection.RowRender = func(CursorSymbol string, HintSymbol string, choice string) string {
 		return choice
 	}
 }

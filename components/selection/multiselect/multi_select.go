@@ -36,6 +36,10 @@ func (ms *Select) Display(prompt ...string) ([]int, error) {
 	return ms.inner.Value(), nil
 }
 
+func (ms *Select) Status() components.Status {
+	return ms.inner.Status()
+}
+
 // Apply options on Select
 func (ms *Select) Apply(ops ...Option) *Select {
 	if len(ops) > 0 {

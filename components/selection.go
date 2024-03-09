@@ -284,6 +284,7 @@ func (s *Selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		if key.Matches(msg, s.Keymap.Quit) {
 			s.unselectAll()
+			s.status = Quit
 			return s, tea.Quit
 		}
 
@@ -306,6 +307,9 @@ func (s *Selection) IsFinish() bool {
 	return IsFinish(s.status)
 }
 
+func (s *Selection) Status() Status {
+	return s.status
+}
 func (s *Selection) View() string {
 	if IsFinish(s.status) {
 		return s.viewResult()
