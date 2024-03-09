@@ -2,6 +2,7 @@ package singleselect
 
 import (
 	"fmt"
+	"github.com/fzdwx/infinite/components"
 	"github.com/fzdwx/infinite/components/selection/multiselect"
 	"github.com/rotisserie/eris"
 )
@@ -43,6 +44,10 @@ func (s *Select) Apply(ops ...Option) *Select {
 		}
 	}
 	return s
+}
+
+func (s *Select) Status(ops ...Option) components.Status {
+	return s.inner.Status()
 }
 
 func (s *Select) mapMultiToSingle() {
