@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/charmbracelet/bubbles/key"
 	inf "github.com/fzdwx/infinite"
 	"github.com/fzdwx/infinite/components/selection/singleselect"

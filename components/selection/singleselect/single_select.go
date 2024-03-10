@@ -46,7 +46,7 @@ func (s *Select) Apply(ops ...Option) *Select {
 	return s
 }
 
-func (s *Select) Status(ops ...Option) components.Status {
+func (s *Select) Status() components.Status {
 	return s.inner.Status()
 }
 

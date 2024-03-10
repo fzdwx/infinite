@@ -136,7 +136,8 @@ func (k SelectionKeyMap) FullHelp() [][]key.Binding {
 
 type Selection struct {
 	// result
-	Selected map[int]bool
+	Selected            map[int]bool
+	DefaultSelectedFunc func(item SelectionItem) bool
 	// Current cursor index in currentChoices
 	cursor int
 	// currently valid option
@@ -210,7 +211,7 @@ func DefaultFilterFunc(input string, items []SelectionItem) []SelectionItem {
 
 func (s *Selection) Init() tea.Cmd {
 	var cmd tea.Cmd
-
+	s.applyDefaultSelected()
 	s.RefreshChoices()
 
 	s.UnCursorSymbol = strutil.PadEnd("", runewidth.StringWidth(s.CursorSymbol), " ")
@@ -589,5 +590,17 @@ func (s *Selection) checkCursor() {
 	items := s.currentChoices[start:end]
 	if s.cursor >= len(items) {
 		s.cursor = len(items) - 1
+	}
+}
+
+func (s *Selection) applyDefaultSelected() {
+	if s.DefaultSelectedFunc == nil {
+		return
+	}
+
+	for _, choice := range s.Choices {
+		if s.DefaultSelectedFunc(choice) {
+			s.Selected[choice.Idx] = true
+		}
 	}
 }

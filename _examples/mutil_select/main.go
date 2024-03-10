@@ -43,6 +43,9 @@ func main() {
 		multiselect.WithHintSymbol("x"),
 		multiselect.WithUnHintSymbol("√"),
 		multiselect.WithPageSize(10),
+		multiselect.WithDefaultSelectedFunc(func(item components.SelectionItem) bool {
+			return true
+		}),
 		//multiselect.WithDisableOutputResult(),
 		//multiselect.WithCursorSymbol(emoji.PointRight),
 		//multiselect.WithDisableFilter(),
