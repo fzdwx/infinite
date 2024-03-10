@@ -10,6 +10,41 @@ import (
 // Option the option of Select
 type Option func(s *Select)
 
+// WithDefaultSelectedFunc replace default selected func.
+func WithDefaultSelectedFunc(f func(item components.SelectionItem) bool) Option {
+	return func(s *Select) {
+		s.inner.DefaultSelectedFunc = f
+	}
+}
+
+// WithDefaultSelectedIndex choose default selected by index.
+func WithDefaultSelectedIndex(index []int) Option {
+	return func(s *Select) {
+		s.inner.DefaultSelectedFunc = func(item components.SelectionItem) bool {
+			for _, i := range index {
+				if i == item.Idx {
+					return true
+				}
+			}
+			return false
+		}
+	}
+}
+
+// WithDefaultSelectedValue choose default selected by value.
+func WithDefaultSelectedValue(value []string) Option {
+	return func(s *Select) {
+		s.inner.DefaultSelectedFunc = func(item components.SelectionItem) bool {
+			for _, v := range value {
+				if v == item.Val {
+					return true
+				}
+			}
+			return false
+		}
+	}
+}
+
 // WithDisableFilter disable filter.
 func WithDisableFilter() Option {
 	return func(s *Select) {

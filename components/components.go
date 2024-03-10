@@ -128,8 +128,11 @@ func NewSelection(choices []string) *Selection {
 	})
 
 	c := &Selection{
-		Paginator:            newDefaultPager(),
-		ShowPaginator:        true,
+		Paginator:     newDefaultPager(),
+		ShowPaginator: true,
+		DefaultSelectedFunc: func(item SelectionItem) bool {
+			return false
+		},
 		Choices:              items,
 		Selected:             make(map[int]bool),
 		CursorSymbol:         SelectionDefaultCursorSymbol,

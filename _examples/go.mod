@@ -9,7 +9,7 @@ require (
 	github.com/charmbracelet/bubbletea v0.25.0
 	github.com/charmbracelet/lipgloss v0.10.0
 	github.com/duke-git/lancet/v2 v2.3.0
-	github.com/fzdwx/infinite v0.0.0
+	github.com/fzdwx/infinite v0.12.1
 	github.com/fzdwx/iter v0.0.0-20230929014346-be73f708fd5a
 	github.com/google/go-github/v52 v52.0.0
 	github.com/sahilm/fuzzy v0.1.1
