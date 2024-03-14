@@ -65,6 +65,7 @@ func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, s.Quit):
+			s.Status = Quit
 			return s, tea.Quit
 		}
 	case Status:
@@ -116,4 +117,8 @@ func (s *Spinner) refreshSpinner(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (s *Spinner) shouldAppendNewLine() bool {
 	return s.Finished() && !s.DisableOutPutResult
+}
+
+func (s *Spinner) GetStatus() Status {
+	return s.Status
 }
