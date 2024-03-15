@@ -77,3 +77,7 @@ func (s *Spinner) refresh(prompt ...string) {
 		s.inner.RefreshPrompt(prompt[0])
 	}
 }
+
+func (s *Spinner) Status() components.Status {
+	return s.inner.GetStatus()
+}
