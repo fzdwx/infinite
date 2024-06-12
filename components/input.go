@@ -229,6 +229,7 @@ func (i *Input) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			i.Model.Blur()
 		case Finish:
 			return i.finish()
+		default: // do nothing
 		}
 	case cleanRequired:
 		i.cleanRequiredMsg(msg)

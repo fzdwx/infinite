@@ -72,6 +72,7 @@ func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg {
 		case Finish:
 			return s.doFinish()
+		default: // do nothing
 		}
 	case spinner.TickMsg:
 		return s.refreshSpinner(msg)

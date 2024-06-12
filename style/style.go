@@ -461,5 +461,5 @@ func (s *Style) Render(str string) string {
 }
 
 func (s *Style) Inner() lipgloss.Style {
-	return s.inner.Copy()
+	return s.inner
 }

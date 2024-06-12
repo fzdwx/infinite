@@ -145,7 +145,7 @@ func (s *selectionWithListDelegate[T]) Render(w io.Writer, m list.Model, index i
 		if isFiltered {
 			// Highlight matches
 			unmatched := st.NormalTitle.Inline(true)
-			matched := unmatched.Copy().Inherit(st.FilterMatch)
+			matched := unmatched.Inherit(st.FilterMatch)
 			title = lipgloss.StyleRunes(title, matchedRunes, matched, unmatched)
 		}
 		title = st.NormalTitle.Render(title)

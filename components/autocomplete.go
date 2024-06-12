@@ -140,7 +140,7 @@ func NewLineSuggestionRender(suggestionItems []string, a *Autocomplete) string {
 			return strx.Empty
 		}
 
-		return strx.NewFluent().Space(a.Padding + a.Input.Cursor()).Write(item).NewLine().String()
+		return strx.NewFluent().Space(a.Padding + a.Input.Position()).Write(item).NewLine().String()
 	}).String()
 }
 
@@ -289,7 +289,7 @@ func (a *Autocomplete) shouldComplete(msg tea.KeyMsg) bool {
 
 func (a *Autocomplete) getValCtx() AutocompleteValCtx {
 	return AutocompleteValCtx{
-		Cursor:       a.Input.Cursor(),
+		Cursor:       a.Input.Position(),
 		Value:        a.Value(),
 		autoComplete: a,
 	}

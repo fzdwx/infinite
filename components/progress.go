@@ -442,20 +442,6 @@ func (pro *Progress) tick() tea.Cmd {
 	return nil
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
 func tick() tea.Msg {
 	return tickCost(1)
 }

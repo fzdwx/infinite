@@ -91,7 +91,7 @@ func (i *Text) Focused() bool {
 
 // Cursor returns the cursor position.
 func (i *Text) Cursor() int {
-	return i.inner.Cursor()
+	return i.inner.Position()
 }
 
 // Blink returns whether or not to draw the cursor.
