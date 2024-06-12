@@ -1,6 +1,6 @@
 module github.com/fzdwx/infinite/examples
 
-go 1.18
+go 1.21
 
 replace github.com/fzdwx/infinite => ../
 
