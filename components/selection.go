@@ -577,6 +577,10 @@ func (s *Selection) shouldFilter() bool {
 	return s.filtering && s.FilterFunc != nil && s.FilterInput != nil
 }
 
+func (s *Selection) SetFiltering(filtering bool) {
+	s.filtering = filtering
+}
+
 func (s *Selection) shouldShowValidatorsErrMsg() bool {
 	return len(s.validatorsErrMsg) > 0
 }

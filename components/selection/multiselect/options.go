@@ -52,6 +52,13 @@ func WithDisableFilter() Option {
 	}
 }
 
+// WithDefaultFiltering default in filtering
+func WithDefaultFiltering() Option {
+	return func(s *Select) {
+		s.inner.SetFiltering(true)
+	}
+}
+
 // WithFilterInput replace filter input.
 func WithFilterInput(input *components.Input) Option {
 	return func(s *Select) {

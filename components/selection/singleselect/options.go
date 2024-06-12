@@ -18,6 +18,13 @@ func WithDisableFilter() Option {
 	}
 }
 
+// WithDefaultFiltering default in filtering
+func WithDefaultFiltering() Option {
+	return func(s *Select) {
+		s.inner.Apply(multiselect.WithDefaultFiltering())
+	}
+}
+
 // WithFilterInput replace filter input.
 func WithFilterInput(input *components.Input) Option {
 	return func(s *Select) {
