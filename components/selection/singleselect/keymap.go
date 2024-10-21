@@ -29,3 +29,16 @@ func DefaultSingleKeyMap() KeyMap {
 		PrevPage:     keyMap.PrevPage,
 	}
 }
+
+func (k KeyMap) ToSelectionKeyMap() components.SelectionKeyMap {
+	return components.SelectionKeyMap{
+		Up:           k.Up,
+		Down:         k.Down,
+		Choice:       k.Choice,
+		Confirm:      k.Confirm,
+		Quit:         k.Quit,
+		ToggleFilter: k.ToggleFilter,
+		NextPage:     k.NextPage,
+		PrevPage:     k.PrevPage,
+	}
+}
