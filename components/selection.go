@@ -481,6 +481,9 @@ func (s *Selection) choice() {
 	start, end := s.Paginator.GetSliceBounds(len(s.currentChoices))
 
 	// get Current choice.
+	if len(s.currentChoices) == 0 || s.cursor >= len(s.currentChoices[start:end]) {
+		return
+	}
 	idx := s.currentChoices[start:end][s.cursor].Idx
 
 	_, ok := s.Selected[idx]

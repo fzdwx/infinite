@@ -44,6 +44,7 @@ func main() {
 
 	if err == nil {
 		fmt.Printf("you selection %s\n", options[selected])
+		fmt.Printf("selected %d\n", selected)
 	}
 
 }
